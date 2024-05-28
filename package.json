@@ -1,0 +1,13 @@
+{
+  "name": "@usirin/monorepo",
+  "version": "1.0.0",
+  "description": "usirin stack",
+  "author": "Umut Sirin <mail@usir.in>",
+  "license": "MIT",
+  "volta": {
+    "node": "22.2.0"
+  },
+  "devDependencies": {
+    "turbo": "^1.13.3"
+  }
+}
