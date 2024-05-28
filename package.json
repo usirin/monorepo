@@ -4,6 +4,10 @@
   "description": "usirin stack",
   "author": "Umut Sirin <mail@usir.in>",
   "license": "MIT",
+  "workspaces": [
+    "packages/*",
+    "services/*"
+  ],
   "volta": {
     "node": "22.2.0"
   },
