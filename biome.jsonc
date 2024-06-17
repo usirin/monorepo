@@ -7,6 +7,11 @@
 		"enabled": true,
 		"lineWidth": 100
 	},
+	"javascript": {
+		"formatter": {
+			"bracketSpacing": false
+		}
+	},
 	"linter": {
 		"enabled": true,
 		"rules": {
