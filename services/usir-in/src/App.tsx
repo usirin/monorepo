@@ -1,6 +1,6 @@
 import {Generation} from "./Generation";
 
-const App = () => {
+const App = (_props: {name: string}) => {
 	return (
 		<div>
 			<title>u5 - ACCESS</title>

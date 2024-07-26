@@ -1,5 +1,5 @@
 {
-  "name": "@umut/otp",
+  "name": "@umut/svc-a11y",
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
@@ -9,10 +9,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "ai": "^3.2.0",
-    "base-x": "^4.0.0",
-    "p-queue": "^8.0.1",
-    "p-wait-for": "^5.0.2",
-    "radix3": "^1.1.2"
+    "kayle": "^0.8.56",
+    "playright": "^0.0.22"
   }
 }
