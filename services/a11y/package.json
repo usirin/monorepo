@@ -1,15 +1,15 @@
 {
-  "name": "@umut/layout-tree",
+  "name": "@umut/svc-a11y",
   "module": "index.ts",
+  "type": "module",
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
-  "type": "module",
   "dependencies": {
-    "immer": "^10.1.1",
-    "ts-pattern": "^5.3.1"
+    "kayle": "^0.8.56",
+    "playright": "^0.0.22"
   }
 }

@@ -1,6 +1,7 @@
+import waitFor from "p-wait-for";
 import {tid} from "./pid";
 import {Process} from "./process";
-import type {Kernel as KernelType, Pid, ProcessContext, Thenable} from "./types";
+import type {Kernel as KernelType, Message, ProcessContext, Thenable} from "./types";
 
 export class Kernel implements KernelType {
 	processes: Map<string, Process> = new Map();
@@ -12,8 +13,15 @@ export class Kernel implements KernelType {
 		this.processes.set(proc.pid, proc);
 
 		const context: ProcessContext = {
-			receive: (fn) => {
-				this.receive(pid, fn);
+			pid,
+			receive: async (topic, fn) => {
+				console.log("waiting for topic", topic);
+				const message = await waitFor(() => {
+					const message = proc.mailbox.dequeue(topic);
+					return !!message && waitFor.resolveWith(message);
+				});
+				console.log("received topic", topic);
+				fn(message as any);
 			},
 		};
 
@@ -26,48 +34,56 @@ export class Kernel implements KernelType {
 		return [proc.pid, promise] as const;
 	}
 
-	receive<TMessage extends {topic: string}>(pid: Pid, fn: (message: TMessage) => void) {
-		const proc = this.processes.get(pid);
-
-		if (!proc) {
-			throw new Error("Process not found");
-		}
-
-		proc.once("message", (message) => {
-			fn(message as TMessage);
-			this.receive(pid, fn);
-		});
-	}
-
-	send<TMessage>(pid: string, msg: TMessage) {
+	send<TMessage extends Message>(pid: string, msg: TMessage) {
+		console.log("Sending", msg.topic, pid);
 		const proc = this.processes.get(pid);
 		if (proc) {
-			proc.send(msg);
+			proc.mailbox.enqueue(msg);
 		}
 	}
 }
 
 const kernel = new Kernel();
 
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const [pid, promise] = kernel.spawn(async ({receive}) => {
 	const state = {count: 0};
-	receive((message) => {
-		console.log("Received", message);
-		if (message.topic === "inc") {
-			state.count++;
-		}
 
-		console.log("State", state);
-	});
+	const loop = async () => {
+		receive("inc", () => {
+			state.count++;
+
+			console.log("inc result:", state.count);
+			loop();
+		});
+
+		receive("hello", () => {
+			console.log("hello");
+			loop();
+		});
+	};
+
+	loop();
 });
 
 console.log(kernel.processes.keys());
 
 kernel.send(pid, {topic: "hello"});
-kernel.send(pid, {topic: "inc"});
-kernel.send(pid, {topic: "inc"});
-kernel.send(pid, {topic: "inc"});
-kernel.send(pid, {topic: "hello"});
+console.log(1);
+// kernel.send(pid, {topic: "inc"});
+// console.log(2);
+// kernel.send(pid, {topic: "inc"});
+// console.log(3);
+// kernel.send(pid, {topic: "inc"});
+// console.log(4);
+// kernel.send(pid, {topic: "hello"});
+// console.log(5);
+
+wait(2000).then(() => {
+	console.log("inside wait");
+	kernel.send(pid, {topic: "inc"});
+});
 
 promise.then(() => {
 	console.log("Done", pid);

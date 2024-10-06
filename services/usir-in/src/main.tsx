@@ -1,6 +1,6 @@
-import { StrictMode } from "react";
-import { createRoot, hydrateRoot } from "react-dom/client";
-import { Root, Slot } from "waku/client";
+import {StrictMode} from "react";
+import {createRoot, hydrateRoot} from "react-dom/client";
+import {Root, Slot} from "waku/client";
 
 const rootElement = (
 	<StrictMode>
@@ -10,8 +10,10 @@ const rootElement = (
 	</StrictMode>
 );
 
-if (document.body.dataset.hydrate) {
-	hydrateRoot(document.body, rootElement);
+// biome-ignore lint/suspicious/noExplicitAny: we are hydrating in a browser
+if ((globalThis as any).__WAKU_HYDRATE__) {
+	hydrateRoot(document, rootElement);
 } else {
-	createRoot(document.body).render(rootElement);
+	// biome-ignore lint/suspicious/noExplicitAny: we are rendering in a browser
+	createRoot(document as any).render(rootElement);
 }
