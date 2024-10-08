@@ -35,9 +35,9 @@ import {match} from "ts-pattern";
 
 import {type Stack, type StackPath, type Window, getAt} from "@umut/layout-tree";
 
+import {useUIState} from "ai/rsc";
 import {Slot} from "waku/client";
 import {create} from "zustand";
-import {widgetKeys} from "../widgets";
 import styles from "./wm.module.css";
 import {commands, useWorkspaceStore} from "./workspace-store";
 
@@ -188,31 +188,33 @@ function Widgets({onSelect}: {onSelect: (key: string) => void}) {
 		<Command value={value} onValueChange={setValue}>
 			<Command.List>
 				<TextField.Root autoFocus value={search} onChange={(e) => setSearch(e.target.value)} />
-				{widgetKeys.map((key) => (
-					<Command.Item
-						key={key}
-						value={key}
-						color="indigo"
-						onSelect={() => {
-							onSelect(key);
-						}}
-					>
-						<Flex
-							p="2"
-							align="center"
-							justify="between"
-							width="100%"
-							style={{
-								backgroundColor: key === value ? "var(--gray-3)" : "transparent",
-								borderRadius: "var(--radius-2)",
+				{["scratch", "time", "counter", "sandpack", "generation", "chat", "theme-settings"].map(
+					(key) => (
+						<Command.Item
+							key={key}
+							value={key}
+							color="indigo"
+							onSelect={() => {
+								onSelect(key);
 							}}
 						>
-							<Code size="1" variant="ghost">
-								{key}
-							</Code>
-						</Flex>
-					</Command.Item>
-				))}
+							<Flex
+								p="2"
+								align="center"
+								justify="between"
+								width="100%"
+								style={{
+									backgroundColor: key === value ? "var(--gray-3)" : "transparent",
+									borderRadius: "var(--radius-2)",
+								}}
+							>
+								<Code size="1" variant="ghost">
+									{key}
+								</Code>
+							</Flex>
+						</Command.Item>
+					),
+				)}
 			</Command.List>
 			<Command.Input value={search} onValueChange={setSearch} style={{display: "none"}} />
 		</Command>

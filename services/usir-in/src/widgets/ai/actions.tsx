@@ -1,3 +1,5 @@
+"use server";
+
 import {openai} from "@ai-sdk/openai";
 import {generateText} from "ai";
 import {getAIState} from "ai/rsc";
@@ -15,11 +17,10 @@ export type ClientMessage = {
 };
 
 export async function sendMessage(input: string) {
-	"use server";
 	const history = getAIState();
 
 	const response = await generateText({
-		model: openai("gpt-4"),
+		model: openai("o1-mini"),
 		// @ts-expect-error
 		messages: [...history, {role: "user", content: input}],
 	});

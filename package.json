@@ -18,6 +18,7 @@
   "trustedDependencies": [
     "@biomejs/biome",
     "@swc/core",
+    "es5-ext",
     "esbuild"
   ]
 }

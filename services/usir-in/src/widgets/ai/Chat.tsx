@@ -2,9 +2,10 @@
 
 import {useUIState} from "ai/rsc";
 import {type ClientMessage, sendMessage} from "./actions";
+import type {AI} from "./context";
 
 export function Chat() {
-	const [messages, setMessages] = useUIState();
+	const [messages, setMessages] = useUIState<typeof AI>();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();

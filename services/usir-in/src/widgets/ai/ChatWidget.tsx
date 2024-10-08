@@ -1,11 +1,10 @@
 import {Chat} from "./Chat";
-import {ChatAIContext} from "./context";
+import {AIProvider} from "./ai-provider";
 
 export function ChatWidget() {
-	console.log(ChatAIContext);
 	return (
-		<ChatAIContext>
+		<AIProvider>
 			<Chat />
-		</ChatAIContext>
+		</AIProvider>
 	);
 }

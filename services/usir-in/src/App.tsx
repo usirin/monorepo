@@ -3,6 +3,7 @@ import {Workspace} from "./widget-manager/Workspace";
 import "./widget-manager/styles.css";
 
 import "@radix-ui/themes/styles.css";
+import {ChatWidget} from "./widgets/ai/ChatWidget";
 
 function Layout(props: {children: React.ReactNode}) {
 	return (
@@ -18,6 +19,7 @@ function Layout(props: {children: React.ReactNode}) {
 const App = (props: {name: string}) => {
 	return (
 		<Layout>
+			<ChatWidget />
 			<KeystrokesManager>
 				<Workspace />
 			</KeystrokesManager>

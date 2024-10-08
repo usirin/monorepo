@@ -15,5 +15,3 @@ export const widgets = {
 	generation: <Generation />,
 	chat: <ChatWidget />,
 };
-
-export const widgetKeys = Object.keys(widgets);
