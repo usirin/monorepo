@@ -35,3 +35,4 @@ export function PanelStack({stack, path}: {stack: Stack; path: StackPath}) {
 		</PanelGroup>
 	);
 }
+

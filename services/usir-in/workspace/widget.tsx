@@ -19,10 +19,11 @@ export const widgets = {
 
 export type WidgetID = keyof typeof widgets;
 
-export function Widget({id: name}: {id: WidgetID}) {
-	const Component = widgets[name as WidgetID];
+export function Widget({id}: {id: WidgetID}) {
+	const Component = widgets[id as WidgetID];
 	if (!Component) {
-		throw new Error(`Unknown widget: ${name}`);
+		console.error(new Error(`Unknown widget: ${id}`));
+		return <div>Unknown widget: {id}</div>;
 	}
 
 	return <Component />;
