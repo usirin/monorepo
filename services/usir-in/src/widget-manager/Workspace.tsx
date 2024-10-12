@@ -5,9 +5,7 @@ import {
 	DragOverlay,
 	MouseSensor,
 	closestCorners,
-	useDndMonitor,
 	useDraggable,
-	useDroppable,
 	useSensor,
 	useSensors,
 } from "@dnd-kit/core";
@@ -35,9 +33,8 @@ import {match} from "ts-pattern";
 
 import {type Stack, type StackPath, type Window, getAt} from "@umut/layout-tree";
 
-import {useUIState} from "ai/rsc";
-import {Slot} from "waku/client";
 import {create} from "zustand";
+import {DropHandle} from "~/workspace/drop-handle";
 import styles from "./wm.module.css";
 import {commands, useWorkspaceStore} from "./workspace-store";
 
@@ -50,19 +47,6 @@ function ResizeHandle({id}: {id: string; path: StackPath}) {
 		<PanelResizeHandle id={id} className={styles.ResizeHandleOuter}>
 			<Box className={styles.ResizeHandleInner} />
 		</PanelResizeHandle>
-	);
-}
-
-function DropHandle({id, path, after}: {id: string; path: StackPath; after?: true}) {
-	const {isOver, setNodeRef, active} = useDroppable({id, data: {path, after}});
-
-	if (!active) return null;
-	if (active.data.current?.path.join(":") === path.join(":")) return null;
-
-	return (
-		<Box ref={setNodeRef} className={clsx(styles.DropHandleOuter, isOver && styles.IsOver)}>
-			<Box className={styles.DropHandleInner} />
-		</Box>
 	);
 }
 
@@ -236,7 +220,7 @@ function WindowContent({window, path}: {window: Window; path: StackPath}) {
 							}}
 						/>
 					) : (
-						<Slot id={window.key} />
+						<>{window.key}</>
 					)}
 				</Box>
 				<Flex p="0" gap="1" align="center">

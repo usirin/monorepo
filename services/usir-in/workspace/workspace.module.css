@@ -1,0 +1,98 @@
+.Container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+.BottomRow {
+  flex: 1 1 auto;
+}
+
+.Panel {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
+  position: relative;
+}
+
+.PanelContent {
+  background-color: var(--color-panel-background);
+  overflow: hidden;
+}
+
+.ResizeHandleOuter {
+  position: relative;
+  flex: 0 0 8px;
+  outline: none;
+
+  --background-color: transparent;
+  &[data-resize-handle-active] {
+    --background-color: var(--color-solid-resize-bar-handle);
+  }
+}
+
+
+.ResizeHandleInner {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  right: 2px;
+  background-color: var(--background-color);
+  transition: background-color 0.2s linear;
+  border-radius: 0.25rem;
+}
+
+
+.DropHandleOuter {
+  flex: 0 0 8px;
+  position: relative;
+  outline: none;
+
+  --background-color: transparent;
+  &.IsOver {
+    --background-color: tomato;
+  }
+}
+
+
+.DropHandleInner {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  right: 2px;
+  background-color: var(--background-color);
+  transition: background-color 0.2s linear;
+  border-radius: 0.25rem;
+}
+
+.Button {
+  color: var(--color-default);
+  background-color: var(--color-button-background);
+  border: 1px solid var(--color-button-border);
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+}
+.Button:hover {
+  background-color: var(--color-button-background-hover);
+}
+
+.Link {
+  display: block;
+  color: var(--color-link);
+  margin-bottom: 0.5rem;
+}
+
+.Icon {
+  width: 1em;
+  height: 1em;
+  position: absolute;
+  left: calc(50% - 0.5rem);
+  top: calc(50% - 0.5rem);
+}

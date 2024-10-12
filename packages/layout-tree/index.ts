@@ -1,5 +1,7 @@
 import {produce} from "immer";
-import {type Entity, entity, factory, id} from "./entity";
+import get from "lodash.get";
+import set from "lodash.set";
+import {type Entity, entity, factory} from "./entity";
 
 export type Orientation = "horizontal" | "vertical";
 export type Direction = "left" | "right" | "up" | "down";
@@ -26,37 +28,25 @@ export const createStack = (orientation: Orientation, children: (Window | Stack)
 	children,
 });
 
-const stack = factory("stack", (orientation: Orientation, children: (Window | Stack)[]) => ({
-	orientation,
-	children,
-}));
-
 export interface Tree extends Entity<"tree"> {
 	root: Stack;
+	get: (path: StackPath) => Stack | Window | null;
+	split: (path: StackPath, orientation: Orientation) => Tree;
 }
 
 export type StackPath = number[];
 
-export const createTree = (root?: Stack): Tree => ({
-	...entity("tree"),
-	root: root ?? createStack("vertical", [createWindow("scratch")]),
-});
+export const createTree = (root = createStack("vertical", [createWindow("scratch")])): Tree => {
+	return {
+		...entity("tree"),
+		root,
+		get: (path: StackPath) => getAt(root, path),
+		split: (path: StackPath, orientation: Orientation) => split(root, path, orientation),
+	};
+};
 
 export function getAt(stack: Stack, stackPath: StackPath): Stack | Window | null {
-	let node = stack;
-	const path = [...stackPath];
-	while (path.length > 0) {
-		if (node.tag !== "stack") {
-			throw new Error("Invalid path");
-		}
-
-		const index = path.shift() as number;
-		if (index === undefined) {
-			return null;
-		}
-		node = node.children[index] as Stack;
-	}
-	return node as Stack | Window;
+	return get(stack, stackPath);
 }
 
 const pop = (stackPath: StackPath): [number | undefined, StackPath] => {
@@ -66,7 +56,7 @@ const pop = (stackPath: StackPath): [number | undefined, StackPath] => {
 
 export function split(tree: Tree, path: StackPath, orientation: Orientation): Tree {
 	return produce(tree, (draft) => {
-		const node = getAt(draft.root, path);
+		const node = draft.get(path);
 		if (node?.tag !== "window") {
 			return;
 		}
@@ -82,7 +72,6 @@ export function split(tree: Tree, path: StackPath, orientation: Orientation): Tr
 			// if the parent has only one child
 			if (parent.children.length === 1) {
 				parent.orientation = orientation;
-				parent.id = id("stack");
 				parent.children = [node, clone(node)];
 				return;
 			}
@@ -187,21 +176,21 @@ export function moveAfter(tree: Tree, path: StackPath, after: StackPath) {
 	});
 }
 
-export function swap(tree: Tree, path: StackPath, withPath: StackPath) {
+export function swap(tree: Tree, source: StackPath, target: StackPath) {
 	return produce(tree, (draft) => {
-		const node = getAt(draft.root, path);
-		if (node?.tag !== "window") {
+		const sourceWindow = getAt(draft.root, source);
+		if (sourceWindow?.tag !== "window") {
 			return;
 		}
 
-		const withNode = getAt(draft.root, withPath);
-		if (withNode?.tag !== "window") {
+		const targetWindow = getAt(draft.root, target);
+		if (targetWindow?.tag !== "window") {
 			return;
 		}
 
-		const temp = node.key;
-		node.key = withNode.key;
-		withNode.key = temp;
+		const temp = sourceWindow.key;
+		sourceWindow.key = targetWindow.key;
+		targetWindow.key = temp;
 	});
 }
 

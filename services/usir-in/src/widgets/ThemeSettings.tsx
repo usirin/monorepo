@@ -6,12 +6,10 @@ import * as React from "react";
 import {
 	AccessibleIcon,
 	Box,
-	Button,
 	Flex,
 	Grid,
 	Heading,
 	IconButton,
-	Kbd,
 	Popover,
 	ScrollArea,
 	Text,
@@ -26,7 +24,6 @@ import {
 	type RemovedProps,
 	getMatchingGrayColor,
 } from "@radix-ui/themes/helpers";
-import {create} from "zustand";
 
 interface ThemePanelProps extends Omit<ThemePanelImplProps, keyof ThemePanelImplPrivateProps> {
 	defaultOpen?: boolean;

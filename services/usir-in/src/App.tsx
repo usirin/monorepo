@@ -19,7 +19,6 @@ function Layout(props: {children: React.ReactNode}) {
 const App = (props: {name: string}) => {
 	return (
 		<Layout>
-			<ChatWidget />
 			<KeystrokesManager>
 				<Workspace />
 			</KeystrokesManager>

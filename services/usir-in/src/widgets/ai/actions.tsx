@@ -1,9 +1,8 @@
-"use server";
-
 import {openai} from "@ai-sdk/openai";
 import {generateText} from "ai";
-import {getAIState} from "ai/rsc";
+import {getMutableAIState} from "ai/rsc";
 import type {ReactNode} from "react";
+import type {AI} from "./context";
 
 export type ServerMessage = {
 	role: "user" | "assistant";
@@ -16,14 +15,27 @@ export type ClientMessage = {
 	display: ReactNode;
 };
 
-export async function sendMessage(input: string) {
-	const history = getAIState();
+export async function sendMessage(content: string) {
+	"use server";
+	const history = getMutableAIState<typeof AI>();
 
-	const response = await generateText({
+	history.update([...history.get(), {role: "user", content}]);
+
+	const _response = await generateText({
 		model: openai("o1-mini"),
-		// @ts-expect-error
-		messages: [...history, {role: "user", content: input}],
+		messages: history.get(),
 	});
 
-	return response;
+	_response;
+
+	const response = JSON.parse(JSON.stringify(_response)) as typeof _response;
+	console.log("response", response);
+
+	history.done([...history.get(), {role: "assistant", content: response.text}]);
+
+	try {
+		return response;
+	} catch (error) {
+		console.log("Error parsing response:", error);
+	}
 }
