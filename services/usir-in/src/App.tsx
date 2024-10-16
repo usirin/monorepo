@@ -1,4 +1,4 @@
-import {KeystrokesManager} from "./KeystrokesManager";
+import {KeystrokesManager} from "../studio/keystrokes-manager";
 import {Workspace} from "./widget-manager/Workspace";
 import "./widget-manager/styles.css";
 

@@ -30,23 +30,27 @@ export const createStack = (orientation: Orientation, children: (Window | Stack)
 
 export interface Tree extends Entity<"tree"> {
 	root: Stack;
-	get: (path: StackPath) => Stack | Window | null;
-	split: (path: StackPath, orientation: Orientation) => Tree;
 }
 
 export type StackPath = number[];
 
 export const createTree = (root = createStack("vertical", [createWindow("scratch")])): Tree => {
-	return {
+	const tree = {
 		...entity("tree"),
 		root,
-		get: (path: StackPath) => getAt(root, path),
-		split: (path: StackPath, orientation: Orientation) => split(root, path, orientation),
 	};
+
+	return tree;
 };
 
 export function getAt(stack: Stack, stackPath: StackPath): Stack | Window | null {
-	return get(stack, stackPath);
+	if (stackPath.length === 0) return stack;
+	const thing = get(
+		stack,
+		stackPath.flatMap((n) => ["children", n]),
+	);
+
+	return (thing as Stack | Window) ?? null;
 }
 
 const pop = (stackPath: StackPath): [number | undefined, StackPath] => {
@@ -56,7 +60,7 @@ const pop = (stackPath: StackPath): [number | undefined, StackPath] => {
 
 export function split(tree: Tree, path: StackPath, orientation: Orientation): Tree {
 	return produce(tree, (draft) => {
-		const node = draft.get(path);
+		const node = getAt(draft.root, path);
 		if (node?.tag !== "window") {
 			return;
 		}

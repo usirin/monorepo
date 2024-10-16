@@ -1,4 +1,4 @@
-import type {ComponentType} from "react";
+import {RSCClient} from "~/src/widgets/rsc-client";
 import {Counter} from "../src/widgets/Counter";
 import {Generation} from "../src/widgets/Generation";
 import {Sandpack} from "../src/widgets/Sandpack";
@@ -15,6 +15,7 @@ export const widgets = {
 	"theme-settings": () => <ThemeSettings />,
 	generation: () => <Generation />,
 	chat: () => <ChatWidget />,
+	"rsc-client": () => <RSCClient />,
 };
 
 export type WidgetID = keyof typeof widgets;

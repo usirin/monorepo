@@ -13,7 +13,7 @@ export function StudioContainer() {
 			style={{height: "100%"}}
 		>
 			<KeystrokesManager>
-				<Flex gap="8px" p="8px" direction="column" height="100%">
+				<Flex gap="1" p="1" direction="column" height="100%">
 					<WorkspaceContainer />
 					<Statusbar />
 				</Flex>

@@ -1,6 +1,6 @@
 import {Box, Card, Flex, Inset, ScrollArea, Text} from "@radix-ui/themes";
 import type {StackPath, Window} from "@umut/layout-tree";
-import {Widget, type WidgetID} from "./widget";
+import {Widget, type WidgetID} from "~/studio/widget";
 
 export function WindowPanel({window, path}: {window: Window; path: StackPath}) {
 	return (
@@ -21,7 +21,7 @@ function PanelTitle({window, path}: {window: Window; path: StackPath}) {
 	return (
 		<Box px="2" py="1">
 			<Text size="1" truncate>
-				{window.id} - {window.key} - {path.join(":")}
+				widget://{window.key}
 			</Text>
 		</Box>
 	);

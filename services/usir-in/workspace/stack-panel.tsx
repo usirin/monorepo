@@ -1,9 +1,9 @@
 import type {Stack, StackPath} from "@umut/layout-tree";
 import {Fragment} from "react";
 import {match} from "ts-pattern";
-import {Panel} from "./panel";
-import {PanelGroup} from "./panel-group";
-import {ResizeHandle} from "./resize-handle";
+import {Panel} from "~/studio/panel";
+import {PanelGroup} from "~/studio/panel-group";
+import {ResizeHandle} from "~/studio/resize-handle";
 import {WindowPanel} from "./window-panel";
 
 export function PanelStack({stack, path}: {stack: Stack; path: StackPath}) {
@@ -35,4 +35,3 @@ export function PanelStack({stack, path}: {stack: Stack; path: StackPath}) {
 		</PanelGroup>
 	);
 }
-

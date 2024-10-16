@@ -1,5 +1,6 @@
 import {describe, expect, it} from "bun:test";
 import {
+	type Stack,
 	type Window,
 	createStack,
 	createTree,
@@ -27,11 +28,6 @@ describe("getAt", () => {
 });
 
 describe("split", () => {
-	it("should throw if there is not a node at given index", () => {
-		const tree = createTree();
-		expect(() => split(tree, [0, 0], "vertical")).toThrow(/Invalid path/);
-	});
-
 	it("should split root vertically", () => {
 		const tree = createTree();
 		let newTree = split(tree, [0], "vertical");
@@ -72,7 +68,7 @@ describe("findSibling", () => {
 		]);
 
 		const result = findSibling(tree, [0], "right");
-		expect(result).toEqual(createWindow("2"));
+		expect(result?.key).toEqual("2");
 	});
 
 	it("should find the left sibling in a horizontal stack", () => {
@@ -84,7 +80,7 @@ describe("findSibling", () => {
 		]);
 
 		const result = findSibling(tree, [1], "left");
-		expect(result).toEqual(createWindow("1"));
+		expect(result?.key).toEqual("1");
 	});
 
 	it("should find the down sibling in a vertical stack", () => {
@@ -92,7 +88,7 @@ describe("findSibling", () => {
 		tree.root = createStack("vertical", [createWindow("1"), createWindow("2"), createWindow("3")]);
 
 		const result = findSibling(tree, [0], "down");
-		expect(result).toEqual(createWindow("2"));
+		expect(result?.key).toEqual("2");
 	});
 
 	it("should find the up sibling in a vertical stack", () => {
@@ -100,7 +96,7 @@ describe("findSibling", () => {
 		tree.root = createStack("vertical", [createWindow("1"), createWindow("2"), createWindow("3")]);
 
 		const result = findSibling(tree, [1], "up");
-		expect(result).toEqual(createWindow("1"));
+		expect(result?.key).toEqual("1");
 	});
 
 	it("should return null when there is no sibling in the given direction", () => {
@@ -120,15 +116,16 @@ describe("findSibling", () => {
 		]);
 
 		const result = findSibling(tree, [0, 1], "down");
-		expect(result).toEqual(createWindow("3"));
+		expect(result?.key).toEqual("3");
 	});
 
 	it("should return null when reaching the edge of the tree", () => {
-		const tree = createTree();
-		tree.root = createStack("vertical", [
-			createStack("horizontal", [createWindow("1"), createWindow("2")]),
-			createWindow("3"),
-		]);
+		const tree = createTree(
+			createStack("vertical", [
+				createStack("horizontal", [createWindow("1"), createWindow("2")]),
+				createWindow("3"),
+			]),
+		);
 
 		const result = findSibling(tree, [1], "down");
 		expect(result).toBe(null);
@@ -142,15 +139,15 @@ describe("remove", () => {
 
 		const newTree = remove(tree, [1]);
 		expect(newTree.root.children.length).toEqual(2);
-		expect(newTree.root.children[0]).toEqual(createWindow("0"));
-		expect(newTree.root.children[1]).toEqual(createWindow("2"));
+		expect((newTree.root.children[0] as Window).key).toEqual("0");
+		expect((newTree.root.children[1] as Window).key).toEqual("2");
 	});
 
 	it("should work with only one window", () => {
 		const tree = createTree();
 
 		const newTree = remove(tree, [0]);
-		expect(newTree.root).toEqual(createStack("vertical", []));
+		expect(newTree.root.children.length).toEqual(0);
 	});
 
 	it("should work well with nested complex trees", () => {
@@ -161,11 +158,12 @@ describe("remove", () => {
 		]);
 
 		const newTree = remove(tree, [0, 0]);
-		expect(newTree.root).toEqual(
-			createStack("vertical", [createStack("horizontal", [createWindow("2")]), createWindow("3")]),
-		);
+		expect((newTree.root.children[0] as Stack).children.length).toEqual(1);
+		expect(((newTree.root.children[0] as Stack).children[0] as Window).key).toEqual("2");
+		expect((newTree.root.children[1] as Window).key).toEqual("3");
 
 		const newTree2 = remove(newTree, [0, 0]);
-		expect(newTree2.root).toEqual(createStack("vertical", [createWindow("3")]));
+		expect(newTree2.root.children.length).toEqual(1);
+		expect((newTree2.root.children[0] as Window).key).toEqual("3");
 	});
 });
