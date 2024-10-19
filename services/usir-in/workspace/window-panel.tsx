@@ -1,6 +1,6 @@
 import {Box, Card, Flex, Inset, ScrollArea, Text} from "@radix-ui/themes";
 import type {StackPath, Window} from "@umut/layout-tree";
-import {Widget, type WidgetID} from "~/studio/widget";
+import {type WidgetID, renderWidget} from "~/studio/widget";
 
 export function WindowPanel({window, path}: {window: Window; path: StackPath}) {
 	return (
@@ -10,7 +10,7 @@ export function WindowPanel({window, path}: {window: Window; path: StackPath}) {
 					<PanelTitle window={window} path={path} />
 				</Inset>
 				<ScrollArea type="hover" style={{flex: 1}}>
-					<Widget id={window.key as WidgetID} />
+					{renderWidget({id: window.key as WidgetID})}
 				</ScrollArea>
 			</Flex>
 		</Card>

@@ -1,26 +1,13 @@
-import {Box} from "@radix-ui/themes";
-import {createStack, createTree, createWindow} from "@umut/layout-tree";
+"use client";
+
 import {Panel} from "~/studio/panel";
 import {PanelGroup} from "~/studio/panel-group";
 import {ResizeHandle} from "~/studio/resize-handle";
 import {PanelStack} from "./stack-panel";
+import {useWorkspaceStore} from "./workspace-manager";
 
-const tree = createTree(
-	createStack("horizontal", [
-		createWindow("rsc-client"),
-		createStack("vertical", [createWindow("scratch"), createWindow("chat")]),
-		createWindow("scratch"),
-	]),
-);
-
-console.log(JSON.stringify(tree, null, 2));
-
-async function fetchLayout() {
-	return tree;
-}
-
-export async function WorkspaceContainer() {
-	const layout = await fetchLayout();
+export function WorkspaceContainer() {
+	const {workspace} = useWorkspaceStore();
 
 	return (
 		<PanelGroup direction="horizontal">
@@ -29,7 +16,7 @@ export async function WorkspaceContainer() {
 			</Panel>
 			<ResizeHandle id="left-panel" />
 			<Panel id="workspace-widgets" order={2} defaultSize={70}>
-				<PanelStack stack={layout.root} path={[]} />
+				<PanelStack stack={workspace.layout.root} path={[]} />
 			</Panel>
 			<ResizeHandle id="right-panel" />
 			<Panel id="right-panel" order={3} defaultSize={15} maxSize={25}>

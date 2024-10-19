@@ -9,6 +9,7 @@ import {WindowPanel} from "./window-panel";
 export function PanelStack({stack, path}: {stack: Stack; path: StackPath}) {
 	return (
 		<PanelGroup
+			autoSaveId="panel-group"
 			id={path.length === 0 ? "root" : path.join(":")}
 			direction={stack.orientation === "horizontal" ? "vertical" : "horizontal"}
 			style={{position: "relative"}}

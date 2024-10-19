@@ -1,5 +1,7 @@
 import {type Tree, createTree} from "@umut/layout-tree";
-import {type ActorRefFrom, setup} from "xstate";
+import {createStoreWithProducer} from "@xstate/store";
+import {produce} from "immer";
+import {type ActorRefFrom, createActor, setup, stopChild} from "xstate";
 import {create} from "zustand";
 import xstate from "zustand-middleware-xstate";
 
@@ -42,37 +44,14 @@ export const useModeState = () => {
 	return {state, send, actor};
 };
 
-const workspaceMachine = setup({
-	types: {
-		context: {} as {
-			focused: string[];
-			layout: Tree;
-		},
-		input: {} as {
-			layout: Tree;
+const studioStore = createStoreWithProducer(produce, {
+	context: {
+		focused: [] as string[],
+		layout: createTree(),
+	},
+	on: {
+		FOCUS: (context, event: {path: string[]}) => {
+			context.focused = event.path;
 		},
 	},
-}).createMachine({
-	id: "workspace",
-	context: ({input}) => ({
-		focused: [],
-		layout: input.layout,
-	}),
 });
-
-const studioMachine = setup({
-	types: {
-		context: {} as {
-			mode: ActorRefFrom<typeof modeMachine>;
-			workspaces: ActorRefFrom<typeof workspaceMachine>[];
-		},
-	},
-}).createMachine({
-	id: "studio",
-	context: ({spawn}) => ({
-		mode: spawn(modeMachine),
-		workspaces: [spawn(workspaceMachine, {input: {layout: createTree()}})],
-	}),
-});
-
-export const useStudioState = create(xstate(studioMachine));

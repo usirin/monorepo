@@ -6,16 +6,16 @@ import {createRoot} from "react-dom/client";
 import {createFromFetch} from "react-server-dom-webpack/client";
 
 export function RSCClient() {
-	const elementRef = useRef<HTMLDivElement | null>(null);
+	const [promise, setPromise] = useState<Promise<Response> | null>(null);
 	useEffect(() => {
-		if (elementRef.current) {
-			const promise = createFromFetch(fetch("/api/hello"));
-			const root = createRoot(elementRef.current);
-			root.render(<WidgetRoot promise={promise} />);
-		}
+		setPromise(createFromFetch(fetch("/api/hello")));
 	}, []);
 
-	return <div ref={elementRef} />;
+	if (!promise) {
+		return null;
+	}
+
+	return <WidgetRoot promise={promise} />;
 }
 
 function WidgetRoot({promise}: {promise: Promise<Response>}) {

@@ -19,7 +19,4 @@ export const factory =
 		(...args: A): Entity<T> & U => ({
 			...entity(tag),
 			..._factory(...args),
-			clone() {
-				return factory(tag, _factory)(...args);
-			},
 		});
