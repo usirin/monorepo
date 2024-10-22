@@ -22,11 +22,13 @@ export interface Stack extends Entity<"stack"> {
 	children: (Window | Stack)[];
 }
 
-export const createStack = (orientation: Orientation, children: (Window | Stack)[]) => ({
-	...entity("stack"),
-	orientation,
-	children,
-});
+export const createStack = factory(
+	"stack",
+	(orientation: Orientation, children: (Window | Stack)[]) => ({
+		orientation,
+		children,
+	}),
+);
 
 export interface Tree extends Entity<"tree"> {
 	root: Stack;
@@ -34,14 +36,13 @@ export interface Tree extends Entity<"tree"> {
 
 export type StackPath = number[];
 
-export const createTree = (root = createStack("vertical", [createWindow("scratch")])): Tree => {
-	const tree = {
-		...entity("tree"),
+export const createTree = factory("tree", (root = createStack("vertical", [
+		createWindow("scratch"),
+	])) => {
+	return {
 		root,
 	};
-
-	return tree;
-};
+});
 
 export function getAt(stack: Stack, stackPath: StackPath): Stack | Window | null {
 	if (stackPath.length === 0) return stack;

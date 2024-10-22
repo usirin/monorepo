@@ -1,5 +1,5 @@
 {
-  "name": "@umut/keyboard",
+  "name": "@umut/runekeeper",
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
@@ -7,5 +7,9 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "vim-like-key-notation": "^1.0.1",
+    "xstate": "^5.18.2"
   }
 }

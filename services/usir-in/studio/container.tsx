@@ -1,5 +1,8 @@
-import {Flex, Theme} from "@radix-ui/themes";
+"use client";
+
+import {Box, Flex, Theme} from "@radix-ui/themes";
 import {WorkspaceContainer} from "~/workspace/container";
+import {commands} from "~/workspace/workspace-manager";
 import {CommandPanel} from "./command-panel";
 import {KeystrokesManager} from "./keystrokes-manager";
 import {Statusbar} from "./statusbar";
@@ -15,8 +18,10 @@ export function StudioContainer() {
 		>
 			<KeystrokesManager>
 				<Flex gap="1" p="1" direction="column" height="100%">
-					<WorkspaceContainer />
-					<CommandPanel />
+					<Box style={{flex: 1}}>
+						<WorkspaceContainer />
+					</Box>
+					<CommandPanel commands={commands} />
 					<Statusbar />
 				</Flex>
 			</KeystrokesManager>

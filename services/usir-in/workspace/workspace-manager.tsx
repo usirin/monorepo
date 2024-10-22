@@ -146,9 +146,6 @@ export const commands = {
 					path ?? state.workspace.focused,
 					orientation ?? "horizontal",
 				);
-				if (getAt(state.workspace.layout.root, state.workspace.focused)?.tag === "stack") {
-					state.workspace.focused.push(0);
-				}
 			});
 		},
 	}),
