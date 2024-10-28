@@ -35,7 +35,11 @@ export const useWorkspaceStore = create<WorkspaceContextType>()(
 			immer(() => ({
 				workspace: {
 					layout: createTree(
-						createStack("vertical", [createWindow("scratch"), createWindow("sandpack")]),
+						createStack("vertical", [
+							createWindow("time"),
+							createStack("horizontal", [createWindow("counter"), createWindow("scratch")]),
+							createWindow("counter"),
+						]),
 					),
 					focused: [0],
 				},
@@ -82,14 +86,12 @@ export const commands = {
 		name: "remove",
 		description: "Remove a widget from the current workspace",
 		parameters: z.object({
-			path: z.array(z.number()),
+			path: z.array(z.number()).optional(),
 		}),
-		execute: ({path}) => {
+		execute: ({path = useWorkspaceStore.getState().workspace.focused}) => {
+			console.log("remove", path);
 			useWorkspaceStore.setState((state) => {
 				state.workspace.layout = remove(state.workspace.layout, path);
-				if (state.workspace.focused.join(",") === path.join(",")) {
-					state.workspace.focused = [];
-				}
 			});
 		},
 	}),
@@ -136,7 +138,10 @@ export const commands = {
 		name: "split",
 		description: "Split the current workspace",
 		parameters: z.object({
-			path: z.array(z.number()),
+			path: z
+				.array(z.number())
+				.optional()
+				.default(() => useWorkspaceStore.getState().workspace.focused),
 			orientation: z.enum(["horizontal", "vertical"]),
 		}),
 		execute: ({path, orientation}) => {
@@ -146,6 +151,15 @@ export const commands = {
 					path ?? state.workspace.focused,
 					orientation ?? "horizontal",
 				);
+
+				const node = getAt(state.workspace.layout.root, path ?? state.workspace.focused);
+
+				if (node?.tag === "stack") {
+					state.workspace.focused = [
+						...(path ?? state.workspace.focused),
+						node.children.length - 1,
+					];
+				}
 			});
 		},
 	}),

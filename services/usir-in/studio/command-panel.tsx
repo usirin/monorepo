@@ -15,7 +15,7 @@ export function CommandPanel({
 }) {
 	const [value, setValue] = useState("");
 	const [search, setSearch] = useState("");
-	const {state} = useModeState();
+	const {state, send} = useModeState();
 
 	if (!state.matches("command")) {
 		return null;
@@ -35,7 +35,8 @@ export function CommandPanel({
 								// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 								command.execute({} as any);
 								setValue("");
-								onSelect?.(command.name);
+								setSearch("");
+								send({type: "NORMAL"});
 							}}
 						>
 							<Flex

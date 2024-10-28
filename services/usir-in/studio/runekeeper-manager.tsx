@@ -18,11 +18,34 @@ if (send) {
 	send({
 		type: "MAP",
 		mode: "normal",
-		sequence: "|",
+		sequence: "-",
 		command: () => {
 			console.log("execute split");
 			return commands.split.execute({
 				orientation: "horizontal",
+			});
+		},
+	});
+
+	send({
+		type: "MAP",
+		mode: "normal",
+		sequence: "|",
+		command: () => {
+			console.log("execute split");
+			return commands.split.execute({
+				orientation: "vertical",
+			});
+		},
+	});
+
+	send({
+		type: "MAP",
+		mode: "normal",
+		sequence: "ZZ",
+		command: () => {
+			console.log("execute remove");
+			return commands.remove.execute({
 				path: [0, 0],
 			});
 		},
