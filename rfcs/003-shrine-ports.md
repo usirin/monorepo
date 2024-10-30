@@ -1,193 +1,219 @@
-# RFC 003: Shrine Widget Ports
+# Widget Communication with Ports
 
 ## Summary
-A type-safe communication system between widgets using input/output ports.
+A system for widgets to communicate with each other in a type-safe way. Think of ports as plugs and sockets - widgets can have input ports (sockets that accept data) and output ports (plugs that send data).
 
-## Port Types
+## How It Works
+
+### Simple Example: Counter with Display
+Let's start with a basic counter that updates a display:
 
 ```typescript
-// Basic port definition
-interface Ports {
-  input: {
-    // Input ports are functions that modify widget state
-    [key: string]: (state: State, ...args: any[]) => void
+// A counter that can be incremented/decremented
+const CounterWidget = defineWidget({
+  id: 'counter',
+  initialState: {
+    value: 0
+  },
+  ports: {
+    input: {
+      // Simple increment/decrement
+      increment(state) {
+        state.value += 1
+      },
+      decrement(state) {
+        state.value -= 1
+      }
+    },
+    output: {
+      // Notify when value changes
+      onChange(value) {
+        // Will be called after each change
+      }
+    }
   }
-  output: {
-    // Output ports are event definitions
-    [key: string]: (...args: any[]) => void
-  }
-}
+})
 
-// Example: Code Editor Widget
+// A display that shows a number
+const DisplayWidget = defineWidget({
+  id: 'display',
+  initialState: {
+    value: null
+  },
+  ports: {
+    input: {
+      // Update display value
+      setValue(state, value) {
+        state.value = value
+      }
+    }
+  }
+})
+
+// Connect counter to display
+registry.connect(CounterWidget, DisplayWidget, {
+  onChange: 'setValue'
+})
+```
+
+### Advanced Example: Code Editor Suite
+A more complex example showing how multiple specialized widgets work together:
+
+```typescript
+// Code editor with syntax highlighting
 const EditorWidget = defineWidget({
   id: 'editor',
   initialState: {
     content: '',
-    language: 'typescript',
-    cursor: { line: 0, column: 0 }
+    cursor: {line: 0, column: 0},
+    selections: []
   },
   ports: {
-    // Input ports - other widgets can call these
     input: {
-      // Set content from external source
-      setContent(state, content: string) {
-        state.content = content
-      },
       // Jump to specific location
-      setCursor(state, line: number, column: number) {
-        state.cursor = { line, column }
+      setCursor(state, line, column) {
+        state.cursor = {line, column}
       },
-      // Highlight specific range
-      highlight(state, range: { start: number, end: number }) {
-        state.highlights.push(range)
+      // Highlight code range
+      addHighlight(state, range) {
+        state.selections.push(range)
+      },
+      // Clear all highlights
+      clearHighlights(state) {
+        state.selections = []
       }
     },
-    // Output ports - this widget emits these events
     output: {
-      // Notify when content changes
-      onChange: (content: string) => void,
-      // Notify when cursor moves
-      onCursorMove: (position: { line: number, column: number }) => void,
-      // Notify when selection changes
-      onSelection: (range: { start: number, end: number }) => void
+      // Code changed
+      onChange(content) {
+        // Will be called when code changes
+      },
+      // Cursor moved
+      onCursorMove(position) {
+        // Will be called when cursor moves
+      }
     }
   }
 })
 
-// Example: Preview Widget
-const PreviewWidget = defineWidget({
-  id: 'preview',
+// Problem finder (linter/type checker)
+const ProblemFinderWidget = defineWidget({
+  id: 'problems',
   initialState: {
-    content: '',
-    scroll: 0
+    problems: []
   },
   ports: {
     input: {
-      // Update preview content
-      updateContent(state, content: string) {
-        state.content = content
-      },
-      // Scroll to position
-      scrollTo(state, position: number) {
-        state.scroll = position
+      // Check code for problems
+      check(state, content) {
+        state.problems = findProblems(content)
       }
     },
     output: {
-      // Notify when user clicks a position in preview
-      onClick: (position: number) => void
+      // Problem selected
+      onSelect(problem) {
+        // Will be called when user clicks a problem
+      }
     }
   }
 })
-```
 
-## Connecting Widgets
-
-```typescript
-// In your studio setup
-const registry = createRegistry()
-
-// Register widgets
-registry.register(EditorWidget)
-registry.register(PreviewWidget)
-
-// Connect editor to preview
-registry.connect('editor', 'preview', {
-  // When editor content changes, update preview
-  onChange: 'updateContent'
-})
-
-// Connect preview to editor
-registry.connect('preview', 'editor', {
-  // When preview is clicked, move cursor in editor
-  onClick: 'setCursor'
-})
-
-// Multiple connections
-registry.connect('editor', ['preview', 'minimap'], {
-  onChange: 'updateContent',
-  onCursorMove: 'highlight'
-})
-```
-
-## Using Ports in Components
-
-```typescript
-function EditorComponent() {
-  const { state, ports } = useWidget('editor')
-  
-  return (
-    <CodeMirror
-      value={state.content}
-      onChange={content => {
-        // Emit change event through output port
-        ports.emit('onChange', content)
-      }}
-      onCursorActivity={pos => {
-        ports.emit('onCursorMove', pos)
-      }}
-    />
-  )
-}
-```
-
-## Advanced Features
-
-### 1. Port Transformers
-```typescript
-// Transform data between widgets
-registry.connect('editor', 'preview', {
-  onChange: {
-    to: 'updateContent',
-    transform: (markdown: string) => markdownToHtml(markdown)
-  }
-})
-```
-
-### 2. Multiple Sources
-```typescript
-// Combine multiple outputs into one input
-registry.connect(['editor', 'console'], 'output', {
-  onChange: 'appendContent'
-})
-```
-
-### 3. Conditional Connections
-```typescript
-registry.connect('editor', 'preview', {
-  onChange: {
-    to: 'updateContent',
-    when: (content) => content.length > 0
-  }
-})
-```
-
-### 4. Async Transformers
-```typescript
-registry.connect('editor', 'preview', {
-  onChange: {
-    to: 'updateContent',
-    async transform(content) {
-      const formatted = await prettier.format(content)
-      return formatted
+// Minimap for code overview
+const MinimapWidget = defineWidget({
+  id: 'minimap',
+  initialState: {
+    decorations: []
+  },
+  ports: {
+    input: {
+      // Update code overview
+      update(state, content) {
+        state.decorations = generateMinimap(content)
+      },
+      // Add problem marker
+      addProblem(state, {line, severity}) {
+        state.decorations.push({line, type: severity})
+      }
+    },
+    output: {
+      // Clicked position in minimap
+      onClick(line) {
+        // Will be called when user clicks minimap
+      }
     }
   }
 })
+
+// Connect everything
+registry.connect([
+  // Editor changes trigger problem finder
+  {
+    from: EditorWidget,
+    to: ProblemFinderWidget,
+    connect: {
+      onChange: 'check'
+    }
+  },
+  // Problem selection jumps to location
+  {
+    from: ProblemFinderWidget,
+    to: EditorWidget,
+    connect: {
+      onSelect: 'setCursor'
+    }
+  },
+  // Editor updates minimap
+  {
+    from: EditorWidget,
+    to: MinimapWidget,
+    connect: {
+      onChange: 'update'
+    }
+  },
+  // Minimap click moves cursor
+  {
+    from: MinimapWidget,
+    to: EditorWidget,
+    connect: {
+      onClick: 'setCursor'
+    }
+  }
+])
 ```
+
+## Key Concepts
+
+1. **Input Ports**
+   - Functions that modify widget state
+   - Called by other widgets
+   - Have access to widget state
+   - Can validate incoming data
+
+2. **Output Ports**
+   - Functions provided by the widget
+   - Called when something happens
+   - Can be connected to input ports
+   - Can transform data before sending
+
+3. **Connections**
+   - Link output ports to input ports
+   - Can transform data between widgets
+   - Type-safe at runtime
+   - Easy to debug and monitor
 
 ## Benefits
 
-1. **Type Safety**
-   - Input/output types are checked at compile time
-   - Connection mismatches are caught early
-
-2. **Explicit Contracts**
-   - Clear documentation of widget capabilities
-   - Self-documenting widget interactions
-
-3. **Decoupling**
+1. **Decoupling**
    - Widgets don't know about each other
    - Easy to swap implementations
+   - Clear communication boundaries
 
-4. **Testability**
-   - Easy to mock connections
-   - Clear interaction boundaries 
+2. **Type Safety**
+   - Input/output types are checked
+   - Runtime validation
+   - IDE support
+
+3. **Debugging**
+   - Clear data flow
+   - Easy to monitor
+   - Simple to test

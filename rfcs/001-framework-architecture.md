@@ -5,97 +5,122 @@ Building studio-like applications (think VS Code or Figma) requires solving simi
 
 ## Core Packages
 
-### @umut/spellbook
-Everything starts with a command. Commands are the primary way to interact with the system:
+### @umut/codex
+Everything starts with plugins. Plugins are how we extend and compose our studio:
 ```typescript
-import { createCommands } from '@umut/spellbook'
+import { createStudio } from '@umut/codex'
 
-const commands = createCommands()
-
-// Register commands
-commands.register({
-  'workspace.split': {
-    execute: (direction: 'horizontal' | 'vertical') => {
-      // Update layout
-    }
+const gitPlugin = {
+  name: 'git',
+  dependencies: ['workspace'],
+  
+  // Setup phase
+  async register({ commands, keybindings }) {
+    commands.register({
+      git: {
+        commit: defineCommand({
+          input: z.object({ message: z.string() }),
+          handler: async ({ message }) => {
+            // Git commit implementation
+          }
+        })
+      }
+    })
+  },
+  
+  // Runtime phase
+  async boot({ workspace }) {
+    workspace.createLayout('git', {
+      root: createStack('horizontal', [
+        createWindow('git-status'),
+        createWindow('terminal')
+      ])
+    })
   }
+}
+
+const studio = createStudio()
+await studio.use(gitPlugin)
+```
+
+### @umut/spellbook
+Commands are the primary way to interact with the system:
+```typescript
+import { defineCommand, createCommands } from '@umut/spellbook'
+
+const workspaceCommands = defineCommand('workspace', {
+  split: defineCommand({
+    input: z.object({
+      direction: z.enum(['horizontal', 'vertical'])
+    }),
+    handler: async ({ direction }) => {
+      // Split implementation
+    }
+  })
 })
 
-// Execute commands
-commands.execute('workspace.split', 'vertical')
+const commands = createCommands()
+commands.register(workspaceCommands)
 ```
 
 ### @umut/runekeeper
-Users trigger commands through keyboard shortcuts:
+Keyboard input is handled through runekeeper:
 ```typescript
 import { createRunekeeper } from '@umut/runekeeper'
 
-const keys = createRunekeeper(['normal', 'insert'])
+const keys = createRunekeeper(['normal'])
 
-// Map key sequences to commands
-keys.map('normal', '<C-w>v', () => {
-  commands.execute('workspace.split')
-})
-
-// Handle key presses
-keys.handleKeyPress('<C-w>', 'normal')
+keys.map('normal', '<C-w>v', () => 
+  commands.execute(['workspace', 'split'], { direction: 'vertical' })
+)
 ```
 
 ### @umut/layout-tree
-Commands modify the window layout through this data structure:
+Pure data structure for window management:
 ```typescript
-import { createTree, split, remove } from '@umut/layout-tree'
+import { createTree, split } from '@umut/layout-tree'
 
-// Create initial layout
 const tree = createTree()
-
-// Split a window
 const newTree = split(tree, [0], 'horizontal')
-
-// Remove a window
-const updatedTree = remove(tree, [0, 1])
 ```
 
 ### @umut/shrine
-Windows contain widgets, which are managed by shrine:
+Widget system with communication:
 ```typescript
 import { defineWidget } from '@umut/shrine'
 
 const EditorWidget = defineWidget({
   id: 'editor',
-  initialState: {
-    content: ''
-  },
+  initialState: { content: '' },
   ports: {
     input: {
-      setContent(state, content: string) {
+      setContent(state, content) {
         state.content = content
       }
     },
     output: {
-      onChange: (content: string) => void
+      onChange(content) {
+        // Called when content changes
+      }
     }
   }
 })
 ```
 
 ### @umut/lodge
-Lodge coordinates everything - layout, focus, widgets:
+Workspace state management:
 ```typescript
 import { createLodge } from '@umut/lodge'
 
 const lodge = createLodge()
-
-// Manage workspaces
 lodge.createWorkspace('main')
 lodge.focusWindow([0, 1])
-lodge.getActiveWorkspace()
 ```
 
 ### @umut/workbench
-Finally, workbench renders everything to the screen:
+React components for the UI:
 ```typescript
-import { Workbench, Window } from '@umut/workbench'
+import { Workbench } from '@umut/workbench'
 
 function Studio() {
   return (
@@ -111,12 +136,13 @@ function Studio() {
 
 ## Package Dependencies
 ```
-@umut/spellbook   (independent)
-@umut/runekeeper  (depends on spellbook)
+@umut/codex      (depends on all)
+@umut/spellbook  (independent)
+@umut/runekeeper (depends on spellbook)
 @umut/layout-tree (independent)
-@umut/shrine      (depends on spellbook)
-@umut/lodge       (depends on layout-tree, shrine, spellbook)
-@umut/workbench   (depends on lodge)
+@umut/shrine     (depends on spellbook)
+@umut/lodge      (depends on layout-tree, shrine, spellbook)
+@umut/workbench  (depends on lodge)
 ```
 
 ## Development
@@ -132,7 +158,7 @@ pnpm test
 ```
 
 ## Next Steps
-1. Implement @umut/spellbook
-2. Complete @umut/lodge workspace management
-3. Build @umut/workbench components
+1. Complete @umut/codex plugin system
+2. Implement @umut/spellbook
+3. Build core plugins
 4. Write documentation

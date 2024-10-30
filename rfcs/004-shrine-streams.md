@@ -1,205 +1,146 @@
-# RFC 004: Shrine Stream-Based Ports
+# Widget Communication with Streams
 
 ## Summary
-An enhanced port system using Web Streams API for real-time data flow between widgets.
+A streaming-based communication system for widgets that need real-time data flow.
 
-## Stream-Based Ports
+## How It Works
+
+### Simple Example: Live Counter
+Let's start with a basic counter that streams updates to multiple displays:
 
 ```typescript
+// Counter that streams value changes
+const CounterWidget = defineWidget({
+  id: 'counter',
+  initialState: {
+    value: 0
+  },
+  streams: {
+    // Output stream of value changes
+    output: {
+      value: new WritableStream({
+        write(value) {
+          // Stream each value change
+        }
+      })
+    }
+  }
+})
+
+// Display that receives value updates
+const DisplayWidget = defineWidget({
+  id: 'display',
+  initialState: {
+    value: null
+  },
+  streams: {
+    // Input stream of values to display
+    input: {
+      value: new ReadableStream({
+        start(controller) {
+          // Receive value updates
+        }
+      })
+    }
+  }
+})
+
+// Connect counter to multiple displays
+registry.pipe('counter', ['display1', 'display2'], {
+  value: {
+    // Optional transform
+    through: new TransformStream({
+      transform(value, controller) {
+        controller.enqueue(`Count: ${value}`)
+      }
+    })
+  }
+})
+```
+
+### Advanced Example: Code Editor with Real-time Features
+A more complex example showing real-time collaboration features:
+
+```typescript
+// Code editor with real-time updates
 const EditorWidget = defineWidget({
   id: 'editor',
   initialState: {
-    content: '',
-    cursor: { line: 0, column: 0 }
+    content: ''
   },
   streams: {
-    // Output streams - data flowing out
     output: {
-      // Content changes as stream of patches
-      content: WritableStream<TextPatch>,
-      // Cursor movement as stream
-      cursor: WritableStream<CursorPosition>,
-      // Selection changes
-      selection: WritableStream<SelectionRange>
+      // Stream of content changes
+      changes: new WritableStream({
+        write(patch) {
+          // Stream each content change
+        }
+      }),
+      // Stream of cursor movements
+      cursor: new WritableStream({
+        write(position) {
+          // Stream cursor position
+        }
+      })
     },
-    // Input streams - data flowing in
     input: {
-      // Receive formatting commands
-      format: ReadableStream<FormatCommand>,
-      // Receive jump commands
-      jump: ReadableStream<JumpCommand>
-    },
-    // Transform streams - modify data as it flows
-    transform: {
-      // Transform content before output
-      content: TransformStream<string, TextPatch>
+      // Receive remote changes
+      remoteChanges: new ReadableStream({
+        start(controller) {
+          // Handle incoming changes
+        }
+      })
     }
   }
 })
 
-// Preview widget with streaming updates
-const PreviewWidget = defineWidget({
-  id: 'preview',
+// Collaboration server connection
+const CollabWidget = defineWidget({
+  id: 'collab',
   streams: {
     input: {
-      // Receive content patches
-      content: ReadableStream<TextPatch>,
-      // Receive scroll commands
-      scroll: ReadableStream<ScrollCommand>
+      // Receive local changes
+      changes: new ReadableStream({
+        start(controller) {
+          // Forward to server
+        }
+      })
     },
     output: {
-      // Emit click positions
-      click: WritableStream<PreviewPosition>
-    }
-  }
-})
-```
-
-## Stream Connections
-
-```typescript
-// Connect widgets using streams
-registry.pipe('editor', 'preview', {
-  // Pipe editor content to preview
-  content: {
-    // Optional transform
-    through: new TransformStream({
-      transform(chunk, controller) {
-        const html = markdownToHtml(chunk)
-        controller.enqueue(html)
-      }
-    })
-  }
-})
-
-// Broadcast channel for multi-widget communication
-const contentBroadcast = new BroadcastChannel('content-updates')
-
-registry.broadcast('editor', 'content', contentBroadcast, {
-  // Optional encoding/decoding
-  encode: JSON.stringify,
-  decode: JSON.parse
-})
-
-// Multiple consumers
-registry.pipe('editor', ['preview', 'minimap', 'outline'], {
-  content: {
-    // Different transforms for different consumers
-    through: (target) => {
-      switch(target) {
-        case 'preview': return markdownTransform
-        case 'minimap': return minimapTransform
-        case 'outline': return outlineTransform
-      }
-    }
-  }
-})
-```
-
-## Stream Processing
-
-```typescript
-// In widget components
-function EditorComponent() {
-  const { streams } = useWidget('editor')
-  
-  useEffect(() => {
-    // Set up content stream
-    const writer = streams.output.content.getWriter()
-    
-    // Handle editor changes
-    function handleChange(change: TextPatch) {
-      writer.write(change)
-    }
-    
-    return () => writer.close()
-  }, [])
-  
-  // Handle incoming format commands
-  useEffect(() => {
-    const reader = streams.input.format.getReader()
-    
-    async function readCommands() {
-      while (true) {
-        const {done, value} = await reader.read()
-        if (done) break
-        applyFormatting(value)
-      }
-    }
-    
-    readCommands()
-    return () => reader.cancel()
-  }, [])
-}
-```
-
-## Advanced Features
-
-### 1. Backpressure Handling
-```typescript
-registry.pipe('editor', 'preview', {
-  content: {
-    through: new TransformStream({
-      transform(chunk, controller) {
-        if (controller.desiredSize! < 0) {
-          // Handle backpressure
-          controller.terminate()
+      // Stream remote changes
+      remoteChanges: new WritableStream({
+        write(change) {
+          // Stream changes from server
         }
-        controller.enqueue(chunk)
+      })
+    }
+  }
+})
+
+// Connect editor to collab server
+registry.pipe('editor', 'collab', {
+  // Local changes go to server
+  changes: {
+    through: new TransformStream({
+      transform(change, controller) {
+        // Transform for network protocol
+        controller.enqueue(serializeChange(change))
+      }
+    })
+  }
+})
+
+registry.pipe('collab', 'editor', {
+  // Remote changes come to editor
+  remoteChanges: {
+    through: new TransformStream({
+      transform(change, controller) {
+        // Transform from network protocol
+        controller.enqueue(deserializeChange(change))
       }
     })
   }
 })
 ```
 
-### 2. Stream Composition
-```typescript
-// Combine multiple streams
-const combinedStream = new TransformStream({
-  transform(chunk, controller) {
-    const [content, cursor] = chunk
-    controller.enqueue({content, cursor})
-  }
-})
-
-registry.pipe('editor', 'preview', {
-  combined: {
-    from: ['content', 'cursor'],
-    through: combinedStream
-  }
-})
-```
-
-### 3. Broadcast Channels
-```typescript
-// Create widget groups
-const editorGroup = registry.createGroup(['editor', 'preview', 'minimap'])
-
-// Broadcast within group
-editorGroup.broadcast('content-updates', {
-  from: 'editor',
-  stream: 'content'
-})
-```
-
-## Benefits
-
-1. **Real-time Updates**
-   - Efficient streaming of changes
-   - Backpressure handling
-   - Cancellable operations
-
-2. **Resource Management**
-   - Automatic cleanup
-   - Memory efficient
-   - Flow control
-
-3. **Composability**
-   - Stream chaining
-   - Transform pipelines
-   - Multi-source merging
-
-4. **Performance**
-   - Chunk-based processing
-   - Native browser APIs
-   - Efficient memory usage 
+[Continue with benefits, implementation details, etc...]
