@@ -1,128 +1,138 @@
-# RFC 001: Studio Framework Architecture
+# Studio Framework Architecture
 
-## Summary
-A framework for building Vim-inspired studio applications with i3-style window management. The goal is to provide a foundation for building highly customizable, keyboard-driven workspaces.
+## Background
+Building studio-like applications (think VS Code or Figma) requires solving similar problems: window management, keyboard shortcuts, widget systems, etc. This framework provides reusable building blocks for these common needs.
 
 ## Core Packages
 
-### @umut/layout-tree
-Pure data structure for tiling window layouts
-- Tree-based layout data structure (Stack/Window nodes)
-- Basic operations: split, remove, move, swap
-- Path-based node addressing
-- No UI, pure logic
-- No persistence
-- No application state
-
-### @umut/runekeeper  
-Keyboard and command system
-- Vim-style key sequence parsing (`<C-w>v`, etc)
-- Modal keyboard handling (normal/insert)
-- Timeout-based sequence handling
-- Command mapping/execution
-- No UI components
-
-### @umut/shrine
-Widget system and registry
-- Widget registration/discovery
-- Widget lifecycle management
-- Widget state management
-- Widget communication layer
-- Hot module replacement support
-- No UI components
-- Pure TypeScript/JavaScript
-
-### @umut/lodge
-Window and workspace management
-- React components for window management
-- Workspace/tab management UI
-- Focus management
-- Drag & drop support
-- Command palette UI
-- Layout persistence
-- Integration with shrine for widget rendering
-
-### @umut/ui
-Base UI components and theme
-- Theme system
-- Common components
-- Layout primitives
-- No business logic
-
-## Example Usage
-
+### @umut/spellbook
+Everything starts with a command. Commands are the primary way to interact with the system:
 ```typescript
-// Widget definition (@umut/shrine)
-import { defineWidget } from '@umut/shrine'
+import { createCommands } from '@umut/spellbook'
 
-export const EditorWidget = defineWidget({
-  id: 'editor',
-  // Widget-specific state management
-  state: {
-    content: '',
-    language: 'typescript'
-  },
-  // Widget-specific commands
-  commands: {
-    'editor.save': (state) => {
-      // Save content
+const commands = createCommands()
+
+// Register commands
+commands.register({
+  'workspace.split': {
+    execute: (direction: 'horizontal' | 'vertical') => {
+      // Update layout
     }
-  },
-  // Optional: Widget communication
-  ports: {
-    onSave: (content) => void,
-    onLanguageChange: (language: string) => void
   }
 })
 
-// Widget Registry (@umut/shrine)
-import { createRegistry } from '@umut/shrine'
+// Execute commands
+commands.execute('workspace.split', 'vertical')
+```
 
-const registry = createRegistry()
-registry.register(EditorWidget)
-registry.register(PreviewWidget)
+### @umut/runekeeper
+Users trigger commands through keyboard shortcuts:
+```typescript
+import { createRunekeeper } from '@umut/runekeeper'
 
-// React Component (@umut/lodge)
-import { Lodge, useWidget } from '@umut/lodge'
+const keys = createRunekeeper(['normal', 'insert'])
 
-function EditorComponent() {
-  const { state, dispatch } = useWidget('editor')
-  return <CodeEditor value={state.content} />
-}
+// Map key sequences to commands
+keys.map('normal', '<C-w>v', () => {
+  commands.execute('workspace.split')
+})
 
-// Main App
+// Handle key presses
+keys.handleKeyPress('<C-w>', 'normal')
+```
+
+### @umut/layout-tree
+Commands modify the window layout through this data structure:
+```typescript
+import { createTree, split, remove } from '@umut/layout-tree'
+
+// Create initial layout
+const tree = createTree()
+
+// Split a window
+const newTree = split(tree, [0], 'horizontal')
+
+// Remove a window
+const updatedTree = remove(tree, [0, 1])
+```
+
+### @umut/shrine
+Windows contain widgets, which are managed by shrine:
+```typescript
+import { defineWidget } from '@umut/shrine'
+
+const EditorWidget = defineWidget({
+  id: 'editor',
+  initialState: {
+    content: ''
+  },
+  ports: {
+    input: {
+      setContent(state, content: string) {
+        state.content = content
+      }
+    },
+    output: {
+      onChange: (content: string) => void
+    }
+  }
+})
+```
+
+### @umut/lodge
+Lodge coordinates everything - layout, focus, widgets:
+```typescript
+import { createLodge } from '@umut/lodge'
+
+const lodge = createLodge()
+
+// Manage workspaces
+lodge.createWorkspace('main')
+lodge.focusWindow([0, 1])
+lodge.getActiveWorkspace()
+```
+
+### @umut/workbench
+Finally, workbench renders everything to the screen:
+```typescript
+import { Workbench, Window } from '@umut/workbench'
+
 function Studio() {
   return (
-    <Lodge registry={registry}>
+    <Workbench>
       <CommandPalette />
       <Workspace>
         <Window id="editor" />
-        <Window id="preview" />
       </Workspace>
-    </Lodge>
+    </Workbench>
   )
 }
 ```
 
 ## Package Dependencies
 ```
-@umut/ui          (independent)
+@umut/spellbook   (independent)
+@umut/runekeeper  (depends on spellbook)
 @umut/layout-tree (independent)
-@umut/runekeeper  (independent)
-@umut/shrine      (independent)
-@umut/lodge       (depends on all above)
+@umut/shrine      (depends on spellbook)
+@umut/lodge       (depends on layout-tree, shrine, spellbook)
+@umut/workbench   (depends on lodge)
+```
+
+## Development
+```bash
+# Install
+pnpm install
+
+# Development
+pnpm dev
+
+# Test
+pnpm test
 ```
 
 ## Next Steps
-1. RFC for Widget System (@umut/shrine)
-   - Widget definition API
-   - State management
-   - Communication protocol
-   - Hot reload support
-
-2. RFC for Window Management (@umut/lodge)
-   - Integration with shrine
-   - Window/workspace management
-   - Layout persistence
-
-3. RFC for Theme System (@umut/ui)
+1. Implement @umut/spellbook
+2. Complete @umut/lodge workspace management
+3. Build @umut/workbench components
+4. Write documentation
