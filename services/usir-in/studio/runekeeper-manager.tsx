@@ -12,18 +12,13 @@ const useRunekeeperStore = create(xstate(createRunekeeperMachine(["normal", "com
 
 const send = useRunekeeperStore.getState().send;
 
-console.log({send});
-
 if (send) {
 	send({
 		type: "MAP",
 		mode: "normal",
 		sequence: "-",
 		command: () => {
-			console.log("execute split");
-			return commands.split.execute({
-				orientation: "horizontal",
-			});
+			commands.split.execute({orientation: "horizontal"});
 		},
 	});
 
@@ -32,10 +27,7 @@ if (send) {
 		mode: "normal",
 		sequence: "|",
 		command: () => {
-			console.log("execute split");
-			return commands.split.execute({
-				orientation: "vertical",
-			});
+			commands.split.execute({orientation: "vertical"});
 		},
 	});
 
@@ -44,10 +36,7 @@ if (send) {
 		mode: "normal",
 		sequence: "ZZ",
 		command: () => {
-			console.log("execute remove");
-			return commands.remove.execute({
-				path: [0, 0],
-			});
+			return commands.remove.execute({});
 		},
 	});
 }
@@ -63,10 +52,10 @@ export const useRunekeeper = () => {
 			}
 		};
 
-		document.addEventListener("keydown", handler);
+		document.addEventListener("keypress", handler);
 
 		return () => {
-			document.removeEventListener("keydown", handler);
+			document.removeEventListener("keypress", handler);
 		};
 	}, [modeStore.state.value, store.send]);
 

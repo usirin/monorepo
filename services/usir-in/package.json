@@ -25,6 +25,7 @@
 		"@xstate/immer": "^0.3.3",
 		"@xstate/react": "^4.1.3",
 		"@xstate/store": "^2.6.0",
+		"@xyflow/react": "^12.3.2",
 		"ai": "^3.4.9",
 		"clsx": "^2.1.1",
 		"cmdk": "^1.0.0",

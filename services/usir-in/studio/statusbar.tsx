@@ -8,8 +8,6 @@ export function Statusbar() {
 	const {state} = useModeState();
 	const {state: runekeeperState} = useRunekeeper();
 
-	console.log({runekeeperState});
-
 	return (
 		<Card size="1">
 			<Flex align="center" justify="between" width="100%">

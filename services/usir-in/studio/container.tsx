@@ -18,9 +18,7 @@ export function StudioContainer() {
 		>
 			<KeystrokesManager>
 				<Flex gap="1" p="1" direction="column" height="100%">
-					<Box style={{flex: 1}}>
-						<WorkspaceContainer />
-					</Box>
+					<WorkspaceContainer />
 					<CommandPanel commands={commands} />
 					<Statusbar />
 				</Flex>

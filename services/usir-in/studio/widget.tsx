@@ -1,8 +1,6 @@
+import {FlowManager, useStore as useFlowStore} from "~/flow/manager";
 import {Counter, useStore as useCounterStore} from "../src/widgets/Counter";
-// import {Generation} from "../src/widgets/Generation";
-// import {Sandpack} from "../src/widgets/Sandpack";
 import {Scratch, useStore as useScratchStore} from "../src/widgets/Scratch";
-// import {ThemePanel as ThemeSettings} from "../src/widgets/ThemeSettings";
 import {Time, useStore as useTimeStore} from "../src/widgets/Time";
 
 const widgets = {
@@ -12,6 +10,7 @@ const widgets = {
 	},
 	scratch: {useStore: useScratchStore, Component: () => <Scratch />},
 	time: {useStore: useTimeStore, Component: () => <Time />},
+	flow: {useStore: useFlowStore, Component: () => <FlowManager />},
 };
 
 export type WidgetID = keyof typeof widgets;

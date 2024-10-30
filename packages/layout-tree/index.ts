@@ -1,7 +1,6 @@
 import {produce} from "immer";
 import get from "lodash.get";
-import set from "lodash.set";
-import {type Entity, entity, factory} from "./entity";
+import {type Entity, factory} from "./entity";
 
 export type Orientation = "horizontal" | "vertical";
 export type Direction = "left" | "right" | "up" | "down";
@@ -36,11 +35,9 @@ export interface Tree extends Entity<"tree"> {
 
 export type StackPath = number[];
 
-export const createTree = factory("tree", (root = createStack("vertical", [
-		createWindow("scratch"),
-	])) => {
+export const createTree = factory("tree", (root?: Stack) => {
 	return {
-		root,
+		root: root ?? createStack("vertical", [createWindow("scratch")]),
 	};
 });
 

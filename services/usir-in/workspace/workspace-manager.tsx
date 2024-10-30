@@ -34,13 +34,7 @@ export const useWorkspaceStore = create<WorkspaceContextType>()(
 		persist(
 			immer(() => ({
 				workspace: {
-					layout: createTree(
-						createStack("vertical", [
-							createWindow("time"),
-							createStack("horizontal", [createWindow("counter"), createWindow("scratch")]),
-							createWindow("counter"),
-						]),
-					),
+					layout: createTree(createStack("vertical", [createWindow("flow")])),
 					focused: [0],
 				},
 			})),
@@ -138,10 +132,7 @@ export const commands = {
 		name: "split",
 		description: "Split the current workspace",
 		parameters: z.object({
-			path: z
-				.array(z.number())
-				.optional()
-				.default(() => useWorkspaceStore.getState().workspace.focused),
+			path: z.array(z.number()).optional(),
 			orientation: z.enum(["horizontal", "vertical"]),
 		}),
 		execute: ({path, orientation}) => {

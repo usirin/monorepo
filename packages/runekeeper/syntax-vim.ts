@@ -158,7 +158,8 @@ export const stringify = (event: Key): string => {
 	return modifiers || key.length > 1 ? `<${modifiers}${key}>` : key;
 };
 
-/** Represents a result that can either be successful (`ok` is `true`) with a value of type `T`,
+/**
+ * Represents a result that can either be successful (`ok` is `true`) with a value of type `T`,
  * or a failure (`ok` is `false`) with a value of type `E`.
  */
 export type Result<T, E> = {ok: true; value: T} | {ok: false; value: E};
