@@ -5,23 +5,23 @@ A generic plugin system for building extensible applications using TypeScript's 
 
 ## Core Concepts
 
-### Plugin API Types
+### Context Types
 ```typescript
 // Base module declaration
 declare module '@umut/codex' {
-  interface PluginAPI {}
+  interface CodexContext {}
 }
 
-// Spellbook extends API
+// Spellbook extends context
 declare module '@umut/codex' {
-  interface PluginAPI {
+  interface CodexContext {
     spellbook: ReturnType<typeof createSpellbook>
   }
 }
 
-// Runekeeper extends API
+// Runekeeper extends context
 declare module '@umut/codex' {
-  interface PluginAPI {
+  interface CodexContext {
     runekeeper: ReturnType<typeof createRunekeeper>
   }
 }
@@ -36,7 +36,6 @@ const spellbookPlugin = definePlugin({
   
   register(context) {
     const spellbook = createSpellbook()
-    
     context.spellbook = spellbook
   }
 })
@@ -49,7 +48,6 @@ const runekeeperPlugin = definePlugin({
   
   register(context) {
     const runekeeper = createRunekeeper(['normal', 'insert'])
-    
     context.runekeeper = runekeeper
   }
 })
@@ -62,7 +60,6 @@ const shrinePlugin = definePlugin({
   
   register(context) {
     const shrine = createShrine()
-    
     context.shrine = shrine
   }
 })
@@ -87,12 +84,12 @@ await codex.init()
 ## Key Features
 
 1. **Type-Safe Dependencies**
-   - Dependencies define available APIs
+   - Dependencies define available context
    - TypeScript checks usage
    - No runtime surprises
 
 2. **Extensible Types**
-   - Plugins extend PluginAPI
+   - Plugins extend CodexContext
    - Declaration merging
    - No central type definition
 

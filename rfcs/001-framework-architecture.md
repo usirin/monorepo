@@ -10,18 +10,21 @@ Everything starts with plugins. Plugins are how we extend and compose our studio
 ```typescript
 import { createStudio } from '@umut/codex'
 
-const gitPlugin = {
-  name: 'git',
+const tokenPlugin = {
+  name: 'tokens',
   dependencies: ['workspace'],
   
   // Setup phase
   async register({ commands, keybindings }) {
     commands.register({
-      git: {
-        commit: defineCommand({
-          input: z.object({ message: z.string() }),
-          handler: async ({ message }) => {
-            // Git commit implementation
+      tokens: {
+        edit: defineCommand({
+          input: z.object({ 
+            name: z.string(),
+            value: z.string()
+          }),
+          handler: async ({ name, value }) => {
+            // Update design token
           }
         })
       }
@@ -30,37 +33,36 @@ const gitPlugin = {
   
   // Runtime phase
   async boot({ workspace }) {
-    workspace.createLayout('git', {
+    workspace.createLayout('tokens', {
       root: createStack('horizontal', [
-        createWindow('git-status'),
-        createWindow('terminal')
+        createWindow('token-explorer'),
+        createWindow('token-editor')
       ])
     })
   }
 }
 
 const studio = createStudio()
-await studio.use(gitPlugin)
+await studio.use(tokenPlugin)
 ```
 
 ### @umut/spellbook
 Commands are the primary way to interact with the system:
 ```typescript
-import { defineCommand, createCommands } from '@umut/spellbook'
-
-const workspaceCommands = defineCommand('workspace', {
-  split: defineCommand({
+const componentCommands = defineCommand('component', {
+  create: defineCommand({
     input: z.object({
-      direction: z.enum(['horizontal', 'vertical'])
+      name: z.string(),
+      type: z.enum(['atom', 'molecule', 'organism'])
     }),
-    handler: async ({ direction }) => {
-      // Split implementation
+    handler: async ({ name, type }) => {
+      // Create new component
     }
   })
 })
 
 const commands = createCommands()
-commands.register(workspaceCommands)
+commands.register(componentCommands)
 ```
 
 ### @umut/runekeeper
