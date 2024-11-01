@@ -156,3 +156,13 @@ export const commands = {
 		},
 	}),
 } satisfies Record<string, Command<string, z.ZodType>>;
+
+const executeCommand = <T extends Command<string, z.ZodType>>(
+	command: T,
+	args: z.infer<T["parameters"]>,
+) => {
+	if (!command.parameters.safeParse(args).success) {
+		throw new Error("Invalid arguments");
+	}
+	command.execute(args);
+};

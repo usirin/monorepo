@@ -26,7 +26,7 @@ A type-safe, composable command system that serves as the central entry point fo
 1. Command Definition
 ```typescript
 import { z } from 'zod'
-import { defineCommand, createCommands } from '@umut/spellbook'
+import { defineCommand, createSpellbook } from '@umut/spellbook'
 
 const workspaceCommands = defineCommand(
   'workspace',
@@ -47,11 +47,11 @@ const workspaceCommands = defineCommand(
 
 2. Command Registration and Execution
 ```typescript
-const commands = createCommands()
-commands.register(workspaceCommands)
+const spellbook = createSpellbook()
+spellbook.register(workspaceCommands)
 
 // Type-safe execution
-await commands.execute('workspace.create', {
+await spellbook.execute('workspace.create', {
   name: 'my-app',
   template: 'react'
 })
@@ -60,7 +60,7 @@ await commands.execute('workspace.create', {
 3. Command Discovery
 ```typescript
 function CommandPalette() {
-  const allCommands = commands.getAll()
+  const allCommands = spellbook.getAll()
   return (
     <div>
       {allCommands.map(command => (

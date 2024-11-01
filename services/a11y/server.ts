@@ -1,6 +1,5 @@
 import {serve} from "bun";
 import {createJsonRpcServer} from "./lib/server";
-import type {RpcMethod} from "./lib/types";
 
 // Define the structure of our RPC methods
 

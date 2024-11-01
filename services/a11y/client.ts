@@ -12,7 +12,7 @@ async function main() {
 		console.log("Division:", await client.call("divide", 15, 3));
 
 		// This should throw an error
-		await client.call("divide", 10, 0);
+		await client.call("multiply", 10, 0);
 	} catch (error) {
 		console.error("An error occurred:", (error as Error).message);
 	}
