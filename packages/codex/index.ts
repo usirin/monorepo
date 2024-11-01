@@ -1,10 +1,11 @@
-// Base module declaration
-declare module "." {
-	export interface CodexContext {}
-}
+// biome-ignore lint/suspicious/noEmptyInterface: this is gonna be extended dynamically
+export interface CodexContext {}
 
 // Plugin types with generic dependencies
-interface Plugin<TDeps extends (keyof CodexContext)[] = (keyof CodexContext)[]> {
+interface Plugin<
+	TDeps extends (keyof CodexContext)[] = (keyof CodexContext)[],
+	TResult = CodexContext[keyof CodexContext],
+> {
 	name: string;
 	version: string;
 	dependencies?: TDeps;
@@ -12,13 +13,13 @@ interface Plugin<TDeps extends (keyof CodexContext)[] = (keyof CodexContext)[]> 
 		deps: {
 			[K in TDeps[number]]: CodexContext[K];
 		},
-	) => Promise<Partial<CodexContext>> | Partial<CodexContext>;
+	) => Promise<TResult> | TResult;
 }
 
 // Create codex instance
 export function createCodex() {
 	const plugins = new Map<string, Plugin>();
-	const results = new Map<string, Partial<CodexContext>>();
+	const results = new Map<string, CodexContext[keyof CodexContext]>();
 
 	return {
 		async use<TPlugin extends Plugin>(newPlugins: TPlugin[]) {
@@ -29,8 +30,11 @@ export function createCodex() {
 		},
 
 		async init() {
-			async function registerPlugin(name: string) {
-				// Already registered
+			async function registerPlugin(name: string, chain: string[] = []) {
+				if (chain.includes(name)) {
+					throw new Error(`Circular dependency detected: ${[...chain, name].join(" -> ")}`);
+				}
+
 				if (results.has(name)) {
 					return results.get(name);
 				}
@@ -39,25 +43,27 @@ export function createCodex() {
 				if (!plugin) throw new Error(`Plugin not found: ${name}`);
 
 				// Get dependencies' results
-				const deps = {} as Record<string, Partial<CodexContext>>;
+				// biome-ignore lint/suspicious/noExplicitAny: i know what i'm doing, and we have tests
+				const deps = {} as Record<string, any>;
 				if (plugin.dependencies) {
 					for (const dep of plugin.dependencies) {
-						const result = await registerPlugin(dep);
-						if (result) deps[dep] = result;
+						const result = await registerPlugin(dep, [...chain, name]);
+						deps[dep] = result;
 					}
 				}
 
 				// Register plugin with dependencies' results
-				const result = await plugin.register(deps);
+				// biome-ignore lint/suspicious/noExplicitAny: i know what i'm doing, and we have tests
+				const result = await plugin.register(deps as any);
 				results.set(name, result);
 
 				return result;
 			}
 
-			const context = {} as CodexContext;
+			let context = {} as CodexContext;
 			for (const plugin of plugins.values()) {
 				const result = await registerPlugin(plugin.name);
-				if (result) Object.assign(context, result);
+				if (result) context = {...context, [plugin.name]: result};
 			}
 
 			return context;
@@ -66,7 +72,7 @@ export function createCodex() {
 }
 
 // Helper to define plugins with inferred dependency types
-export function definePlugin<TDeps extends (keyof CodexContext)[]>(config: {
+export function definePlugin<TDeps extends (keyof CodexContext)[], TResult>(config: {
 	name: string;
 	version: string;
 	dependencies?: TDeps;
@@ -74,7 +80,7 @@ export function definePlugin<TDeps extends (keyof CodexContext)[]>(config: {
 		deps: {
 			[K in TDeps[number]]: CodexContext[K];
 		},
-	) => Promise<Partial<CodexContext>> | Partial<CodexContext>;
-}): Plugin<TDeps> {
+	) => Promise<TResult> | TResult;
+}): Plugin<TDeps, TResult> {
 	return config;
 }
