@@ -1,22 +1,36 @@
 # RFC 007: Spellbook Command System
 
 ## Summary
-A composable command system that serves as the central entry point for studio applications.
+A type-safe, composable command system that serves as the central entry point for studio applications. This system provides a unified way to define, validate, and execute commands across the application while maintaining full type safety and runtime validation.
 
-## User Journey
+## Background and Motivation
 
-Let's build a studio application starting with its command interface:
+### Current State
+- Studio applications currently lack a centralized command system
+- Command implementations are scattered across different modules
+- No standardized way to validate command inputs
+- Type safety is inconsistent across command implementations
+- Difficult to discover available commands
 
+### Pain Points
+- Inconsistent command interfaces
+- Runtime errors due to invalid command arguments
+- Poor developer experience when implementing new commands
+- Difficulty in maintaining command documentation
+- No centralized way to track command usage
+
+## Technical Architecture
+
+### Core Components
+
+1. Command Definition
 ```typescript
-// commands.ts - The entry point of our application
 import { z } from 'zod'
 import { defineCommand, createCommands } from '@umut/spellbook'
 
-// Workspace management
 const workspaceCommands = defineCommand(
   'workspace',
   {
-    // Create a new workspace
     create: defineCommand(
       'create',
       z.object({
@@ -24,170 +38,33 @@ const workspaceCommands = defineCommand(
         template: z.enum(['empty', 'react', 'vue']).default('empty')
       }),
       async ({ name, template }) => {
-        // Create workspace logic
-      }
-    ),
-    
-    // Split current window
-    split: defineCommand(
-      'split',
-      z.object({
-        direction: z.enum(['horizontal', 'vertical'])
-      }),
-      async ({ direction }) => {
-        // Split window logic
-      }
-    ),
-    
-    // Focus window in direction
-    focus: defineCommand(
-      'focus',
-      z.object({
-        direction: z.enum(['left', 'right', 'up', 'down'])
-      }),
-      async ({ direction }) => {
-        // Focus window logic
+        // Implementation
       }
     )
   }
 )
-
-// File operations
-const fileCommands = defineCommand(
-  'file',
-  {
-    open: defineCommand(
-      'open',
-      z.object({
-        path: z.string()
-      }),
-      async ({ path }) => {
-        // Open file logic
-      }
-    ),
-    
-    save: defineCommand(
-      'save',
-      z.object({
-        path: z.string().optional()
-      }),
-      async ({ path }) => {
-        // Save file logic
-      }
-    ),
-    
-    find: defineCommand(
-      'find',
-      z.object({
-        query: z.string(),
-        caseSensitive: z.boolean().default(false)
-      }),
-      async ({ query, caseSensitive }) => {
-        // Find in file logic
-      }
-    )
-  }
-)
-
-// Terminal operations
-const terminalCommands = defineCommand(
-  'terminal',
-  {
-    create: defineCommand(
-      'create',
-      z.object({
-        cwd: z.string().optional()
-      }),
-      async ({ cwd }) => {
-        // Create terminal logic
-      }
-    ),
-    
-    run: defineCommand(
-      'run',
-      z.object({
-        command: z.string(),
-        args: z.array(z.string()).default([])
-      }),
-      async ({ command, args }) => {
-        // Run command logic
-      }
-    )
-  }
-)
-
-// Create and export our command system
-export const commands = createCommands()
-
-// Register all commands
-commands.register(workspaceCommands)
-commands.register(fileCommands)
-commands.register(terminalCommands)
 ```
 
-Now our application can be controlled through these commands:
-
+2. Command Registration and Execution
 ```typescript
-// Creating a new React project
+const commands = createCommands()
+commands.register(workspaceCommands)
+
+// Type-safe execution
 await commands.execute('workspace.create', {
   name: 'my-app',
   template: 'react'
 })
-
-// Split window and open terminal
-await commands.execute('workspace.split', {
-  direction: 'horizontal'
-})
-await commands.execute('terminal.create')
-
-// Install dependencies
-await commands.execute('terminal.run', {
-  command: 'npm',
-  args: ['install']
-})
-
-// Open and edit file
-await commands.execute('file.open', {
-  path: 'src/App.tsx'
-})
 ```
 
-### Keyboard Bindings
+3. Command Discovery
 ```typescript
-// keybindings.ts
-import { createRunekeeper } from '@umut/runekeeper'
-import { commands } from './commands'
-
-const keys = createRunekeeper(['normal'])
-
-// Map keys to commands
-keys.map('normal', '<C-w>v', () => 
-  commands.execute('workspace.split', { direction: 'vertical' })
-)
-
-keys.map('normal', '<C-w>s', () => 
-  commands.execute('workspace.split', { direction: 'horizontal' })
-)
-
-keys.map('normal', '<C-s>', () => 
-  commands.execute('file.save')
-)
-```
-
-### Command Palette UI
-```typescript
-// command-palette.tsx
-import { commands } from './commands'
-
 function CommandPalette() {
   const allCommands = commands.getAll()
-  
   return (
     <div>
       {allCommands.map(command => (
-        <div key={command.path} onClick={() => {
-          // Show argument form and execute command
-        }}>
+        <div key={command.path}>
           {command.path}
         </div>
       ))}
@@ -196,212 +73,76 @@ function CommandPalette() {
 }
 ```
 
-## Benefits
+### Data Model
+- Commands are organized in a tree structure
+- Each command has a path, schema, and handler
+- Schemas are defined using Zod for runtime validation
+- Full TypeScript inference for command arguments
 
-1. **Central Control Point**
-   - All application actions are commands
-   - Clear entry point for features
-   - Easy to discover capabilities
+## Alternatives Considered
 
-2. **Type Safety**
-   - Full TypeScript inference
-   - Runtime validation via Zod
-   - Nested command types
+### 1. Event Bus System
+Pros:
+- Looser coupling between components
+- Easier to add new subscribers
 
-3. **Developer Experience**
-   - Commands as API documentation
-   - Easy to test
-   - Great IDE support
+Cons:
+- No type safety for event payloads
+- No centralized command discovery
+- Harder to track command execution
 
-## Next Steps
-1. Implement core command definition
-2. Add command composition
-3. Add type inference
-4. Add validation
+### 2. Class-based Command Pattern
+Pros:
+- Traditional OOP approach
+- Explicit command classes
 
-## Technical Implementation
+Cons:
+- More boilerplate
+- Less flexible composition
+- Harder to maintain type safety
 
-### Core Types
-```typescript
-import { z } from 'zod'
+## Implementation Strategy
 
-// Command definition with type safety
-type CommandDef<TSchema extends z.ZodType> = {
-  schema: TSchema
-  execute: (args: z.infer<TSchema>) => Promise<void> | void
-}
+### Phase 1: Core Implementation
+1. Implement basic command definition and execution
+2. Add type inference system
+3. Implement command registration
 
-// Recursive command tree type
-type CommandTree = {
-  [K: string]: CommandDef<z.ZodType> | CommandTree
-}
+### Phase 2: Developer Experience
+1. Add command discovery API
+2. Implement command palette UI
+3. Add developer tools for command inspection
 
-// Helper to extract command paths from a tree
-type CommandPaths<T> = T extends CommandDef<any> 
-  ? '' 
-  : T extends CommandTree
-  ? {
-      [K in keyof T]: K extends string
-        ? T[K] extends CommandDef<any>
-          ? K
-          : `${K}.${CommandPaths<T[K]>}`
-        : never
-    }[keyof T]
-  : never
+### Phase 3: Integration
+1. Migrate existing commands to new system
+2. Add telemetry and monitoring
+3. Document migration guides
 
-// Helper to get args type for a command path
-type CommandArgs<
-  TCommands extends CommandTree,
-  TPath extends string
-> = TPath extends keyof TCommands
-  ? TCommands[TPath] extends CommandDef<infer TSchema>
-    ? z.infer<TSchema>
-    : TPath extends `${infer Head}.${infer Rest}`
-    ? Head extends keyof TCommands
-      ? TCommands[Head] extends CommandTree
-        ? CommandArgs<TCommands[Head], Rest>
-        : never
-      : never
-    : never
-  : never
-```
+## Additional Considerations
 
-### Implementation
-```typescript
-class SpellBook<TCommands extends CommandTree> {
-  private commands: TCommands = {} as TCommands
+### Security
+- Commands should be authenticated where necessary
+- Validate all inputs at runtime
+- Consider command permissions system
 
-  // Type-safe command registration
-  register<TPath extends string>(
-    path: TPath,
-    def: CommandDef<z.ZodType>
-  ): void {
-    let current = this.commands
-    const parts = path.split('.')
-    const last = parts.pop()!
-    
-    for (const part of parts) {
-      current[part] = current[part] || {}
-      current = current[part] as CommandTree
-    }
-    
-    current[last] = def
-  }
+### Performance
+- Lazy load command implementations
+- Cache command validation results
+- Optimize command tree traversal
 
-  // Type-safe command execution
-  async execute<TPath extends CommandPaths<TCommands>>(
-    path: TPath,
-    args: CommandArgs<TCommands, TPath>
-  ): Promise<void> {
-    const command = this.getCommand(path)
-    if (!command) {
-      throw new Error(`Command not found: ${path}`)
-    }
+### Testing
+- Each command should have unit tests
+- Test invalid inputs
+- Test command composition
+- Test type inference
 
-    // Runtime validation
-    const validated = command.schema.parse(args)
-    
-    // Execute command
-    await command.execute(validated)
-  }
+### Monitoring
+- Track command execution times
+- Monitor command failure rates
+- Track command usage patterns
 
-  private getCommand(path: string): CommandDef<z.ZodType> | undefined {
-    let current: any = this.commands
-    const parts = path.split('.')
-    
-    for (const part of parts) {
-      if (!current[part]) return undefined
-      current = current[part]
-    }
-    
-    return current
-  }
-}
-
-// Helper function with type inference
-export function defineCommand<TSchema extends z.ZodType>(
-  schema: TSchema,
-  execute: (args: z.infer<TSchema>) => Promise<void> | void
-): CommandDef<TSchema> {
-  return { schema, execute }
-}
-
-// Usage example with full type safety
-const commands = new SpellBook()
-
-const workspaceCommands = {
-  'workspace.split': defineCommand(
-    z.object({
-      direction: z.enum(['horizontal', 'vertical'])
-    }),
-    async ({ direction }) => {
-      // Implementation
-    }
-  ),
-  'workspace.focus': defineCommand(
-    z.object({
-      direction: z.enum(['left', 'right', 'up', 'down'])
-    }),
-    async ({ direction }) => {
-      // Implementation
-    }
-  )
-}
-
-// TypeScript will ensure:
-// 1. Command paths exist
-// 2. Args match schema
-// 3. Return types are correct
-commands.execute('workspace.split', {
-  direction: 'horizontal'
-}) // ✅ OK
-
-commands.execute('workspace.split', {
-  direction: 'diagonal'
-}) // ❌ Type Error
-
-commands.execute('workspace.unknown', {}) // ❌ Type Error
-```
-
-### Error Handling
-```typescript
-// Custom error types
-class CommandError extends Error {
-  constructor(
-    message: string,
-    public command: string
-  ) {
-    super(message)
-  }
-}
-
-class ValidationError extends CommandError {
-  constructor(
-    command: string,
-    public errors: z.ZodError
-  ) {
-    super('Invalid command arguments', command)
-  }
-}
-
-// Error handling in execute
-async execute<TPath extends CommandPaths<TCommands>>(
-  path: TPath,
-  args: CommandArgs<TCommands, TPath>
-): Promise<void> {
-  const command = this.getCommand(path)
-  if (!command) {
-    throw new CommandError(`Command not found: ${path}`, path)
-  }
-
-  try {
-    const validated = command.schema.parse(args)
-    await command.execute(validated)
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      throw new ValidationError(path, error)
-    }
-    throw error
-  }
-}
-```
+## Success Metrics
+1. 100% type safety for command arguments
+2. Zero runtime errors from invalid command arguments
+3. Reduced time to implement new commands
+4. Improved command discovery
