@@ -28,27 +28,25 @@ A type-safe, composable command system that serves as the central entry point fo
 import { z } from 'zod'
 import { defineCommand, createSpellbook } from '@umut/spellbook'
 
-const workspaceCommands = defineCommand(
-  'workspace',
-  {
-    create: defineCommand(
-      'create',
-      z.object({
-        name: z.string(),
-        template: z.enum(['empty', 'react', 'vue']).default('empty')
-      }),
-      async ({ name, template }) => {
-        // Implementation
-      }
-    )
+const createWorkspace = defineCommand({
+  description: 'Create a new workspace',
+  input: z.object({
+    name: z.string(),
+    template: z.enum(['empty', 'react', 'vue']).default('empty')
+  }),
+  execute: async ({ name, template }) => {
+    // Implementation
   }
-)
+})
+
+const commands = {
+  'workspace.create': createWorkspace
+}
 ```
 
 2. Command Registration and Execution
 ```typescript
-const spellbook = createSpellbook()
-spellbook.register(workspaceCommands)
+const spellbook = createSpellbook(commands)
 
 // Type-safe execution
 await spellbook.execute('workspace.create', {
@@ -57,92 +55,75 @@ await spellbook.execute('workspace.create', {
 })
 ```
 
-3. Command Discovery
+### Type System
+
 ```typescript
-function CommandPalette() {
-  const allCommands = spellbook.getAll()
-  return (
-    <div>
-      {allCommands.map(command => (
-        <div key={command.path}>
-          {command.path}
-        </div>
-      ))}
-    </div>
-  )
+type CommandHandler<T extends z.ZodType> = (args: z.infer<T>) => Promise<void> | void
+
+interface Command<TSchema extends z.ZodType> {
+  description: string
+  input: TSchema
+  execute: (args: z.infer<TSchema>) => void
+}
+
+// Utility type to infer command input type
+type InferCommandInput<T> = T extends Command<infer S> ? z.infer<S> : never
+```
+
+### Error Handling
+```typescript
+try {
+  spellbook.execute('workspace.create', {
+    name: 123 // Invalid input
+  })
+} catch (error) {
+  // Command will throw errors for:
+  // 1. Command not found
+  // 2. Invalid arguments (failed schema validation)
 }
 ```
 
-### Data Model
-- Commands are organized in a tree structure
-- Each command has a path, schema, and handler
-- Schemas are defined using Zod for runtime validation
-- Full TypeScript inference for command arguments
+### Command Discovery
+```typescript
+// Access all registered commands
+const allCommands = spellbook.commands
 
-## Alternatives Considered
-
-### 1. Event Bus System
-Pros:
-- Looser coupling between components
-- Easier to add new subscribers
-
-Cons:
-- No type safety for event payloads
-- No centralized command discovery
-- Harder to track command execution
-
-### 2. Class-based Command Pattern
-Pros:
-- Traditional OOP approach
-- Explicit command classes
-
-Cons:
-- More boilerplate
-- Less flexible composition
-- Harder to maintain type safety
+// Get specific command
+const createCommand = spellbook.commands['workspace.create']
+console.log(createCommand.description) // Access command metadata
+```
 
 ## Implementation Strategy
 
-### Phase 1: Core Implementation
-1. Implement basic command definition and execution
-2. Add type inference system
-3. Implement command registration
+### Phase 1: Core Implementation (Completed)
+- ✅ Basic command definition with description, input schema, and execute handler
+- ✅ Type inference system
+- ✅ Command registration
+- ✅ Basic validation with Zod
 
-### Phase 2: Developer Experience
-1. Add command discovery API
-2. Implement command palette UI
-3. Add developer tools for command inspection
+### Phase 2: Developer Experience (In Progress)
+- ✅ Type-safe command execution
+- 🚧 Better error handling
+- 🚧 Command discovery improvements
+- 🚧 Command palette UI
 
-### Phase 3: Integration
-1. Migrate existing commands to new system
-2. Add telemetry and monitoring
-3. Document migration guides
-
-## Additional Considerations
-
-### Security
-- Commands should be authenticated where necessary
-- Validate all inputs at runtime
-- Consider command permissions system
-
-### Performance
-- Lazy load command implementations
-- Cache command validation results
-- Optimize command tree traversal
-
-### Testing
-- Each command should have unit tests
-- Test invalid inputs
-- Test command composition
-- Test type inference
-
-### Monitoring
-- Track command execution times
-- Monitor command failure rates
-- Track command usage patterns
+### Phase 3: Integration (Planned)
+- Command telemetry
+- Migration guides
+- Integration with existing systems
+- Enhanced validation features
+- Command middleware support
 
 ## Success Metrics
 1. 100% type safety for command arguments
 2. Zero runtime errors from invalid command arguments
 3. Reduced time to implement new commands
 4. Improved command discovery
+5. Comprehensive error handling
+
+## Current Limitations
+1. Flat command structure (no nested namespaces)
+2. Basic error handling
+3. No middleware support
+4. No async validation
+5. No command lifecycle hooks
