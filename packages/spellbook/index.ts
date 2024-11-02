@@ -18,10 +18,12 @@ export function defineCommand<TSchema extends z.ZodType>({
 	return {description, input, execute};
 }
 
-export function createSpellbook<T extends Record<string, Command<z.ZodTypeAny>>>(commands: T) {
+export function createSpellbook<TCommands extends Record<string, Command<z.ZodTypeAny>>>(
+	commands: TCommands,
+) {
 	return {
 		commands,
-		execute: <K extends keyof T>(key: K, args: z.infer<T[K]["input"]>) => {
+		execute: <TKey extends keyof TCommands>(key: TKey, args: z.infer<TCommands[TKey]["input"]>) => {
 			const command = commands[key];
 			if (!command) {
 				throw new Error(`Command not found: ${key as string}`);
