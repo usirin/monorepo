@@ -2,7 +2,7 @@ import * as path from "node:path";
 import * as utils from "node:util";
 // @ts-ignore
 import {renderToReadableStream} from "react-server-dom-webpack/server.edge";
-import {Counter} from "~/src/widgets/Counter";
+import {Counter} from "~/studio/widgets/Counter.jsx";
 
 import "../../../.next/server/app/page_client-reference-manifest.js";
 

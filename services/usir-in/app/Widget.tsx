@@ -1,10 +1,10 @@
-import {Counter} from "../src/widgets/Counter";
-import {Generation} from "../src/widgets/Generation";
-import {Sandpack} from "../src/widgets/Sandpack";
-import {Scratch} from "../src/widgets/Scratch";
-import {ThemePanel as ThemeSettings} from "../src/widgets/ThemeSettings";
-import {Time} from "../src/widgets/Time";
-import {ChatWidget} from "../src/widgets/ai/ChatWidget";
+import {Counter} from "../studio/widgets/Counter";
+import {Generation} from "../studio/widgets/Generation";
+import {Sandpack} from "../studio/widgets/Sandpack";
+import {Scratch} from "../studio/widgets/Scratch";
+import {ThemePanel as ThemeSettings} from "../studio/widgets/ThemeSettings";
+import {Time} from "../studio/widgets/Time";
+import {ChatWidget} from "../studio/widgets/ai/ChatWidget";
 
 export const widgets = {
 	counter: () => <Counter />,

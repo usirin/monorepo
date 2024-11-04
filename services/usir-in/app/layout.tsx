@@ -1,4 +1,4 @@
-import "../src/widget-manager/styles.css";
+import "./styles.css";
 
 import "@radix-ui/themes/styles.css";
 
