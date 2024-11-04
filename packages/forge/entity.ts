@@ -24,8 +24,10 @@ export type Ref<T extends Entity<string>> = T["id"];
  * Generates a unique ID with the given prefix
  *
  * @example
+ * ```ts
  * const userId = id('user');
  * // Result: 'user:x7f2k...'
+ * ```
  */
 export const id = <T extends string>(prefix: T): `${T}:${string}` =>
 	`${prefix}:${Math.random().toString(36).substring(2, 15)}`;
@@ -34,8 +36,10 @@ export const id = <T extends string>(prefix: T): `${T}:${string}` =>
  * Creates a basic entity with a tag and generated ID
  *
  * @example
+ * ```ts
  * const user = entity('user');
  * // Result: { tag: 'user', id: 'user:x7f2k...' }
+ * ```
  */
 export const entity = <T extends string>(tag: T): Entity<T> => ({
 	tag,
@@ -47,6 +51,7 @@ export const entity = <T extends string>(tag: T): Entity<T> => ({
  * Combines a basic entity (tag + id) with custom properties.
  *
  * @example
+ * ```ts
  * // Define a factory for creating users
  * const createUser = factory('user', (name: string, age: number) => ({
  *   name,
@@ -61,6 +66,7 @@ export const entity = <T extends string>(tag: T): Entity<T> => ({
  *   name: 'John',
  *   age: 30
  * }
+ * ```
  */
 export const factory =
 	// biome-ignore lint/suspicious/noExplicitAny: we need any here so we can infer
