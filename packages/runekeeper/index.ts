@@ -1,6 +1,6 @@
 import {enableMapSet, produce} from "immer";
 import {assign, createActor, setup} from "xstate";
-import {parseSequence} from "./syntax-vim";
+import {stringify} from "./syntax-vim";
 
 enableMapSet();
 
@@ -136,35 +136,21 @@ export function createRunekeeper<TMode extends string>(modes: TMode[]) {
 	const runekeeperMachine = createRunekeeperMachine(modes);
 	const runekeeperActor = createActor(runekeeperMachine);
 
-	runekeeperActor.subscribe((snapshot) => {
-		// console.log("Current state:", snapshot.value);
-		// console.log("Buffer:", snapshot.context.buffer);
-		// console.log(
-		// 	"Keymap:",
-		// 	Object.fromEntries(
-		// 		[...snapshot.context.keymap].map(([mode, map]) => [mode, Object.fromEntries(map)]),
-		// 	),
-		// );
-		// console.log("Command History:", snapshot.context.history);
-	});
-
 	runekeeperActor.start();
 
 	return {
+		machine: runekeeperMachine,
+		actor: runekeeperActor,
 		map: (mode: TMode, sequence: string, command: () => void) => {
 			runekeeperActor.send({type: "MAP", mode, sequence, command});
 		},
 		unmap: (mode: TMode, sequence: string) => {
 			runekeeperActor.send({type: "UNMAP", mode, sequence});
 		},
-		handleKeyPress: (key: string, mode: TMode) => {
-			const parsedKeys = parseSequence(key);
-			if (parsedKeys) {
-				for (const parsedKey of parsedKeys) {
-					runekeeperActor.send({type: "KEY_PRESS", key: parsedKey, mode});
-				}
-			}
+		handleKeyPress: (event: KeyboardEvent, mode: TMode) => {
+			runekeeperActor.send({type: "KEY_PRESS", key: stringify(event), mode});
 		},
 		getSnapshot: () => runekeeperActor.getSnapshot(),
+		subscribe: runekeeperActor.subscribe,
 	};
 }
