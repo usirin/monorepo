@@ -34,9 +34,7 @@ export const useWorkspaceStore = create<WorkspaceContextType>()(
 		persist(
 			immer(() => ({
 				workspace: {
-					layout: createTree(
-						createStack("vertical", [createWindow("flow"), createWindow("counter")]),
-					),
+					layout: createTree(createStack("vertical", [createWindow("scratch")])),
 					focused: [0],
 				},
 			})),

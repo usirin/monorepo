@@ -12,6 +12,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@umut/forge": "workspace:*",
     "immer": "^10.1.1",
     "lodash.get": "^4.4.2",
     "lodash.nth": "^4.11.2",

@@ -1,6 +1,6 @@
+import {type Entity, factory} from "@umut/forge";
 import {produce} from "immer";
 import get from "lodash.get";
-import {type Entity, factory} from "./entity";
 
 export type Orientation = "horizontal" | "vertical";
 export type Direction = "left" | "right" | "up" | "down";
@@ -9,11 +9,10 @@ export interface Window extends Entity<"window"> {
 	key: string;
 }
 
-export const createWindow = factory("window", (key: string) => {
-	return {
-		key,
-	};
-});
+export const createWindow = factory("window", (key: string) => ({
+	key,
+}));
+
 export const clone = (window: Window) => createWindow(window.key);
 
 export interface Stack extends Entity<"stack"> {
@@ -35,11 +34,9 @@ export interface Tree extends Entity<"tree"> {
 
 export type StackPath = number[];
 
-export const createTree = factory("tree", (root?: Stack) => {
-	return {
-		root: root ?? createStack("vertical", [createWindow("scratch")]),
-	};
-});
+export const createTree = factory("tree", (root?: Stack) => ({
+	root: root ?? createStack("vertical", [createWindow("scratch")]),
+}));
 
 export function getAt(stack: Stack, stackPath: StackPath): Stack | Window | null {
 	if (stackPath.length === 0) return stack;

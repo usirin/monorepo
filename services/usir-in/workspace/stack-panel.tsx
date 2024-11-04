@@ -13,6 +13,7 @@ export function PanelStack({stack, path}: {stack: Stack; path: StackPath}) {
 			id={path.length === 0 ? "root" : path.join(":")}
 			direction={stack.orientation === "horizontal" ? "vertical" : "horizontal"}
 			style={{position: "relative"}}
+			onLayout={(sizes) => console.log(path, sizes)}
 		>
 			{stack.children.map((child, index) => (
 				<Fragment key={path.concat(index).join(":")}>

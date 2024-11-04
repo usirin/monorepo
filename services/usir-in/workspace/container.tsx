@@ -38,7 +38,8 @@ export function WorkspaceContainer() {
 			<ResizeHandle id="right-panel" />
 			<Panel id="right-panel" order={3} collapsible minSize={15} defaultSize={15} maxSize={25}>
 				<PanelLayout isSelected header={<PanelHeader>Right Panel</PanelHeader>}>
-					<WidgetDebugger id={focused?.key as WidgetID} />
+					{/*<WidgetDebugger id={focused?.key as WidgetID} /> */}
+					<Text>Right Panel</Text>
 				</PanelLayout>
 			</Panel>
 		</PanelGroup>
