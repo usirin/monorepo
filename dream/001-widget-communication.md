@@ -40,46 +40,67 @@ Widgets can live anywhere:
 
 ### 2. Communication Patterns
 
-#### Async by Default
-```mermaid
-sequenceDiagram
-    Widget A->>Message Bus: Send Message
-    Message Bus->>Widget B: Deliver Message
-    Widget B->>Message Bus: Send Response
-    Message Bus->>Widget A: Deliver Response
-```
-- All communication is asynchronous
-- Built-in retry mechanisms
-- Latency handling
-- Error recovery
+Our primary communication pattern is **Pub/Sub with Streams**. Here's why:
 
-#### Pub/Sub
 ```mermaid
 graph TD
-    A[Publisher Widget] --> B[Message Bus]
-    B --> C[Subscriber 1]
-    B --> D[Subscriber 2]
-    B --> E[Subscriber 3]
-```
-- Topic-based messaging
-- Message persistence
-- Delivery guarantees
-- Back-pressure handling
-
-#### Streaming
-```mermaid
-sequenceDiagram
-    Widget A->>Message Bus: Start Stream
-    loop Stream Data
-        Widget A->>Message Bus: Stream Chunk
-        Message Bus->>Widget B: Deliver Chunk
+    A[Widget A] -->|Publishes| B[Message Bus]
+    B -->|Streams| C[Widget B]
+    B -->|Streams| D[Widget C]
+    B -->|Streams| E[Widget D]
+    
+    subgraph "Why Pub/Sub?"
+        F[Type-safe Messages]
+        G[Location Independence]
+        H[Many-to-Many]
     end
-    Widget A->>Message Bus: End Stream
+    
+    subgraph "Why Streams?"
+        I[Real-time Updates]
+        J[Back-pressure]
+        K[Cancellation]
+    end
 ```
-- Bi-directional streams
-- Flow control
-- Chunked transfer
-- Stream composition
+
+#### Core Pattern: Pub/Sub with Streams
+This is our foundation because:
+- Natural fit for distributed systems
+- Built-in support in Effect.ts
+- Handles both one-off messages and continuous updates
+- Provides back-pressure management
+- Enables clean cancellation
+
+Example:
+```typescript
+// Publisher (AI Model Widget)
+yield* Stream.fromEffect(modelOutput)
+  .pipe(
+    Stream.broadcast, // Multiple subscribers
+    Stream.filter(isValid),
+    Stream.chunks // Back-pressure
+  )
+
+// Subscriber (Visualization Widget)
+yield* Stream.subscribe('model-output')
+  .pipe(
+    Stream.takeUntil(cancelled),
+    Stream.tap(updateView)
+  )
+```
+
+#### Other Patterns We Considered
+
+**Direct Communication**
+- ❌ Tight coupling
+- ❌ Hard to scale
+- ❌ Complex error handling
+- ✅ Only for special cases (parent-child)
+
+**Request/Response**
+- ❌ Blocking nature
+- ❌ Complex timeout handling
+- ❌ No real-time updates
+- ✅ Used internally by Pub/Sub when needed
 
 ### 3. Supervision Tree
 ```mermaid
