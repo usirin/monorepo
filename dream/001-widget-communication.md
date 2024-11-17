@@ -1,238 +1,177 @@
-# Widget Communication in Kontrol
+# RFC: Widget Communication System
 
-## Vision
+## Summary
+This RFC proposes a distributed widget communication system for Kontrol, enabling widgets to operate across different processes and machines while maintaining type-safe, real-time communication. The system uses Effect.ts's Stream and Channel primitives as its foundation.
 
-In traditional applications, UI components are isolated and must live in the same process. This model breaks down in an AI-first world where:
-- Widgets might need significant compute resources
-- Different widgets might have different runtime requirements
-- Some widgets might need specialized hardware (GPUs, TPUs)
-- Widgets might need to scale independently
+## Background and Motivation
 
-Kontrol introduces a distributed widget architecture where widgets can live anywhere - different processes, machines, or cloud services - while maintaining seamless communication and state synchronization.
+### Current State
+- UI components are process-bound
+- State management is local
+- Communication is synchronous
+- Resource allocation is static
 
-## Core Concepts
+### Pain Points
+1. AI operations need specialized hardware
+2. Large models can't run in browser
+3. Resource utilization is inefficient
+4. Scaling is difficult
+5. State synchronization is complex
 
-### 1. Location-Independent Widgets
-```mermaid
-graph TD
-    subgraph Local Machine
-        A[UI Process] --> B[Window 1]
-        A --> C[Window 2]
-    end
-    subgraph GPU Server
-        D[ML Widget]
-    end
-    subgraph Cloud
-        E[LLM Widget]
-        F[Vector DB Widget]
-    end
-    A <--> D
-    A <--> E
-    E <--> F
-```
+### Why Change is Needed
+Modern AI applications require:
+- Distributed processing
+- Hardware flexibility
+- Dynamic scaling
+- Real-time updates
+- Resource optimization
 
-Widgets can live anywhere:
-- Local process
-- Remote server
-- Cloud service
-- Specialized hardware
-- Edge devices
+## Technical Architecture
 
-### 2. Communication Patterns
+### Core Components
 
-Our primary communication pattern is **Pub/Sub with Streams**. Here's why:
-
-```mermaid
-graph TD
-    A[Widget A] -->|Publishes| B[Message Bus]
-    B -->|Streams| C[Widget B]
-    B -->|Streams| D[Widget C]
-    B -->|Streams| E[Widget D]
-    
-    subgraph "Why Pub/Sub?"
-        F[Type-safe Messages]
-        G[Location Independence]
-        H[Many-to-Many]
-    end
-    
-    subgraph "Why Streams?"
-        I[Real-time Updates]
-        J[Back-pressure]
-        K[Cancellation]
-    end
-```
-
-#### Core Pattern: Pub/Sub with Streams
-This is our foundation because:
-- Natural fit for distributed systems
-- Built-in support in Effect.ts
-- Handles both one-off messages and continuous updates
-- Provides back-pressure management
-- Enables clean cancellation
-
-Example:
+1. **Widget Protocol**
 ```typescript
-// Publisher (AI Model Widget)
-yield* Stream.fromEffect(modelOutput)
-  .pipe(
-    Stream.broadcast, // Multiple subscribers
-    Stream.filter(isValid),
-    Stream.chunks // Back-pressure
-  )
-
-// Subscriber (Visualization Widget)
-yield* Stream.subscribe('model-output')
-  .pipe(
-    Stream.takeUntil(cancelled),
-    Stream.tap(updateView)
-  )
+interface WidgetMessage<T> {
+  id: string           // Unique message ID
+  from: string         // Source widget ID
+  to: string          // Target widget ID
+  payload: T          // Schema-validated payload
+  timestamp: number   // Message timestamp
+}
 ```
 
-#### Other Patterns We Considered
-
-**Direct Communication**
-- ❌ Tight coupling
-- ❌ Hard to scale
-- ❌ Complex error handling
-- ✅ Only for special cases (parent-child)
-
-**Request/Response**
-- ❌ Blocking nature
-- ❌ Complex timeout handling
-- ❌ No real-time updates
-- ✅ Used internally by Pub/Sub when needed
-
-### 3. Supervision Tree
+2. **Communication Layer**
 ```mermaid
 graph TD
-    A[Supervisor] --> B[Widget Group 1]
-    A --> C[Widget Group 2]
-    B --> D[Widget 1.1]
-    B --> E[Widget 1.2]
-    C --> F[Widget 2.1]
-    C --> G[Widget 2.2]
+    A[Widget] -->|Publish| B[Message Bus]
+    B -->|Stream| C[Widget]
+    B -->|Stream| D[Widget]
+    
+    subgraph "Message Bus"
+        E[Channel]
+        F[Schema Validation]
+        G[Routing]
+    end
 ```
 
-- Health monitoring
-- Automatic restart
-- Resource management
-- Load balancing
-- Scaling decisions
+3. **Implementation with Effect**
+```typescript
+class WidgetChannel extends Effect.Service<WidgetChannel>() {
+  static readonly live = Effect.gen(function*(_) {
+    // Bounded hub for back-pressure
+    const hub = yield* Hub.bounded<WidgetMessage>(100)
+    
+    return {
+      publish: <T>(message: WidgetMessage<T>) =>
+        Hub.publish(hub, message),
+        
+      subscribe: (pattern: SubscriptionPattern) =>
+        Hub.subscribeScoped(hub).pipe(
+          Stream.filter(matchesPattern(pattern))
+        )
+    }
+  })
+}
+```
 
-## Example Workflows
+### Message Flow
+1. Publisher serializes message
+2. Schema validation
+3. Message bus routing
+4. Subscriber deserialization
+5. Type-safe consumption
 
-### 1. Distributed AI Pipeline
+## Alternatives Considered
+
+### 1. Direct Communication
 ```mermaid
 graph LR
-    A[Input Widget] --> B[Vector DB]
-    B --> C[LLM Service]
-    C --> D[Visualization]
-    
-    subgraph Local
-        A
-        D
-    end
-    subgraph Cloud
-        B
-        C
-    end
+    A[Widget] -->|Direct| B[Widget]
 ```
+Rejected due to:
+- Poor scaling
+- Complex error handling
+- Tight coupling
+- No back-pressure
 
-Components:
-- Input Widget: Local UI for user interaction
-- Vector DB: Cloud-based embedding storage
-- LLM Service: GPU-powered language model
-- Visualization: Local UI for results
-
-### 2. Edge Computing Workflow
+### 2. Event Bus
 ```mermaid
 graph TD
-    A[Sensor Widget] --> B[Edge Processor]
-    B --> C[Cloud Analytics]
-    C --> D[Dashboard]
-    
-    subgraph Edge Device
-        A
-        B
-    end
-    subgraph Cloud
-        C
-    end
-    subgraph User Device
-        D
-    end
+    A[Widget] -->|Event| B[Bus]
+    B -->|Event| C[Widget]
 ```
+Rejected due to:
+- Type safety issues
+- No streaming support
+- Limited flow control
+- Complex state sync
 
-Components:
-- Sensor Widget: Edge device data collection
-- Edge Processor: Local data processing
-- Cloud Analytics: Heavy computation
-- Dashboard: User interface
+## Implementation Strategy
 
-## Why This Matters
+### Phase 1: Core Protocol (2 weeks)
+1. Message format definition
+2. Schema validation
+3. Basic routing
+4. Error handling
 
-### 1. Scalability
-- Widgets can scale independently
-- Resource-intensive widgets can run on appropriate hardware
-- Natural load distribution
-- Cost-effective resource usage
+### Phase 2: Distribution (2 weeks)
+1. Network transport
+2. Service discovery
+3. Health monitoring
+4. Load balancing
 
-### 2. Flexibility
-- Mix local and remote widgets
-- Easy integration with cloud services
-- Hardware-specific optimizations
-- Geographic distribution
+### Phase 3: Developer Tools (2 weeks)
+1. Debug tooling
+2. Monitoring
+3. Documentation
+4. Examples
 
-### 3. Reliability
-- Automatic failover
-- State replication
-- Error isolation
-- Graceful degradation
+## Additional Considerations
 
-## Technical Considerations
-
-### 1. Transport Layer
-- WebSocket for real-time
-- HTTP/2 for REST
-- gRPC for high-performance
-- MQTT for IoT scenarios
-
-### 2. State Management
-- Distributed state sync
-- Conflict resolution
-- State persistence
-- Cache strategies
-
-### 3. Security
-- Authentication
-- Authorization
-- Encryption
+### Security
+- Message encryption
+- Widget authentication
+- Permission model
 - Audit logging
 
-### 4. Monitoring
-- Health checks
-- Performance metrics
+### Performance
+- Message batching
+- Back-pressure handling
+- Caching strategy
+- Connection pooling
+
+### Scalability
+- Horizontal scaling
+- Load distribution
+- Resource limits
+- Failure domains
+
+### Monitoring
+- Message metrics
+- System health
 - Error tracking
-- Usage analytics
+- Performance stats
+
+## Success Metrics
+1. Latency < 100ms for 99th percentile
+2. Zero message loss
+3. Automatic recovery from failures
+4. Type safety at compile time
+5. Resource cleanup guaranteed
+
+## Risks and Mitigations
+
+| Risk | Mitigation |
+|------|------------|
+| Network partition | Message persistence + replay |
+| Resource exhaustion | Back-pressure + limits |
+| Type mismatches | Schema validation |
+| System overload | Load shedding |
 
 ## Next Steps
-
-1. **Core Protocol**
-   - Message format
-   - Transport layer
-   - Security model
-   - State sync
-
-2. **Infrastructure**
-   - Widget registry
-   - Supervision system
-   - Scaling logic
-   - Deployment tools
-
-3. **Developer Tools**
-   - Network inspector
-   - State debugger
-   - Performance monitor
-   - Deployment dashboard
-
-The future of widgets is distributed, and Kontrol provides the foundation for building this future.
+1. Implement core protocol
+2. Build reference implementation
+3. Create developer tools
+4. Write documentation
+5. Release beta version
