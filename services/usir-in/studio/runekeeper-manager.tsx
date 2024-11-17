@@ -32,10 +32,11 @@ export const useRunekeeper = () => {
 
 	useEffect(() => {
 		runekeeper.map("normal", "-", () => {
+			console.log("Splitting horizontally");
 			commands.split.execute({orientation: "horizontal"});
 		});
 
-		runekeeper.map("command", "|", () => {
+		runekeeper.map("normal", "|", () => {
 			commands.split.execute({orientation: "vertical"});
 		});
 

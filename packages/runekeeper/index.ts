@@ -1,6 +1,6 @@
 import {enableMapSet, produce} from "immer";
 import {assign, createActor, setup} from "xstate";
-import {stringify} from "./syntax-vim";
+import {type Key, stringify} from "./syntax-vim";
 
 enableMapSet();
 
@@ -147,7 +147,7 @@ export function createRunekeeper<TMode extends string>(modes: TMode[]) {
 		unmap: (mode: TMode, sequence: string) => {
 			runekeeperActor.send({type: "UNMAP", mode, sequence});
 		},
-		handleKeyPress: (event: KeyboardEvent, mode: TMode) => {
+		handleKeyPress: (event: Key, mode: TMode) => {
 			runekeeperActor.send({type: "KEY_PRESS", key: stringify(event), mode});
 		},
 		getSnapshot: () => runekeeperActor.getSnapshot(),

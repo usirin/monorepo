@@ -5,10 +5,10 @@ import {type Window, getAt} from "@umut/layout-tree";
 import {Panel} from "~/studio/panel";
 import {PanelGroup} from "~/studio/panel-group";
 import {ResizeHandle} from "~/studio/resize-handle";
-import type {WidgetID} from "~/studio/widget";
+// import type {WidgetID} from "~/studio/widget";
 import {PanelHeader, PanelLayout} from "./panel-layout";
 import {PanelStack} from "./stack-panel";
-import {WidgetDebugger} from "./widget-debugger";
+// import {WidgetDebugger} from "./widget-debugger";
 import {useWorkspaceStore} from "./workspace-manager";
 
 export function WorkspaceContainer() {
@@ -36,7 +36,7 @@ export function WorkspaceContainer() {
 				<PanelStack stack={workspace.layout.root} path={[]} />
 			</Panel>
 			<ResizeHandle id="right-panel" />
-			<Panel id="right-panel" order={3} collapsible minSize={15} defaultSize={15} maxSize={25}>
+			<Panel id="right-panel" order={3} collapsible minSize={15} defaultSize={15}>
 				<PanelLayout isSelected header={<PanelHeader>Right Panel</PanelHeader>}>
 					{/*<WidgetDebugger id={focused?.key as WidgetID} /> */}
 					<Text>Right Panel</Text>

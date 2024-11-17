@@ -1,166 +1,289 @@
-# Studio Framework Architecture
+# Kontrol Framework Architecture
 
 ## Background
-Building studio-like applications (think VS Code or Figma) requires solving similar problems: window management, keyboard shortcuts, widget systems, etc. This framework provides reusable building blocks for these common needs.
+Building studio-like applications (think VS Code or Figma) requires solving similar problems: window management, keyboard shortcuts, widget systems, etc. Kontrol provides reusable building blocks for these common needs, leveraging Effect.ts for resource management and type safety where it makes sense.
 
-## Core Packages
+## Core Components
 
-### @umut/codex
-Everything starts with plugins. Plugins are how we extend and compose our studio:
-```typescript
-import { createStudio } from '@umut/codex'
-
-const tokenPlugin = {
-  name: 'tokens',
-  dependencies: ['workspace'],
-  
-  // Setup phase
-  async register({ commands, keybindings }) {
-    commands.register({
-      tokens: {
-        edit: defineCommand({
-          input: z.object({ 
-            name: z.string(),
-            value: z.string()
-          }),
-          handler: async ({ name, value }) => {
-            // Update design token
-          }
-        })
-      }
-    })
-  },
-  
-  // Runtime phase
-  async boot({ workspace }) {
-    workspace.createLayout('tokens', {
-      root: createStack('horizontal', [
-        createWindow('token-explorer'),
-        createWindow('token-editor')
-      ])
-    })
-  }
-}
-
-const studio = createStudio()
-await studio.use(tokenPlugin)
-```
-
-### @umut/spellbook
-Commands are the primary way to interact with the system:
-```typescript
-const componentCommands = defineCommand('component', {
-  create: defineCommand({
-    input: z.object({
-      name: z.string(),
-      type: z.enum(['atom', 'molecule', 'organism'])
-    }),
-    handler: async ({ name, type }) => {
-      // Create new component
-    }
-  })
-})
-
-const commands = createCommands()
-commands.register(componentCommands)
-```
-
-### @umut/runekeeper
-Keyboard input is handled through runekeeper:
-```typescript
-import { createRunekeeper } from '@umut/runekeeper'
-
-const keys = createRunekeeper(['normal'])
-
-keys.map('normal', '<C-w>v', () => 
-  commands.execute(['workspace', 'split'], { direction: 'vertical' })
-)
-```
-
-### @umut/layout-tree
+### @kontrol/layout-tree
 Pure data structure for window management:
 ```typescript
-import { createTree, split } from '@umut/layout-tree'
+import { createTree, split } from '@kontrol/layout-tree'
 
+// Pure functions for layout manipulation
 const tree = createTree()
 const newTree = split(tree, [0], 'horizontal')
 ```
 
-### @umut/shrine
-Widget system with communication:
+### @kontrol/spellbook
+Command system with schema validation:
 ```typescript
-import { defineWidget } from '@umut/shrine'
+import { Schema } from "@effect/schema"
 
-const EditorWidget = defineWidget({
-  id: 'editor',
-  initialState: { content: '' },
-  ports: {
-    input: {
-      setContent(state, content) {
-        state.content = content
-      }
-    },
-    output: {
-      onChange(content) {
-        // Called when content changes
-      }
-    }
-  }
+const commands = createSpellbook({
+  'workspace.split': defineCommand({
+    input: Schema.struct({
+      direction: Schema.union(
+        Schema.literal("vertical"), 
+        Schema.literal("horizontal")
+      )
+    }),
+    execute: ({ direction }) => {/* ... */}
+  })
 })
 ```
 
-### @umut/lodge
-Workspace state management:
+### @kontrol/runekeeper
+Keyboard handling with state machine:
 ```typescript
-import { createLodge } from '@umut/lodge'
-
-const lodge = createLodge()
-lodge.createWorkspace('main')
-lodge.focusWindow([0, 1])
+const runekeeper = createRunekeeper(['normal', 'insert'])
+runekeeper.map('normal', '<C-w>v', () => {/* ... */})
 ```
 
-### @umut/workbench
-React components for the UI:
-```typescript
-import { Workbench } from '@umut/workbench'
+### @kontrol/widgets
+Widget system designed for AI-first applications, based on vim's buffer/window model:
 
-function Studio() {
+```typescript
+// Core Widget Service - Like vim buffers, but for AI state
+class Widget extends Effect.Service<Widget>() {
+  static create<TState, TActions>({ id, schema, setup }: {
+    id: string,
+    // Schema defines widget's state shape
+    schema: Schema.Schema<TState>,
+    // Setup creates singleton state and actions
+    setup: Effect.Effect<TActions>
+  }) {
+    return class extends Widget {
+      static readonly live = Effect.gen(function*(_) {
+        // Singleton state for the widget
+        const state = yield* Ref.make<TState>()
+        
+        // Stream for state updates
+        const updates = yield* Stream.fromEffect(Ref.get(state))
+        
+        // Stream for AI events (completions, embeddings etc)
+        const events = yield* Stream.async<AIEvent>()
+        
+        // Actions from setup
+        const actions = yield* setup
+        
+        return {
+          // State management
+          state,
+          updates,
+          events,
+          actions,
+          
+          // Metadata
+          id,
+          schema
+        }
+      }).pipe(Effect.scoped)
+    }
+  }
+}
+
+// Example: AI Chat Widget
+const ChatWidget = Widget.create({
+  id: 'chat',
+  schema: Schema.struct({
+    messages: Schema.array(Schema.struct({
+      role: Schema.union(
+        Schema.literal("user"),
+        Schema.literal("assistant")
+      ),
+      content: Schema.string,
+      // Metadata for AI features
+      embedding: Schema.optional(Schema.array(Schema.number)),
+      tokens: Schema.optional(Schema.number),
+      contextualMemory: Schema.optional(Schema.array(Schema.string))
+    })),
+    // AI-specific state
+    context: Schema.struct({
+      relevantDocs: Schema.array(Schema.string),
+      codebase: Schema.optional(Schema.string),
+      activeFile: Schema.optional(Schema.string)
+    }),
+    // Stream state
+    streaming: Schema.boolean,
+    temperature: Schema.number
+  }),
+  
+  setup: Effect.gen(function*(_) {
+    const llm = yield* LLMService
+    const memory = yield* MemoryService
+    const codebase = yield* CodebaseService
+    
+    return {
+      // Basic chat actions
+      sendMessage: (content: string) => Effect.gen(function*(_) {
+        // Get relevant context
+        const context = yield* memory.search(content)
+        const codeContext = yield* codebase.findRelevant(content)
+        
+        // Update state with streaming response
+        yield* llm.streamCompletion({
+          messages: [...previousMessages, { role: "user", content }],
+          context: [...context, ...codeContext]
+        })
+      }),
+      
+      // AI-specific actions
+      generateEmbeddings: (messageId: string) => 
+        Effect.gen(function*(_) {
+          const embedding = yield* llm.embed(message.content)
+          yield* memory.store(embedding)
+        }),
+        
+      findSimilar: (messageId: string) =>
+        Effect.gen(function*(_) {
+          const similar = yield* memory.similar(message.embedding)
+          return similar
+        }),
+        
+      explainCode: (messageId: string) =>
+        Effect.gen(function*(_) {
+          const explanation = yield* llm.explain(message.codeContext)
+          return explanation
+        })
+    }
+  })
+})
+
+// React Window Component (pure rendering)
+function ChatWindow({ bufferId }: { bufferId: string }) {
+  const chat = useWidget(bufferId)
+  
   return (
-    <Workbench>
-      <CommandPalette />
-      <Workspace>
-        <Window id="editor" />
-      </Workspace>
-    </Workbench>
+    <div>
+      {chat.messages.map(message => (
+        <Message 
+          key={message.id}
+          content={message.content}
+          // AI features available through context menu
+          onExplainCode={() => chat.explainCode(message.id)}
+          onFindSimilar={() => chat.findSimilar(message.id)}
+        />
+      ))}
+    </div>
   )
 }
 ```
 
-## Package Dependencies
+Key Features for AI Applications:
+
+1. **Rich State Model**
+   - Support for embeddings and vector storage
+   - Streaming state management
+   - Context management (docs, code, etc)
+   - Memory and retrieval
+
+2. **AI-Specific Actions**
+   - Text completion
+   - Code explanation
+   - Semantic search
+   - Context injection
+   - Prompt management
+
+3. **Integration Points**
+   - LLM services
+   - Vector databases
+   - Code parsers
+   - Knowledge bases
+   - Fine-tuning pipelines
+
+## React Integration (@kontrol/widgets/react)
+Clean React bindings that hide Effect implementation:
+```typescript
+// Public React API
+export function KontrolProvider({ children }) {
+  // Internal Effect runtime setup
+  return <>{children}</>
+}
+
+export function createWidget<
+  TId extends string,
+  TProps extends Record<string, unknown>
+>(id: TId, config: WidgetConfig<TProps>) {
+  return function WidgetComponent(props: TProps) {
+    // Internal Effect handling
+    return config.component(props)
+  }
+}
+
+export function useKontrolWidget<T>(id: string) {
+  // Internal Effect handling
+  return {
+    state: /* widget state */,
+    api: /* widget methods */
+  }
+}
 ```
-@umut/codex      (depends on all)
-@umut/spellbook  (independent)
-@umut/runekeeper (depends on spellbook)
-@umut/layout-tree (independent)
-@umut/shrine     (depends on spellbook)
-@umut/lodge      (depends on layout-tree, shrine, spellbook)
-@umut/workbench  (depends on lodge)
+
+## Integration (@kontrol/core)
+Brings all components together:
+```typescript
+import { Effect } from "effect"
+
+const program = Effect.gen(function*(_) {
+  // Core services
+  const layout = yield* LayoutTree
+  const commands = yield* Spellbook  
+  const keys = yield* Runekeeper
+  const widgets = yield* WidgetManager
+  
+  // Register core commands
+  yield* commands.register('split', {
+    input: Schema.struct({ direction: Schema.string }),
+    execute: ({ direction }) => layout.split(direction)
+  })
+  
+  // Setup keybindings
+  yield* keys.map('normal', '<C-w>v', () =>
+    commands.execute('split', { direction: 'vertical' })
+  )
+  
+  // Create widgets
+  yield* widgets.spawn(EditorWidget)
+  
+  return {
+    layout,
+    commands,
+    keys,
+    widgets
+  }
+})
 ```
+
+## Design Principles
+
+1. **Pure Core Components**
+   - layout-tree: Pure data structure
+   - spellbook: Pure command system
+   - runekeeper: Pure state machine
+   - widgets: Effect fibers for state (internal)
+
+2. **Effect Integration**
+   - Completely internal
+   - Hidden from application code
+   - Exposed through clean APIs
+   - Type-safe boundaries
+
+3. **React Integration**
+   - No Effect exposure
+   - Simple component API
+   - Familiar React patterns
+   - Type-safe props and methods
 
 ## Development
 ```bash
-# Install
 pnpm install
-
-# Development
 pnpm dev
-
-# Test
 pnpm test
 ```
 
 ## Next Steps
-1. Complete @umut/codex plugin system
-2. Implement @umut/spellbook
-3. Build core plugins
+1. Implement core components
+2. Build widget fiber system
+3. Create React bridge
 4. Write documentation
