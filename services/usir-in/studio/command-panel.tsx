@@ -22,7 +22,7 @@ export function CommandPanel({
 	}
 
 	return (
-		<Card size="1">
+		<Card size="1" style={{flexShrink: 0}}>
 			<Command value={value} onValueChange={setValue}>
 				<Command.List>
 					{Object.values(commands).map((command) => (

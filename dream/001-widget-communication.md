@@ -48,5 +48,4 @@ Effect.ts provides the core primitives needed:
 
 ## The Cool Part
 The cool part isn't the distributed computing (that's been done before) - it's how natural it feels to build apps this way. No more "how do I squeeze this into the browser?" or "should this be a microservice?". Just write your widget, and let it live wherever it works best.
-
 Want to try something on your laptop first? Cool. Want to move it to a GPU cluster later? No problem. The widget doesn't care - it's just a stream of messages.

@@ -9,7 +9,7 @@ export function Statusbar() {
 	const {state: runekeeperState} = useRunekeeper();
 
 	return (
-		<Card size="1">
+		<Card size="1" style={{flexShrink: 0}}>
 			<Flex align="center" justify="between" width="100%">
 				<Text size="1">Mode: {state.value}</Text>
 				<Text size="1">Buffer: {runekeeperState.context.buffer}</Text>

@@ -23,14 +23,22 @@ export const useRunekeeper = () => {
 			runekeeper.handleKeyPress(event, modeStore.state.value);
 		};
 
-		document.addEventListener("keypress", handler);
+		document.addEventListener("keydown", handler);
 
 		return () => {
-			document.removeEventListener("keypress", handler);
+			document.removeEventListener("keydown", handler);
 		};
 	}, [modeStore.state.value, runekeeper]);
 
 	useEffect(() => {
+		runekeeper.map("normal", "<c-p>", () => {
+			modeStore.send({type: "COMMAND"});
+		});
+		runekeeper.map("command", "<c-p>", () => {
+			console.log("Exiting command mode");
+			modeStore.send({type: "ESC"});
+		});
+
 		runekeeper.map("normal", "-", () => {
 			console.log("Splitting horizontally");
 			commands.split.execute({orientation: "horizontal"});
@@ -43,7 +51,7 @@ export const useRunekeeper = () => {
 		runekeeper.map("normal", "ZZ", () => {
 			commands.remove.execute({});
 		});
-	}, [runekeeper.map]);
+	}, [runekeeper.map, modeStore.send]);
 
 	return {state: snapshot, runekeeper};
 };

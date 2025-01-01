@@ -1,6 +1,6 @@
 "use client";
 
-import {Box, Flex, Theme} from "@radix-ui/themes";
+import {Flex, Theme} from "@radix-ui/themes";
 import {WorkspaceContainer} from "~/workspace/container";
 import {commands} from "~/workspace/workspace-manager";
 import {CommandPanel} from "./command-panel";
