@@ -7,7 +7,7 @@ export type InferCommandInput<T> = T extends Command<infer S> ? z.infer<S> : nev
 export interface Command<TSchema extends z.ZodType> {
 	description: string;
 	input: TSchema;
-	execute: (args: z.infer<TSchema>) => void;
+	execute: (args: z.output<TSchema>) => void;
 }
 
 export function defineCommand<TSchema extends z.ZodType>({
@@ -23,15 +23,42 @@ export function createSpellbook<TCommands extends Record<string, Command<z.ZodTy
 ) {
 	return {
 		commands,
-		execute: <TKey extends keyof TCommands>(key: TKey, args: z.infer<TCommands[TKey]["input"]>) => {
+		execute: <TKey extends keyof TCommands>(
+			key: TKey,
+			args?: z.input<TCommands[TKey]["input"]>,
+		) => {
 			const command = commands[key];
 			if (!command) {
 				throw new Error(`Command not found: ${key as string}`);
 			}
-			if (!command.input.safeParse(args).success) {
+			const parsed = command.input.safeParse(args);
+			if (!parsed.success) {
 				throw new Error("Invalid arguments");
 			}
-			command.execute(args);
+			command.execute(parsed.data);
 		},
 	};
+}
+
+export class Spellbook<TCommands extends Record<string, Command<z.ZodTypeAny>>> {
+	#commands: TCommands;
+
+	static create() {
+		return new Spellbook<Record<never, Command<z.ZodTypeAny>>>();
+	}
+
+	constructor(commands: TCommands = {} as TCommands) {
+		this.#commands = commands;
+	}
+
+	command<TKey extends string, TSchema extends z.ZodType>(key: TKey, command: Command<TSchema>) {
+		return new Spellbook<TCommands & Record<TKey, Command<TSchema>>>({
+			...this.#commands,
+			[key]: command,
+		});
+	}
+
+	build() {
+		return createSpellbook(this.#commands);
+	}
 }
