@@ -11,9 +11,32 @@ import {PanelStack} from "./stack-panel";
 // import {WidgetDebugger} from "./widget-debugger";
 import {useWorkspaceStore} from "./workspace-manager";
 
+// we are going to allow this to be a custom component defined in the workspace store
+// this will allow us to have a custom left panel for each workspace
+function LeftPanel() {
+	const {workspace} = useWorkspaceStore();
+
+	const focused = getAt(workspace.layout.root, workspace.focused) as Window;
+	return (
+		<PanelLayout isSelected header={<PanelHeader>Left Panel</PanelHeader>}>
+			<Text size="2">
+				focused: {workspace.focused?.join(":")} - {focused?.key}
+			</Text>
+		</PanelLayout>
+	);
+}
+
+function RightPanel() {
+	return (
+		<PanelLayout isSelected header={<PanelHeader>Right Panel</PanelHeader>}>
+			{/*<WidgetDebugger id={focused?.key as WidgetID} /> */}
+			<Text>Right Panel</Text>
+		</PanelLayout>
+	);
+}
+
 export function WorkspaceContainer() {
 	const {workspace} = useWorkspaceStore();
-	const focused = getAt(workspace.layout.root, workspace.focused) as Window;
 
 	return (
 		<PanelGroup autoSaveId="panel-group" direction="horizontal">
@@ -25,11 +48,7 @@ export function WorkspaceContainer() {
 				minSize={10}
 				maxSize={25}
 			>
-				<PanelLayout isSelected header={<PanelHeader>Left Panel</PanelHeader>}>
-					<Text size="2">
-						focused: {workspace.focused?.join(":")} - {focused?.key}
-					</Text>
-				</PanelLayout>
+				<LeftPanel />
 			</Panel>
 			<ResizeHandle id="left-panel" />
 			<Panel id="workspace-widgets" order={2} defaultSize={70}>
@@ -37,10 +56,7 @@ export function WorkspaceContainer() {
 			</Panel>
 			<ResizeHandle id="right-panel" />
 			<Panel id="right-panel" order={3} collapsible minSize={15} defaultSize={15}>
-				<PanelLayout isSelected header={<PanelHeader>Right Panel</PanelHeader>}>
-					{/*<WidgetDebugger id={focused?.key as WidgetID} /> */}
-					<Text>Right Panel</Text>
-				</PanelLayout>
+				<RightPanel />
 			</Panel>
 		</PanelGroup>
 	);

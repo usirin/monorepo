@@ -43,7 +43,6 @@ export function createCodex() {
 				if (!plugin) throw new Error(`Plugin not found: ${name}`);
 
 				// Get dependencies' results
-				// biome-ignore lint/suspicious/noExplicitAny: i know what i'm doing, and we have tests
 				const deps = {} as Record<string, any>;
 				if (plugin.dependencies) {
 					for (const dep of plugin.dependencies) {
@@ -53,7 +52,6 @@ export function createCodex() {
 				}
 
 				// Register plugin with dependencies' results
-				// biome-ignore lint/suspicious/noExplicitAny: i know what i'm doing, and we have tests
 				const result = await plugin.register(deps as any);
 				results.set(name, result);
 

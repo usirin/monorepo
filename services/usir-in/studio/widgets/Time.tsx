@@ -25,7 +25,7 @@ export function Time() {
 			setTime(new Date());
 		}, 1000);
 		return () => clearInterval(interval);
-	}, []);
+	}, [setTime]);
 
 	return <div>{time.toLocaleTimeString()}</div>;
 }

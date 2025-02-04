@@ -12,15 +12,13 @@ export function PanelLayout({
 	onClick?: () => void;
 }) {
 	return (
-		<Card
-			onClick={onClick}
-			size="1"
-			style={{height: "100%", opacity: isSelected ? 1 : 0.85, padding: 0}}
-		>
-			<Flex direction="column" width="100%" height="100%">
-				{header}
-				<ScrollArea type="hover">{children}</ScrollArea>
-			</Flex>
+		<Card onClick={onClick} size="1" style={{height: "100%", opacity: isSelected ? 1 : 0.85}}>
+			<Inset side="all">
+				<Flex direction="column" width="100%" height="100%">
+					{header}
+					<ScrollArea type="hover">{children}</ScrollArea>
+				</Flex>
+			</Inset>
 		</Card>
 	);
 }

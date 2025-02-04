@@ -6,16 +6,16 @@
 /**
  * Represents a widget's state management options.
  * Defines how widget state is handled and persisted.
- * 
+ *
  * @template TState - The type of the widget's state
  */
 interface StateOptions<TState> {
   /** Initial state or state factory */
   initial: TState | (() => TState)
-  
+
   /** Whether to persist state across sessions */
   persist?: boolean
-  
+
   /** Optional state migration strategies */
   migrate?: {
     [version: string]: (state: unknown) => TState
@@ -25,7 +25,7 @@ interface StateOptions<TState> {
 /**
  * Represents a widget's port configuration.
  * Ports are the communication channels between widgets.
- * 
+ *
  * @template TInput - Type map for input methods
  * @template TOutput - Type map for output events
  */
@@ -35,7 +35,7 @@ interface PortOptions<
 > {
   /** Methods that can be called on this widget */
   input?: TInput
-  
+
   /** Events that this widget can emit */
   output?: TOutput
 }
@@ -43,7 +43,7 @@ interface PortOptions<
 /**
  * Represents a widget's command configuration.
  * Commands are actions that can be triggered on the widget.
- * 
+ *
  * @template TState - The widget's state type
  */
 interface CommandOptions<TState> {
@@ -51,7 +51,7 @@ interface CommandOptions<TState> {
   [key: string]: {
     /** Command description for documentation */
     description?: string
-    
+
     /** Command implementation with access to widget state */
     execute: (state: TState, ...args: any[]) => void | Promise<void>
   }
@@ -60,7 +60,7 @@ interface CommandOptions<TState> {
 /**
  * Complete widget definition type.
  * Combines all widget aspects into a single configuration object.
- * 
+ *
  * @template TState - Widget state type
  * @template TInput - Input port types
  * @template TOutput - Output port types
@@ -72,24 +72,24 @@ interface WidgetDefinition<
 > {
   /** Unique identifier for the widget */
   id: string
-  
+
   /** Widget state configuration */
   state: StateOptions<TState>
-  
+
   /** Widget communication ports */
   ports?: PortOptions<TInput, TOutput>
-  
+
   /** Widget commands */
   commands?: CommandOptions<TState>
-  
+
   /** Widget lifecycle hooks */
   lifecycle?: {
     /** Called when widget is mounted */
     onMount?: (state: TState) => void | Promise<void>
-    
+
     /** Called when widget is unmounted */
     onUnmount?: (state: TState) => void | Promise<void>
-    
+
     /** Called when widget state changes */
     onStateChange?: (state: TState, prev: TState) => void
   }
@@ -98,7 +98,7 @@ interface WidgetDefinition<
 /**
  * Widget instance type.
  * Represents a running instance of a widget.
- * 
+ *
  * @template TState - Widget state type
  * @template TInput - Input port types
  * @template TOutput - Output port types
@@ -110,18 +110,18 @@ interface WidgetInstance<
 > {
   /** Widget identifier */
   readonly id: string
-  
+
   /** Current widget state */
   readonly state: TState
-  
+
   /** Input port methods */
   readonly input: TInput
-  
+
   /** Output port event emitter */
   readonly output: {
     [K in keyof TOutput]: TOutput[K]
   }
-  
+
   /** Update widget state */
   setState: (state: Partial<TState> | ((prev: TState) => Partial<TState>)) => void
 }
@@ -235,7 +235,7 @@ import { useWidget } from '@umut/lodge'
 
 function CounterComponent() {
   const { state, actions } = useWidget('counter')
-  
+
   return (
     <div>
       Count: {state.count}
@@ -303,4 +303,4 @@ type WidgetInstance<T extends Widget> = {
       payload: T['ports']['output'][K]
     ) => void
   }
-} 
+}

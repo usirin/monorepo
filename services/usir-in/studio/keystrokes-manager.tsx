@@ -20,7 +20,3 @@ export const KeystrokesManager = (props: PropsWithChildren) => {
 
 	return <KeystrokesProvider keystrokes={keystrokes}>{props.children}</KeystrokesProvider>;
 };
-
-type Something<T> = T | 1;
-
-type Foo = Something<3 | 4>;

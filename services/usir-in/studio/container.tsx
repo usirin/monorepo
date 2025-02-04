@@ -5,6 +5,7 @@ import {WorkspaceContainer} from "~/workspace/container";
 import {commands} from "~/workspace/workspace-manager";
 import {CommandPanel} from "./command-panel";
 import {KeystrokesManager} from "./keystrokes-manager";
+import {RunekeeperContextManager} from "./runekeeper-manager";
 import {Statusbar} from "./statusbar";
 
 export function StudioContainer() {
@@ -16,13 +17,16 @@ export function StudioContainer() {
 			scaling="90%"
 			style={{height: "100%"}}
 		>
-			<KeystrokesManager>
-				<Flex gap="1" p="1" direction="column" height="100%">
-					<WorkspaceContainer />
-					<CommandPanel commands={commands} />
-					<Statusbar />
-				</Flex>
-			</KeystrokesManager>
+			<RunekeeperContextManager>
+				<KeystrokesManager>
+					<Flex gap="1" p="1" direction="column" height="100%">
+						<Statusbar />
+						<WorkspaceContainer />
+						<CommandPanel commands={commands} />
+						<Statusbar />
+					</Flex>
+				</KeystrokesManager>
+			</RunekeeperContextManager>
 		</Theme>
 	);
 }

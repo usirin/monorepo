@@ -32,7 +32,6 @@ export function CommandPanel({
 							color="indigo"
 							onSelect={() => {
 								// TODO: Fix this by parsing the schema and providing the correct args
-								// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 								command.execute({} as any);
 								setValue("");
 								setSearch("");

@@ -1,18 +1,12 @@
 "use client";
 
 import {createRunekeeper} from "@umut/runekeeper";
-import {type PropsWithChildren, createContext, useContext, useEffect, useMemo} from "react";
+import {type PropsWithChildren, createContext, useContext, useEffect} from "react";
 import {useSyncExternalStore} from "react";
 import {commands} from "~/workspace/workspace-manager";
 import {useModeState} from "./studio-state";
 
-type StudioRunekeeper = ReturnType<typeof createRunekeeper<"normal" | "command">>;
-type StudioRunekeeperState = ReturnType<StudioRunekeeper["getSnapshot"]>;
-
-type RunekeeperContextValue = {
-	runekeeper: StudioRunekeeper;
-	state: StudioRunekeeperState;
-};
+type RunekeeperContextValue = ReturnType<typeof createRunekeeper<"normal" | "command">>;
 
 const RunekeeperContext = createContext<RunekeeperContextValue | null>(null);
 
@@ -21,25 +15,29 @@ const RunekeeperContext = createContext<RunekeeperContextValue | null>(null);
  * Manages a single instance of Runekeeper and provides it through context
  * Also handles global keyboard event listeners and mode integration
  */
-export function RunekeeperContextManager({children}: PropsWithChildren) {
-	const runekeeper = useMemo(() => createRunekeeper(["normal", "command"]), []);
+export function RunekeeperProvider({children}: PropsWithChildren) {
 	const modeStore = useModeState();
+	const runekeeper = useSyncExternalStore(
+		(callback) => {
+			// Create a single instance of Runekeeper
+			const instance = createRunekeeper(["normal", "command"]);
+			const subscription = instance.actor.subscribe(callback);
 
-	// Track Runekeeper state changes
-	const state = useSyncExternalStore((callback) => {
-		const subscription = runekeeper.actor.subscribe(callback);
-		return () => subscription.unsubscribe();
-	}, runekeeper.getSnapshot);
+			// Setup global keyboard event listener
+			const handler = (event: KeyboardEvent) => {
+				instance.handleKeyPress(event, modeStore.state.value);
+			};
+			document.addEventListener("keydown", handler);
 
-	// Setup global keyboard event listener
-	useEffect(() => {
-		const handler = (event: KeyboardEvent) => {
-			runekeeper.handleKeyPress(event, modeStore.state.value);
-		};
-
-		document.addEventListener("keydown", handler);
-		return () => document.removeEventListener("keydown", handler);
-	}, [runekeeper, modeStore.state.value]);
+			// Cleanup function
+			return () => {
+				subscription.unsubscribe();
+				document.removeEventListener("keydown", handler);
+			};
+		},
+		// Get snapshot function
+		() => createRunekeeper(["normal", "command"]),
+	);
 
 	// Setup default key mappings
 	useEffect(() => {
@@ -68,19 +66,17 @@ export function RunekeeperContextManager({children}: PropsWithChildren) {
 		});
 	}, [modeStore.send, runekeeper]);
 
-	return (
-		<RunekeeperContext.Provider value={{runekeeper, state}}>{children}</RunekeeperContext.Provider>
-	);
+	return <RunekeeperContext.Provider value={runekeeper}>{children}</RunekeeperContext.Provider>;
 }
 
 /**
  * Hook to access Runekeeper instance and state
- * Must be used within a RunekeeperContextManager
+ * Must be used within a RunekeeperProvider
  */
 export function useRunekeeper() {
 	const context = useContext(RunekeeperContext);
 	if (!context) {
-		throw new Error("useRunekeeper must be used within a RunekeeperContextManager");
+		throw new Error("useRunekeeper must be used within a RunekeeperProvider");
 	}
 	return context;
 }

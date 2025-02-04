@@ -1,64 +1,74 @@
 import type {z} from "zod";
 
-export type CommandHandler<T extends z.ZodType> = (args: z.infer<T>) => Promise<void> | void;
+export type CommandHandler<T extends z.ZodType, TReturn = void> = (args: {input: z.output<T>}) =>
+	| Promise<TReturn>
+	| TReturn;
 
-export type InferCommandInput<T> = T extends Command<infer S> ? z.infer<S> : never;
+export type InferCommandInput<T> = T extends Command<infer S, z.ZodType> ? z.infer<S> : never;
+export type InferCommandReturn<T> = T extends Command<z.ZodType, infer R> ? R : never;
 
-export interface Command<TSchema extends z.ZodType> {
+export interface Command<TSchema extends z.ZodType, TReturn = void> {
 	description: string;
-	input: TSchema;
-	execute: (args: z.output<TSchema>) => void;
+	meta?: {
+		icon: string;
+		group?: string;
+		hidden?: boolean;
+	};
+	input: () => Promise<TSchema> | TSchema;
+	execute: CommandHandler<TSchema, TReturn>;
 }
 
-export function defineCommand<TSchema extends z.ZodType>({
-	description,
-	input,
-	execute,
-}: Command<TSchema>) {
-	return {description, input, execute};
-}
-
-export function createSpellbook<TCommands extends Record<string, Command<z.ZodTypeAny>>>(
+function createSpellbook<TCommands extends Record<string, Command<z.ZodType, any>>>(
 	commands: TCommands,
 ) {
 	return {
 		commands,
-		execute: <TKey extends keyof TCommands>(
+		execute: async <TKey extends keyof TCommands>(
 			key: TKey,
-			args?: z.input<TCommands[TKey]["input"]>,
-		) => {
+			args?: z.input<Awaited<ReturnType<TCommands[TKey]["input"]>>>,
+		): Promise<ReturnType<TCommands[TKey]["execute"]>> => {
 			const command = commands[key];
 			if (!command) {
 				throw new Error(`Command not found: ${key as string}`);
 			}
-			const parsed = command.input.safeParse(args);
+
+			const input = await command.input();
+
+			const parsed = input.safeParse(args);
 			if (!parsed.success) {
-				throw new Error("Invalid arguments");
+				throw parsed.error;
 			}
-			command.execute(parsed.data);
+			return command.execute({input: parsed.data});
 		},
 	};
 }
 
-export class Spellbook<TCommands extends Record<string, Command<z.ZodTypeAny>>> {
-	#commands: TCommands;
+export type SpellbookType<TCommands extends Record<string, Command<z.ZodType, any>>> = ReturnType<
+	typeof createSpellbook<TCommands>
+>;
+
+export class Spellbook<TCommands extends Record<string, Command<z.ZodType, any>>> {
+	private commands: TCommands;
 
 	static create() {
-		return new Spellbook<Record<never, Command<z.ZodTypeAny>>>();
+		return new Spellbook<Record<never, Command<z.ZodType, any>>>();
 	}
 
 	constructor(commands: TCommands = {} as TCommands) {
-		this.#commands = commands;
+		this.commands = commands;
 	}
 
-	command<TKey extends string, TSchema extends z.ZodType>(key: TKey, command: Command<TSchema>) {
-		return new Spellbook<TCommands & Record<TKey, Command<TSchema>>>({
-			...this.#commands,
+	command<TKey extends string, TSchema extends z.ZodType, TReturn>(
+		key: TKey,
+		command: Command<TSchema, TReturn>,
+	) {
+		return new Spellbook<TCommands & Record<TKey, Command<TSchema, TReturn>>>({
+			...this.commands,
 			[key]: command,
 		});
 	}
 
 	build() {
-		return createSpellbook(this.#commands);
+		return createSpellbook(this.commands);
 	}
 }
