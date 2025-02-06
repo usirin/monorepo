@@ -3,10 +3,12 @@
 import {createRunekeeper} from "@umut/runekeeper";
 import {type PropsWithChildren, createContext, useContext, useEffect, useMemo} from "react";
 import {useSyncExternalStore} from "react";
-import {commands} from "~/workspace/workspace-manager";
 import {useModeState} from "./studio-state";
 
-type StudioRunekeeper = ReturnType<typeof createRunekeeper<"normal" | "command">>;
+const MODE_KEYS = ["normal", "command"] as const;
+type ModeKey = (typeof MODE_KEYS)[number];
+
+type StudioRunekeeper = ReturnType<typeof createRunekeeper<ModeKey>>;
 type StudioRunekeeperState = ReturnType<StudioRunekeeper["getSnapshot"]>;
 
 type RunekeeperContextValue = {
@@ -22,7 +24,7 @@ const RunekeeperContext = createContext<RunekeeperContextValue | null>(null);
  * Also handles global keyboard event listeners and mode integration
  */
 export function RunekeeperContextManager({children}: PropsWithChildren) {
-	const runekeeper = useMemo(() => createRunekeeper(["normal", "command"]), []);
+	const runekeeper = useMemo(() => createRunekeeper<ModeKey>([...MODE_KEYS]), []);
 	const modeStore = useModeState();
 
 	// Track Runekeeper state changes
@@ -41,36 +43,18 @@ export function RunekeeperContextManager({children}: PropsWithChildren) {
 		return () => document.removeEventListener("keydown", handler);
 	}, [runekeeper, modeStore.state.value]);
 
-	// Setup default key mappings
-	useEffect(() => {
-		const {map} = runekeeper;
-
-		map("normal", "<c-p>", () => {
-			modeStore.send({type: "COMMAND"});
-		});
-
-		map("command", "<c-p>", () => {
-			console.log("Exiting command mode");
-			modeStore.send({type: "ESC"});
-		});
-
-		map("normal", "-", () => {
-			console.log("Splitting horizontally");
-			commands.split.execute({orientation: "horizontal"});
-		});
-
-		map("normal", "|", () => {
-			commands.split.execute({orientation: "vertical"});
-		});
-
-		map("normal", "ZZ", () => {
-			commands.remove.execute({});
-		});
-	}, [modeStore.send, runekeeper]);
-
 	return (
 		<RunekeeperContext.Provider value={{runekeeper, state}}>{children}</RunekeeperContext.Provider>
 	);
+}
+
+export function useKeymap(mode: ModeKey, sequence: string, command: () => void) {
+	const {runekeeper} = useRunekeeper();
+
+	useEffect(() => {
+		runekeeper.map(mode, sequence, command);
+		return () => runekeeper.unmap(mode, sequence);
+	}, [runekeeper, mode, sequence, command]);
 }
 
 /**

@@ -21,21 +21,25 @@ export interface WorkspaceContextType {
 		layout: Tree;
 		focused: StackPath;
 	};
-}
-export interface Command<TName extends string, TSchema extends z.ZodType> {
-	name: TName;
-	description: string;
-	parameters: TSchema;
-	execute: (args: z.infer<TSchema>) => void;
+	actions: {
+		setFocused: (path: StackPath) => void;
+	};
 }
 
 export const useWorkspaceStore = create<WorkspaceContextType>()(
 	devtools(
 		persist(
-			immer(() => ({
+			immer((set) => ({
 				workspace: {
 					layout: createTree(createStack("vertical", [createWindow("time")])),
 					focused: [0],
+				},
+				actions: {
+					setFocused: (path) => {
+						set((state) => {
+							state.workspace.focused = path;
+						});
+					},
 				},
 			})),
 			{

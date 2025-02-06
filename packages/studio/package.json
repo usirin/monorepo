@@ -1,0 +1,17 @@
+{
+  "name": "@umut/studio",
+  "module": "index.ts",
+	"types": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+	"dependencies": {
+		"@umut/layout-tree": "workspace:*",
+		"@umut/forge": "workspace:*",
+		"immer": "^10.1.0"
+	},
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	}
+}

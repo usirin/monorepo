@@ -3,11 +3,11 @@
  *
  * @example
  * type UserEntity = Entity<'user'>;
- * // Result: { tag: 'user', id: 'user:x7f2k...' }
+ * // Result: { tag: 'user', id: 'user_x7f2k...' }
  */
 export type Entity<T extends string> = {
 	tag: T;
-	id: `${T}:${string}`;
+	id: `${T}_${string}`;
 };
 
 /**
@@ -16,7 +16,7 @@ export type Entity<T extends string> = {
  * @example
  * type UserEntity = Entity<'user'>;
  * type UserRef = Ref<UserEntity>;
- * // Result: 'user:x7f2k...'
+ * // Result: 'user_x7f2k...'
  */
 export type Ref<T extends Entity<string>> = T["id"];
 
@@ -26,11 +26,11 @@ export type Ref<T extends Entity<string>> = T["id"];
  * @example
  * ```ts
  * const userId = id('user');
- * // Result: 'user:x7f2k...'
+ * // Result: 'user_x7f2k...'
  * ```
  */
-export const id = <T extends string>(prefix: T): `${T}:${string}` =>
-	`${prefix}:${Math.random().toString(36).substring(2, 15)}`;
+export const id = <T extends string>(prefix: T): `${T}_${string}` =>
+	`${prefix}_${Math.random().toString(36).substring(2, 15)}`;
 
 /**
  * Creates a basic entity with a tag and generated ID
@@ -38,7 +38,7 @@ export const id = <T extends string>(prefix: T): `${T}:${string}` =>
  * @example
  * ```ts
  * const user = entity('user');
- * // Result: { tag: 'user', id: 'user:x7f2k...' }
+ * // Result: { tag: 'user', id: 'user_x7f2k...' }
  * ```
  */
 export const entity = <T extends string>(tag: T): Entity<T> => ({
@@ -62,16 +62,15 @@ export const entity = <T extends string>(tag: T): Entity<T> => ({
  * const user = createUser('John', 30);
  * // Result: {
  *   tag: 'user',
- *   id: 'user:x7f2k...',
+ *   id: 'user_x7f2k...',
  *   name: 'John',
  *   age: 30
  * }
  * ```
  */
 export const factory =
-	// biome-ignore lint/suspicious/noExplicitAny: we need any here so we can infer
-		<T extends string, U, A extends any[]>(tag: T, _factory: (...args: A) => U) =>
-		(...args: A): Entity<T> & U => ({
-			...entity(tag),
-			..._factory(...args),
-		});
+	<T extends string, U, A extends any[]>(tag: T, _factory: (...args: A) => U) =>
+	(...args: A): Entity<T> & U => ({
+		...entity(tag),
+		..._factory(...args),
+	});

@@ -1,18 +1,27 @@
 import type {StackPath, Window} from "@umut/layout-tree";
+import {getActiveWorkspace} from "@umut/studio";
+import {MemoryRouter, Route, Routes} from "react-router";
+import {spellbook, useStudioManager} from "~/studio/studio-manager";
 import {type WidgetID, renderWidget} from "~/studio/widget";
 import {PanelHeader, PanelLayout} from "./panel-layout";
-import {commands, useWorkspaceStore} from "./workspace-manager";
+import {useActiveWorkspace, useRegistry} from "./workspace-registry";
 
 export function WindowPanel({window, path}: {window: Window; path: StackPath}) {
-	const {focused} = useWorkspaceStore((state) => state.workspace);
+	const studio = useStudioManager((studio) => studio.state);
+	console.log(studio);
+	const workspace = getActiveWorkspace(studio);
 
 	return (
 		<PanelLayout
-			onClick={() => commands.focus.execute({path})}
-			isSelected={focused.join(":") === path.join(":")}
+			onClick={() => spellbook.execute("window:focus", {path})}
+			isSelected={workspace.focused.join(":") === path.join(":")}
 			header={<PanelHeader>widget://{window.key}</PanelHeader>}
 		>
-			{renderWidget({id: window.key as WidgetID})}
+			<MemoryRouter>
+				<Routes>
+					<Route path="/" element={renderWidget({id: window.key as WidgetID})} />
+				</Routes>
+			</MemoryRouter>
 		</PanelLayout>
 	);
 }

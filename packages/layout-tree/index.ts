@@ -437,3 +437,33 @@ const isHorizontal = (direction: Direction) => direction === "left" || direction
  */
 const orentationFromDirection = (direction: Direction): Orientation =>
 	isHorizontal(direction) ? "horizontal" : "vertical";
+
+/**
+ * Finds the path to a window in the tree
+ * @param tree - The layout tree
+ * @param window - The window to find
+ * @returns The path to the window or null if not found
+ */
+export function findWindowPath(tree: Tree, window: Window): StackPath | null {
+	function findInStack(stack: Stack, path: StackPath = []): StackPath | null {
+		for (let i = 0; i < stack.children.length; i++) {
+			const child = stack.children[i];
+			const childPath = [...path, i];
+
+			if (child.tag === "window" && child.key === window.key) {
+				return childPath;
+			}
+
+			if (child.tag === "stack") {
+				const result = findInStack(child, childPath);
+				if (result) {
+					return result;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	return findInStack(tree.root);
+}
