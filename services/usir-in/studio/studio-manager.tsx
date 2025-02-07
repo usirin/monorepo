@@ -49,10 +49,10 @@ export const spellbook = Spellbook.create()
 	})
 	.command("workspace:remove", {
 		description: "Remove the active workspace",
-		input: () => z.void(),
-		execute: async () => {
+		input: () => z.object({id: z.string()}),
+		execute: async ({input}) => {
 			useStudioManager.setState((studio) => ({
-				state: removeWorkspace(studio.state, studio.state.activeWorkspace),
+				state: removeWorkspace(studio.state, input.id as `workspace_${string}`),
 			}));
 		},
 	})

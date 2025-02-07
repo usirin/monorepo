@@ -33,8 +33,8 @@ export function focusWindow(workspace: Workspace, path: Layout.StackPath): Works
 /**
  * Splits a window in the workspace
  * @param workspace - The workspace to update
- * @param path - Path to the window to split. If not provided, uses focused window
  * @param orientation - The split orientation
+ * @param path - Path to the window to split. If not provided, uses focused window
  * @returns Updated workspace
  */
 export function splitWindow(
@@ -43,7 +43,14 @@ export function splitWindow(
 	path?: Layout.StackPath,
 ): Workspace {
 	return produce(workspace, (draft) => {
-		draft.layout = Layout.split(draft.layout, path ?? draft.focused, orientation);
+		const targetPath = path ?? draft.focused;
+		draft.layout = Layout.split(draft.layout, targetPath, orientation);
+
+		// After split, check if the target path now points to a stack
+		const node = Layout.getAt(draft.layout.root, targetPath);
+		if (node?.tag === "stack") {
+			draft.focused = [...targetPath, 0];
+		}
 	});
 }
 

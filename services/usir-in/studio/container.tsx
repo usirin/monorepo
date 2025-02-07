@@ -18,8 +18,8 @@ export function StudioContainer() {
 		<Theme
 			appearance="dark"
 			accentColor="tomato"
+			grayColor="slate"
 			radius="small"
-			scaling="90%"
 			style={{height: "100%"}}
 		>
 			<RunekeeperContextManager>
