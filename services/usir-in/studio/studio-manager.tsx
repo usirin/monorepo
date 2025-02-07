@@ -1,14 +1,12 @@
-import {type Direction, type Orientation, findSibling, findWindowPath} from "@umut/layout-tree";
+import {findSibling, findWindowPath} from "@umut/layout-tree";
 import {Spellbook} from "@umut/spellbook";
 import {
 	type Studio,
-	type Workspace,
 	addWorkspace,
 	createStudio,
-	createWorkspace,
 	focusWindow,
 	getActiveWorkspace,
-	getWindowAt,
+	getWorkspace,
 	moveWindowAfter,
 	moveWindowBefore,
 	removeWindow,
@@ -28,7 +26,7 @@ interface StudioState {
 export const useStudioManager = create<StudioState>()(
 	devtools(
 		persist(
-			immer((set) => ({
+			immer(() => ({
 				state: createStudio(),
 			})),
 			{
@@ -77,7 +75,6 @@ export const spellbook = Spellbook.create()
 				if (!workspace) return studio;
 
 				studio.state.workspaces[workspace.id] = splitWindow(workspace, "horizontal");
-				return studio;
 			});
 		},
 	})
@@ -86,11 +83,10 @@ export const spellbook = Spellbook.create()
 		input: () => z.void(),
 		execute: async () => {
 			useStudioManager.setState((studio) => {
-				const workspace = getActiveWorkspace(studio.state);
+				const workspace = getWorkspace(studio.state, studio.state.activeWorkspace);
 				if (!workspace) return studio;
 
 				studio.state.workspaces[workspace.id] = splitWindow(workspace, "vertical");
-				return studio;
 			});
 		},
 	})
@@ -282,9 +278,11 @@ export const spellbook = Spellbook.create()
 		description: "Focus the window",
 		input: () => z.object({path: z.array(z.number())}),
 		execute: async ({input}) => {
-			useStudioManager.setState((studio) => ({
-				state: focusWindow(getActiveWorkspace(studio.state), input.path),
-			}));
+			useStudioManager.setState((studio) => {
+				const workspace = getActiveWorkspace(studio.state);
+				if (!workspace) return studio;
+				studio.state.workspaces[workspace.id] = focusWindow(workspace, input.path);
+			});
 		},
 	})
 	.build();

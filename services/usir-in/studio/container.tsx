@@ -26,7 +26,9 @@ export function StudioContainer() {
 				<KeystrokesManager>
 					<Flex gap="1" p="1" direction="column" height="100%">
 						<Menubar />
-						{activeWorkspace && <WorkspaceContainer workspace={activeWorkspace} />}
+						{activeWorkspace && (
+							<WorkspaceContainer key={activeWorkspace.id} workspace={activeWorkspace} />
+						)}
 						<CommandPanel commands={commands} />
 						<Statusbar />
 					</Flex>

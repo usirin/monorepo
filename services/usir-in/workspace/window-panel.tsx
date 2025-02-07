@@ -4,12 +4,9 @@ import {MemoryRouter, Route, Routes} from "react-router";
 import {spellbook, useStudioManager} from "~/studio/studio-manager";
 import {type WidgetID, renderWidget} from "~/studio/widget";
 import {PanelHeader, PanelLayout} from "./panel-layout";
-import {useActiveWorkspace, useRegistry} from "./workspace-registry";
 
 export function WindowPanel({window, path}: {window: Window; path: StackPath}) {
-	const studio = useStudioManager((studio) => studio.state);
-	console.log(studio);
-	const workspace = getActiveWorkspace(studio);
+	const workspace = useStudioManager((studio) => getActiveWorkspace(studio.state));
 
 	return (
 		<PanelLayout
