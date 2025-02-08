@@ -1,6 +1,6 @@
 "use client";
 
-import {Box, Dialog, Flex, Inset, Separator, Text} from "@radix-ui/themes";
+import {Box, Dialog, Flex, Inset, Separator, Text, VisuallyHidden} from "@radix-ui/themes";
 import clsx from "clsx";
 import {Command as CommandPrimitive} from "cmdk";
 import * as React from "react";
@@ -19,6 +19,9 @@ Command.displayName = CommandPrimitive.displayName;
 const CommandDialog = ({children, ...props}: Dialog.RootProps) => {
 	return (
 		<Dialog.Root {...props}>
+			<VisuallyHidden>
+				<Dialog.Title>Command Palette</Dialog.Title>
+			</VisuallyHidden>
 			<CommandContent>{children}</CommandContent>
 		</Dialog.Root>
 	);
@@ -37,14 +40,14 @@ const CommandInput = React.forwardRef<
 	React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({className, ...props}, ref) => (
 	<Inset side="x">
-		<Flex align="center" direction="column" gap="2" overflow="visible">
+		<Flex align="center" direction="column" px="2" pb="2">
 			<CommandPrimitive.Input
 				ref={ref}
 				className={clsx(styles.CommandInput, className)}
 				{...props}
 			/>
-			<CommandSeparator style={{width: "100%"}} />
 		</Flex>
+		<CommandSeparator style={{width: "100%"}} />
 	</Inset>
 ));
 

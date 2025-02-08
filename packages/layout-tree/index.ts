@@ -428,7 +428,8 @@ const getSiblingIndex = (index: number, direction: Direction) =>
  * @param direction - Direction to check
  * @returns boolean indicating if direction is horizontal
  */
-const isHorizontal = (direction: Direction) => direction === "left" || direction === "right";
+const isHorizontalDirection = (direction: Direction) =>
+	direction === "left" || direction === "right";
 
 /**
  * Converts a direction to its corresponding orientation
@@ -436,7 +437,7 @@ const isHorizontal = (direction: Direction) => direction === "left" || direction
  * @returns Corresponding Orientation
  */
 const orentationFromDirection = (direction: Direction): Orientation =>
-	isHorizontal(direction) ? "horizontal" : "vertical";
+	isHorizontalDirection(direction) ? "vertical" : "horizontal";
 
 /**
  * Finds the path to a window in the tree
@@ -450,7 +451,7 @@ export function findWindowPath(tree: Tree, window: Window): StackPath | null {
 			const child = stack.children[i];
 			const childPath = [...path, i];
 
-			if (child.tag === "window" && child.key === window.key) {
+			if (child.tag === "window" && child.id === window.id) {
 				return childPath;
 			}
 

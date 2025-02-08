@@ -1,8 +1,9 @@
 "use client";
 
-import {Code, Flex, Text} from "@radix-ui/themes";
+import {Code, Flex, ScrollArea, Text} from "@radix-ui/themes";
 import type {Command as SpellbookCommand} from "@umut/spellbook";
-import {isValidElement, useCallback, useState} from "react";
+import {type ReactNode, isValidElement, useCallback, useState} from "react";
+import {spellbook} from "~/studio/studio-manager";
 import {
 	Command,
 	CommandEmpty,
@@ -11,18 +12,37 @@ import {
 	CommandItem,
 	CommandList,
 } from "./Command";
-import {useSpellbook} from "./SpellbookContext";
 
-export function CommandPalette() {
-	const {spellbook, navigation} = useSpellbook();
+function useNavigationApi() {
+	const [stack, setStack] = useState<ReactNode[]>([]);
+
+	const push = useCallback((node: ReactNode) => {
+		setStack((stack) => [...stack, node]);
+	}, []);
+
+	const pop = useCallback(() => {
+		setStack((paths) => paths.slice(0, -1));
+	}, []);
+
+	const peek = useCallback(() => {
+		return stack[stack.length - 1];
+	}, [stack]);
+
+	return {paths: stack, push, pop, peek};
+}
+
+export function CommandPalette({onSelect}: {onSelect?: (key: string) => void}) {
 	const [value, setValue] = useState("");
 	const [search, setSearch] = useState("");
+	const navigation = useNavigationApi();
 
 	const handleSelect = async (key: string) => {
 		const result = await spellbook.execute(key as keyof typeof spellbook.commands);
 		if (isValidElement(result)) {
 			navigation.push(result);
 		}
+
+		onSelect?.(key);
 
 		setValue("");
 		setSearch("");
@@ -57,12 +77,10 @@ export function CommandPalette() {
 }
 
 function RootCommand({onSelect}: {onSelect: (key: string) => void}) {
-	const {spellbook} = useSpellbook();
 	const groupedCommands = Object.entries(spellbook.commands).reduce<
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 		Record<string, Array<[string, SpellbookCommand<any, any>]>>
 	>((acc, [key, command]) => {
-		const group = command.meta?.group ?? "Other";
+		const group = key.split(":")[0];
 		if (!acc[group]) {
 			acc[group] = [];
 		}
@@ -74,19 +92,22 @@ function RootCommand({onSelect}: {onSelect: (key: string) => void}) {
 		<>
 			{Object.entries(groupedCommands).map(([group, commands]) => (
 				<CommandGroup key={group} heading={group}>
-					{commands.map(([key, command]) => (
-						<CommandItem key={key} value={key} onSelect={() => onSelect(key)}>
-							<Flex align="center" gap="2">
-								{command.meta?.icon && <Text size="2">{command.meta.icon}</Text>}
-								<Text size="1">{command.description}</Text>
-							</Flex>
-							<Flex align="center" gap="2">
-								<Code size="1" variant="soft" style={{opacity: 0.5}}>
-									{key}
-								</Code>
-							</Flex>
-						</CommandItem>
-					))}
+					{commands.map(
+						([key, command]) =>
+							!command.meta?.hidden && (
+								<CommandItem key={key} value={key} onSelect={() => onSelect(key)}>
+									<Flex align="center" gap="2">
+										{command.meta?.icon && <Text size="2">{command.meta.icon}</Text>}
+										<Text size="1">{command.description}</Text>
+									</Flex>
+									<Flex align="center" gap="2">
+										<Code size="1" variant="soft" style={{opacity: 0.5}}>
+											{key}
+										</Code>
+									</Flex>
+								</CommandItem>
+							),
+					)}
 				</CommandGroup>
 			))}
 		</>

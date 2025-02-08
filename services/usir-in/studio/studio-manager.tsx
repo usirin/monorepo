@@ -49,15 +49,19 @@ export const spellbook = Spellbook.create()
 	})
 	.command("workspace:remove", {
 		description: "Remove the active workspace",
-		input: () => z.object({id: z.string()}),
+		input: () => z.object({id: z.string()}).optional(),
 		execute: async ({input}) => {
 			useStudioManager.setState((studio) => ({
-				state: removeWorkspace(studio.state, input.id as `workspace_${string}`),
+				state: removeWorkspace(
+					studio.state,
+					(input?.id as `workspace_${string}`) ?? studio.state.activeWorkspace,
+				),
 			}));
 		},
 	})
 	.command("workspace:set-active", {
 		description: "Set the active workspace",
+		meta: {hidden: true},
 		input: () => z.object({id: z.string()}),
 		execute: async ({input}) => {
 			useStudioManager.setState((studio) => ({
@@ -66,7 +70,7 @@ export const spellbook = Spellbook.create()
 		},
 	})
 	// Split Commands
-	.command("workspace:split-horizontal", {
+	.command("window:split-horizontal", {
 		description: "Split the focused window horizontally",
 		input: () => z.void(),
 		execute: async () => {
@@ -78,7 +82,7 @@ export const spellbook = Spellbook.create()
 			});
 		},
 	})
-	.command("workspace:split-vertical", {
+	.command("window:split-vertical", {
 		description: "Split the focused window vertically",
 		input: () => z.void(),
 		execute: async () => {
@@ -90,101 +94,8 @@ export const spellbook = Spellbook.create()
 			});
 		},
 	})
-	// Movement Commands
-	.command("workspace:move-left", {
-		description: "Move the focused window to the left",
-		input: () => z.void(),
-		execute: async () => {
-			useStudioManager.setState((studio) => {
-				const workspace = getActiveWorkspace(studio.state);
-				if (!workspace) return studio;
-
-				const sibling = findSibling(workspace.layout, workspace.focused, "left");
-				if (!sibling) return studio;
-
-				const siblingPath = findWindowPath(workspace.layout, sibling);
-				if (!siblingPath) return studio;
-
-				studio.state.workspaces[workspace.id] = moveWindowBefore(
-					workspace,
-					workspace.focused,
-					siblingPath,
-				);
-				return studio;
-			});
-		},
-	})
-	.command("workspace:move-right", {
-		description: "Move the focused window to the right",
-		input: () => z.void(),
-		execute: async () => {
-			useStudioManager.setState((studio) => {
-				const workspace = getActiveWorkspace(studio.state);
-				if (!workspace) return studio;
-
-				const sibling = findSibling(workspace.layout, workspace.focused, "right");
-				if (!sibling) return studio;
-
-				const siblingPath = findWindowPath(workspace.layout, sibling);
-				if (!siblingPath) return studio;
-
-				studio.state.workspaces[workspace.id] = moveWindowAfter(
-					workspace,
-					workspace.focused,
-					siblingPath,
-				);
-				return studio;
-			});
-		},
-	})
-	.command("workspace:move-up", {
-		description: "Move the focused window up",
-		input: () => z.void(),
-		execute: async () => {
-			useStudioManager.setState((state) => {
-				const workspace = getActiveWorkspace(state.state);
-				if (!workspace) return state;
-
-				const sibling = findSibling(workspace.layout, workspace.focused, "up");
-				if (!sibling) return state;
-
-				const siblingPath = findWindowPath(workspace.layout, sibling);
-				if (!siblingPath) return state;
-
-				state.state.workspaces[workspace.id] = moveWindowBefore(
-					workspace,
-					workspace.focused,
-					siblingPath,
-				);
-				return state;
-			});
-		},
-	})
-	.command("workspace:move-down", {
-		description: "Move the focused window down",
-		input: () => z.void(),
-		execute: async () => {
-			useStudioManager.setState((studio) => {
-				const workspace = getActiveWorkspace(studio.state);
-				if (!workspace) return studio;
-
-				const sibling = findSibling(workspace.layout, workspace.focused, "down");
-				if (!sibling) return studio;
-
-				const siblingPath = findWindowPath(workspace.layout, sibling);
-				if (!siblingPath) return studio;
-
-				studio.state.workspaces[workspace.id] = moveWindowAfter(
-					workspace,
-					workspace.focused,
-					siblingPath,
-				);
-				return studio;
-			});
-		},
-	})
 	// Window Management Commands
-	.command("workspace:close-window", {
+	.command("window:close", {
 		description: "Close the focused window",
 		input: () => z.void(),
 		execute: async () => {
@@ -198,7 +109,7 @@ export const spellbook = Spellbook.create()
 		},
 	})
 	// Focus Commands
-	.command("workspace:focus-left", {
+	.command("window:focus-left", {
 		description: "Focus the window to the left",
 		input: () => z.void(),
 		execute: async () => {
@@ -217,7 +128,7 @@ export const spellbook = Spellbook.create()
 			});
 		},
 	})
-	.command("workspace:focus-right", {
+	.command("window:focus-right", {
 		description: "Focus the window to the right",
 		input: () => z.void(),
 		execute: async () => {
@@ -236,7 +147,7 @@ export const spellbook = Spellbook.create()
 			});
 		},
 	})
-	.command("workspace:focus-up", {
+	.command("window:focus-up", {
 		description: "Focus the window above",
 		input: () => z.void(),
 		execute: async () => {
@@ -255,7 +166,7 @@ export const spellbook = Spellbook.create()
 			});
 		},
 	})
-	.command("workspace:focus-down", {
+	.command("window:focus-down", {
 		description: "Focus the window below",
 		input: () => z.void(),
 		execute: async () => {
@@ -276,6 +187,7 @@ export const spellbook = Spellbook.create()
 	})
 	.command("window:focus", {
 		description: "Focus the window",
+		meta: {hidden: true},
 		input: () => z.object({path: z.array(z.number())}),
 		execute: async ({input}) => {
 			useStudioManager.setState((studio) => {

@@ -21,7 +21,7 @@ function LeftPanel() {
 	const workspace = useStudioManager((studio) => getActiveWorkspace(studio.state));
 
 	return (
-		<PanelLayout isSelected header={<PanelHeader>Left Panel</PanelHeader>}>
+		<PanelLayout variant="classic" isSelected header={null}>
 			<Text size="2">focused: {workspace.focused?.join(":")}</Text>
 		</PanelLayout>
 	);
@@ -41,21 +41,38 @@ export function WorkspaceContainer({workspace}: {workspace: Workspace}) {
 
 	useEffect(() => {
 		runekeeper.map("normal", "-", () => {
-			spellbook.execute("workspace:split-horizontal");
+			spellbook.execute("window:split-horizontal");
 		});
 
 		runekeeper.map("normal", "|", () => {
-			spellbook.execute("workspace:split-vertical");
+			spellbook.execute("window:split-vertical");
+		});
+
+		runekeeper.map("normal", "<c-j>", () => {
+			spellbook.execute("window:focus-down");
+		});
+
+		runekeeper.map("normal", "<c-k>", () => {
+			spellbook.execute("window:focus-up");
+		});
+
+		runekeeper.map("normal", "<c-l>", () => {
+			spellbook.execute("window:focus-right");
+		});
+
+		runekeeper.map("normal", "<c-h>", () => {
+			spellbook.execute("window:focus-left");
 		});
 
 		return () => {
 			runekeeper.unmap("normal", "-");
 			runekeeper.unmap("normal", "|");
+			runekeeper.unmap("normal", "q");
 		};
 	}, [runekeeper]);
 
 	return (
-		<PanelGroup autoSaveId="panel-group" direction="horizontal">
+		<PanelGroup autoSaveId={workspace.id} direction="horizontal">
 			<Panel
 				id="left-panel"
 				order={1}

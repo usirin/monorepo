@@ -10,7 +10,7 @@ export type InferCommandReturn<T> = T extends Command<z.ZodType, infer R> ? R : 
 export interface Command<TSchema extends z.ZodType, TReturn = void> {
 	description: string;
 	meta?: {
-		icon: string;
+		icon?: string;
 		group?: string;
 		hidden?: boolean;
 	};

@@ -7,7 +7,7 @@ export function Menubar() {
 	const studio = useStudioManager();
 
 	return (
-		<Card size="1" style={{flexShrink: 0, "--card-padding": "var(--space-1)"}}>
+		<Card variant="ghost" size="1" style={{flexShrink: 0, "--card-padding": "var(--space-1)"}}>
 			<Flex gap="1" align="center" justify="end">
 				{Object.values(studio.state.workspaces).map((workspace, index) => (
 					<Tooltip
