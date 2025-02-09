@@ -32,6 +32,7 @@ const modeMachine = setup({
 
 const useModeMachine = create(xstate(modeMachine));
 
+// TODO: move this to studio-manager state
 export const useModeState = () => {
 	const {state, send, actor} = useModeMachine();
 	if (!state || !send || !actor) {

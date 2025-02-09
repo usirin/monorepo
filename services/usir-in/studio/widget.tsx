@@ -1,6 +1,7 @@
 import {FlowManager, useStore as useFlowStore} from "~/flow/manager";
 import {Counter, useStore as useCounterStore} from "./widgets/Counter";
 import {Scratch, useStore as useScratchStore} from "./widgets/Scratch";
+import {ThemePanel as ThemeSettings} from "./widgets/ThemeSettings";
 import {Time, useStore as useTimeStore} from "./widgets/Time";
 
 const widgets = {
@@ -9,6 +10,7 @@ const widgets = {
 		Component: () => <Counter />,
 	},
 	scratch: {useStore: useScratchStore, Component: () => <Scratch />},
+	"theme-settings": {useStore: useScratchStore, Component: () => <ThemeSettings />},
 	time: {useStore: useTimeStore, Component: () => <Time />},
 	flow: {useStore: useFlowStore, Component: () => <FlowManager />},
 };

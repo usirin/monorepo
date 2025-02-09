@@ -5,6 +5,7 @@ import {spellbook, useStudioManager} from "~/studio/studio-manager";
 import {type WidgetID, renderWidget} from "~/studio/widget";
 import {PanelHeader, PanelLayout} from "./panel-layout";
 
+// TODO: make this work with react-focus-rings
 export function WindowPanel({window, path}: {window: Window; path: StackPath}) {
 	const workspace = useStudioManager((studio) => getActiveWorkspace(studio.state));
 

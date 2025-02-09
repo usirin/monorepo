@@ -1,19 +1,15 @@
 "use client";
 
 import {Text} from "@radix-ui/themes";
-import {type Window, getAt} from "@umut/layout-tree";
 import {type Workspace, getActiveWorkspace} from "@umut/studio";
 import {useEffect} from "react";
 import {Panel} from "~/studio/panel";
 import {PanelGroup} from "~/studio/panel-group";
 import {ResizeHandle} from "~/studio/resize-handle";
-import {useKeymap, useRunekeeper} from "~/studio/runekeeper-manager";
+import {useRunekeeper} from "~/studio/runekeeper-manager";
 import {spellbook, useStudioManager} from "~/studio/studio-manager";
-// import type {WidgetID} from "~/studio/widget";
-import {PanelHeader, PanelLayout} from "./panel-layout";
+import {PanelLayout} from "./panel-layout";
 import {PanelStack} from "./stack-panel";
-// import {WidgetDebugger} from "./widget-debugger";
-import {useActiveWorkspace, useRegistry} from "./workspace-registry";
 
 // we are going to allow this to be a custom component defined in the workspace store
 // this will allow us to have a custom left panel for each workspace
@@ -21,7 +17,7 @@ function LeftPanel() {
 	const workspace = useStudioManager((studio) => getActiveWorkspace(studio.state));
 
 	return (
-		<PanelLayout variant="classic" isSelected header={null}>
+		<PanelLayout variant="surface" isSelected header={null}>
 			<Text size="2">focused: {workspace.focused?.join(":")}</Text>
 		</PanelLayout>
 	);
@@ -29,7 +25,7 @@ function LeftPanel() {
 
 function RightPanel() {
 	return (
-		<PanelLayout isSelected header={<PanelHeader>Right Panel</PanelHeader>}>
+		<PanelLayout variant="surface" isSelected header={null}>
 			{/*<WidgetDebugger id={focused?.key as WidgetID} /> */}
 			<Text>Right Panel</Text>
 		</PanelLayout>

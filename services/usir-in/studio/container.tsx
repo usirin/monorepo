@@ -1,19 +1,17 @@
 "use client";
 
-import {Dialog, Flex, IconButton, Theme, VisuallyHidden} from "@radix-ui/themes";
+import {Dialog, Flex, Theme, VisuallyHidden} from "@radix-ui/themes";
 import {getActiveWorkspace} from "@umut/studio";
 import {useEffect} from "react";
 import {create} from "zustand";
 import {CommandPalette} from "~/spellbook/CommandPalette";
 import {WorkspaceContainer} from "~/workspace/container";
-import {commands} from "~/workspace/workspace-manager";
-import {CommandPanel} from "./command-panel";
-import {KeystrokesManager} from "./keystrokes-manager";
 import {Menubar} from "./menubar";
 import {RunekeeperContextManager, useRunekeeper} from "./runekeeper-manager";
 import {Statusbar} from "./statusbar";
-import {spellbook, useStudioManager} from "./studio-manager";
+import {useStudioManager} from "./studio-manager";
 
+// TODO: move this to studio-manager state
 const useSpellbookState = create<{open: boolean; setOpen: (open: boolean) => void}>()((set) => ({
 	open: false,
 	setOpen: (open) => set({open}),
@@ -58,16 +56,14 @@ export function StudioContainer() {
 			style={{height: "100%"}}
 		>
 			<RunekeeperContextManager>
-				<KeystrokesManager>
-					<Flex gap="1" p="1" direction="column" height="100%">
-						<Menubar />
-						{activeWorkspace && (
-							<WorkspaceContainer key={activeWorkspace.id} workspace={activeWorkspace} />
-						)}
-						<Spellbook />
-						<Statusbar />
-					</Flex>
-				</KeystrokesManager>
+				<Flex gap="1" p="1" direction="column" height="100%">
+					<Menubar />
+					{activeWorkspace && (
+						<WorkspaceContainer key={activeWorkspace.id} workspace={activeWorkspace} />
+					)}
+					<Spellbook />
+					<Statusbar />
+				</Flex>
 			</RunekeeperContextManager>
 		</Theme>
 	);
