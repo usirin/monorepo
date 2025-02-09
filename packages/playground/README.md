@@ -1,4 +1,4 @@
-# @umut/playground
+# @usirin/playground
 
 To install dependencies:
 

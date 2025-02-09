@@ -1,10 +1,10 @@
 {
-	"name": "@umut/layout-tree",
+	"name": "@usirin/layout-tree",
 	"version": "0.0.0",
 	"type": "module",
 	"module": "index.ts",
 	"dependencies": {
-		"@umut/forge": "workspace:*",
+		"@usirin/forge": "workspace:*",
 		"immer": "catalog:",
 		"lodash.get": "^4.4.2"
 	},

@@ -1,5 +1,5 @@
 {
-  "name": "@umut/otp",
+  "name": "@usirin/otp",
   "module": "index.ts",
   "type": "module",
   "devDependencies": {

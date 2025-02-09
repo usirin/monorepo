@@ -8,7 +8,7 @@ A type-safe plugin system for building extensible applications. Plugins can decl
 ### Plugin Definition
 ```typescript
 // Define plugin context
-declare module '@umut/codex' {
+declare module '@usirin/codex' {
   interface CodexContext {
     spellbook: {
       defineCommand: (name: string) => void

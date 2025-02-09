@@ -1,5 +1,5 @@
-import {findSibling, findWindowPath} from "@umut/layout-tree";
-import {Spellbook} from "@umut/spellbook";
+import {findSibling, findWindowPath} from "@usirin/layout-tree";
+import {Spellbook} from "@usirin/spellbook";
 import {
 	type Studio,
 	addWorkspace,
@@ -13,7 +13,7 @@ import {
 	removeWorkspace,
 	setActiveWorkspace,
 	splitWindow,
-} from "@umut/studio";
+} from "@usirin/studio";
 import {z} from "zod";
 import {create} from "zustand";
 import {createJSONStorage, devtools, persist} from "zustand/middleware";

@@ -1,4 +1,4 @@
-import {PluginService, definePlugin} from "@umut/codex";
+import {PluginService, definePlugin} from "@usirin/codex";
 import {Context, Effect, pipe} from "effect";
 
 // Define service interfaces

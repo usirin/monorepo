@@ -1,4 +1,4 @@
-import type {Stack, StackPath} from "@umut/layout-tree";
+import type {Stack, StackPath} from "@usirin/layout-tree";
 import {Fragment} from "react";
 import {match} from "ts-pattern";
 import {Panel} from "~/studio/panel";

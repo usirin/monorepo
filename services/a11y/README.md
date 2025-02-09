@@ -1,4 +1,4 @@
-# @umut/svc-a11y
+# @usirin/svc-a11y
 
 To install dependencies:
 

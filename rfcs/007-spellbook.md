@@ -26,7 +26,7 @@ A type-safe, composable command system that serves as the central entry point fo
 1. Command Definition
 ```typescript
 import { z } from 'zod'
-import { defineCommand, createSpellbook } from '@umut/spellbook'
+import { defineCommand, createSpellbook } from '@usirin/spellbook'
 
 const createWorkspace = defineCommand({
   description: 'Create a new workspace',

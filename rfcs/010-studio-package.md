@@ -1,7 +1,7 @@
 # RFC 010: Studio Package
 
 ## Summary
-Create `@umut/studio` as an umbrella package that provides a unified development environment by integrating existing packages (`@umut/runekeeper`, `@umut/layout-tree`) with new core functionality for workspace management, commands, and UI components.
+Create `@usirin/studio` as an umbrella package that provides a unified development environment by integrating existing packages (`@umut/runekeeper`, `@umut/layout-tree`) with new core functionality for workspace management, commands, and UI components.
 
 ## Background and Motivation
 
@@ -29,8 +29,8 @@ graph TD
     Studio --> Keybindings[Keybinding Manager]
     Studio --> UI[UI Components]
     
-    Workspace --> LayoutTree[@umut/layout-tree]
-    Keybindings --> Runekeeper[@umut/runekeeper]
+    Workspace --> LayoutTree[@usirin/layout-tree]
+    Keybindings --> Runekeeper[@usirin/runekeeper]
     
     Commands --> CommandPalette[Command Palette]
     Commands --> Keybindings
@@ -42,7 +42,7 @@ graph TD
 
 ### Package Structure
 ```
-@umut/studio
+@usirin/studio
 ├── core/
 │   ├── studio.ts         # Main Studio class & initialization
 │   ├── types.ts          # Core type definitions
@@ -179,17 +179,17 @@ interface PluginContext extends Studio {
 
 ### Step 1: Install Package
 ```bash
-npm install @umut/studio
+npm install @usirin/studio
 ```
 
 ### Step 2: Update Code
 ```typescript
 // Before
-import { RunekeeperManager } from '@umut/runekeeper'
+import { RunekeeperManager } from '@usirin/runekeeper'
 import { WorkspaceManager } from './workspace'
 
 // After
-import { createStudio } from '@umut/studio'
+import { createStudio } from '@usirin/studio'
 
 const studio = await createStudio({
   plugins: [myPlugin],

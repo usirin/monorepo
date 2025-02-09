@@ -1,5 +1,5 @@
 {
-  "name": "@umut/svc-a11y",
+  "name": "@usirin/svc-a11y",
   "module": "index.ts",
   "type": "module",
   "devDependencies": {

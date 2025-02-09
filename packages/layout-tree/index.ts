@@ -3,7 +3,7 @@
  * A tree-based layout management system that handles window splitting, moving, and organization
  */
 
-import {type Entity, factory} from "@umut/forge";
+import {type Entity, factory} from "@usirin/forge";
 import {produce} from "immer";
 import get from "lodash.get";
 

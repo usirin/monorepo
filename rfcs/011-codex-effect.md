@@ -1,7 +1,7 @@
 # RFC 011: Codex Effect Integration
 
 ## Summary
-Integrate Effect.ts into @umut/codex to leverage its built-in service pattern, error handling, and resource management capabilities.
+Integrate Effect.ts into @usirin/codex to leverage its built-in service pattern, error handling, and resource management capabilities.
 
 ## Background and Motivation
 

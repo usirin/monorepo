@@ -1,5 +1,5 @@
-import type {StackPath, Window} from "@umut/layout-tree";
-import {getActiveWorkspace} from "@umut/studio";
+import type {StackPath, Window} from "@usirin/layout-tree";
+import {getActiveWorkspace} from "@usirin/studio";
 import {MemoryRouter, Route, Routes} from "react-router";
 import {spellbook, useStudioManager} from "~/studio/studio-manager";
 import {type WidgetID, renderWidget} from "~/studio/widget";

@@ -1,7 +1,7 @@
 "use client";
 
 import {Dialog, Flex, Theme, VisuallyHidden} from "@radix-ui/themes";
-import {getActiveWorkspace} from "@umut/studio";
+import {getActiveWorkspace} from "@usirin/studio";
 import {useEffect} from "react";
 import {create} from "zustand";
 import {CommandPalette} from "~/spellbook/CommandPalette";

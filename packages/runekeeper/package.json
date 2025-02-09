@@ -1,5 +1,5 @@
 {
-	"name": "@umut/runekeeper",
+	"name": "@usirin/runekeeper",
 	"module": "index.ts",
 	"type": "module",
 	"dependencies": {
