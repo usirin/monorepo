@@ -1,6 +1,6 @@
 "use client";
 
-import {createRunekeeper} from "@umut/runekeeper";
+import {createRunekeeper} from "@usirin/runekeeper";
 import {type PropsWithChildren, createContext, useContext, useEffect, useMemo} from "react";
 import {useSyncExternalStore} from "react";
 import {useModeState} from "./studio-state";

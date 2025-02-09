@@ -1,4 +1,4 @@
-# @umut/forge
+# @usirin/forge
 
 A lightweight TypeScript utility for creating and managing typed entities with unique identifiers.
 
@@ -12,14 +12,14 @@ A lightweight TypeScript utility for creating and managing typed entities with u
 ## Installation
 
 ```bash
-npx jsr add @umut/forge
+npx jsr add @usirin/forge
 # or
-bunx jsr add @umut/forge
+bunx jsr add @usirin/forge
 ```
 
 Or with Deno:
 ```bash
-deno add @umut/forge
+deno add @usirin/forge
 ```
 
 ## Usage
@@ -27,7 +27,7 @@ deno add @umut/forge
 ### Basic Entity Creation
 
 ```typescript
-import { entity, type Entity } from '@umut/forge';
+import { entity, type Entity } from '@usirin/forge';
 
 // Create a basic entity
 const user = entity('user');
@@ -40,7 +40,7 @@ type UserEntity = Entity<'user'>;
 ### Using the Factory Pattern
 
 ```typescript
-import { factory } from '@umut/forge';
+import { factory } from '@usirin/forge';
 
 // Define a factory for creating users with additional properties
 const createUser = factory('user', (name: string, age: number) => ({
@@ -61,7 +61,7 @@ const user = createUser('John', 30);
 ### Working with References
 
 ```typescript
-import { type Ref } from '@umut/forge';
+import { type Ref } from '@usirin/forge';
 
 type UserEntity = Entity<'user'>;
 type UserRef = Ref<UserEntity>; // Type: 'user:string'

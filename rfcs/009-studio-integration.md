@@ -16,13 +16,13 @@ Currently, usir-in has a basic widget system and workspace management, but lacks
 ### Core Integration
 
 ```typescript
-import { definePlugin, createCodex } from '@umut/codex'
-import { createSpellbook, defineCommand } from '@umut/spellbook'
-import { createRunekeeper } from '@umut/runekeeper'
+import { definePlugin, createCodex } from '@usirin/codex'
+import { createSpellbook, defineCommand } from '@usirin/spellbook'
+import { createRunekeeper } from '@usirin/runekeeper'
 import { z } from 'zod'
 
 // Define plugin context types
-declare module '@umut/codex' {
+declare module '@usirin/codex' {
   interface CodexContext {
     spellbook: ReturnType<typeof createSpellbook>
     runekeeper: ReturnType<typeof createRunekeeper>
@@ -116,7 +116,7 @@ const runekeeperPlugin = definePlugin({
 ### Studio Container Updates
 
 ```typescript:services/usir-in/studio/container.tsx
-import { createCodex } from '@umut/codex'
+import { createCodex } from '@usirin/codex'
 import { useEffect } from 'react'
 
 export function StudioContainer() {

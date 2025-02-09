@@ -1,5 +1,5 @@
 {
-  "name": "@umut/playground",
+  "name": "@usirin/playground",
   "module": "index.ts",
   "type": "module",
   "devDependencies": {

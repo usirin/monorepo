@@ -1,4 +1,4 @@
-import {factory} from "@umut/forge";
+import {factory} from "@usirin/forge";
 import {produce} from "immer";
 import {type Workspace, createWorkspace} from "./workspace";
 

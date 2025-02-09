@@ -130,7 +130,7 @@ interface WidgetInstance<
 ## Widget Definition
 
 ```typescript
-import { defineWidget } from '@umut/shrine'
+import { defineWidget } from '@usirin/shrine'
 
 // Basic widget
 export const CounterWidget = defineWidget({
@@ -205,7 +205,7 @@ export const EditorWidget = defineWidget({
 ## Widget Registry
 
 ```typescript
-import { createRegistry } from '@umut/shrine'
+import { createRegistry } from '@usirin/shrine'
 
 const registry = createRegistry()
 
@@ -228,10 +228,10 @@ registry.connect('editor', 'preview', {
 })
 ```
 
-## React Integration (via @umut/lodge)
+## React Integration (via @usirin/lodge)
 
 ```typescript
-import { useWidget } from '@umut/lodge'
+import { useWidget } from '@usirin/lodge'
 
 function CounterComponent() {
   const { state, actions } = useWidget('counter')

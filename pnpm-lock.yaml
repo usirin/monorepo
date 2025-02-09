@@ -68,7 +68,7 @@ importers:
 
   packages/layout-tree:
     dependencies:
-      '@umut/forge':
+      '@usirin/forge':
         specifier: workspace:*
         version: link:../forge
       immer:
@@ -157,10 +157,10 @@ importers:
 
   packages/studio:
     dependencies:
-      '@umut/forge':
+      '@usirin/forge':
         specifier: workspace:*
         version: link:../forge
-      '@umut/layout-tree':
+      '@usirin/layout-tree':
         specifier: workspace:*
         version: link:../layout-tree
       immer:
@@ -210,16 +210,19 @@ importers:
       '@radix-ui/themes':
         specifier: 'catalog:'
         version: 3.2.0(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@umut/forge':
+      '@usirin/forge':
         specifier: workspace:*
         version: link:../../packages/forge
-      '@umut/layout-tree':
+      '@usirin/layout-tree':
         specifier: workspace:*
         version: link:../../packages/layout-tree
-      '@umut/runekeeper':
+      '@usirin/runekeeper':
         specifier: workspace:*
         version: link:../../packages/runekeeper
-      '@umut/studio':
+      '@usirin/spellbook':
+        specifier: workspace:*
+        version: link:../../packages/spellbook
+      '@usirin/studio':
         specifier: workspace:*
         version: link:../../packages/studio
       '@xstate/react':

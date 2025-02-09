@@ -1,4 +1,4 @@
-# @umut/keyboard
+# @usirin/keyboard
 
 To install dependencies:
 

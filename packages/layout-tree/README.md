@@ -1,4 +1,4 @@
-# @umut/layout-tree
+# @usirin/layout-tree
 
 A data structure for creating tiled layouts. based on i3tree.
 

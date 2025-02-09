@@ -1,5 +1,5 @@
 import {useDroppable} from "@dnd-kit/core";
-import type {StackPath} from "@umut/layout-tree";
+import type {StackPath} from "@usirin/layout-tree";
 import clsx from "clsx";
 import styles from "./workspace.module.css";
 

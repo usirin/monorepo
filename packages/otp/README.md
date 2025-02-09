@@ -1,4 +1,4 @@
-# @umut/otp
+# @usirin/otp
 
 To install dependencies:
 

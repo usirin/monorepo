@@ -1,7 +1,7 @@
 "use client";
 
 import {Text} from "@radix-ui/themes";
-import {type Workspace, getActiveWorkspace} from "@umut/studio";
+import {type Workspace, getActiveWorkspace} from "@usirin/studio";
 import {useEffect} from "react";
 import {Panel} from "~/studio/panel";
 import {PanelGroup} from "~/studio/panel-group";

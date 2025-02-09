@@ -1,7 +1,7 @@
 # Technical Specification: Codex Effect Integration
 
 ## Overview
-This document details the technical implementation of integrating Effect.ts into the @umut/codex package.
+This document details the technical implementation of integrating Effect.ts into the @usirin/codex package.
 
 ## Core Types
 

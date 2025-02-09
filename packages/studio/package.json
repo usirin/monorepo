@@ -1,11 +1,11 @@
 {
-	"name": "@umut/studio",
+	"name": "@usirin/studio",
 	"module": "index.ts",
 	"types": "index.ts",
 	"type": "module",
 	"dependencies": {
-		"@umut/layout-tree": "workspace:*",
-		"@umut/forge": "workspace:*",
+		"@usirin/layout-tree": "workspace:*",
+		"@usirin/forge": "workspace:*",
 		"immer": "catalog:"
 	},
 	"devDependencies": {

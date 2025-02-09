@@ -1,4 +1,4 @@
-# @umut/usir-in
+# @usirin/usir-in
 
 To install dependencies:
 

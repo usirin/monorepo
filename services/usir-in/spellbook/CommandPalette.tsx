@@ -1,7 +1,7 @@
 "use client";
 
 import {Code, Flex, ScrollArea, Text} from "@radix-ui/themes";
-import type {Command as SpellbookCommand} from "@umut/spellbook";
+import type {Command as SpellbookCommand} from "@usirin/spellbook";
 import {type ReactNode, isValidElement, useCallback, useState} from "react";
 import {spellbook} from "~/studio/studio-manager";
 import {

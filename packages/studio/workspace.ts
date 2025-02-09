@@ -3,8 +3,8 @@
  * A module for managing workspace state and operations
  */
 
-import {factory} from "@umut/forge";
-import * as Layout from "@umut/layout-tree";
+import {factory} from "@usirin/forge";
+import * as Layout from "@usirin/layout-tree";
 import {produce} from "immer";
 
 /**
