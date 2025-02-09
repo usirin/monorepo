@@ -1,24 +1,27 @@
 {
-  "name": "@usirin/monorepo",
-  "version": "1.0.0",
-  "description": "usirin stack",
-  "author": "Umut Sirin <mail@usir.in>",
-  "license": "MIT",
-  "workspaces": [
-    "packages/*",
-    "services/*"
-  ],
-  "volta": {
-    "node": "20.14.0"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "1.7.3",
-    "turbo": "^1.13.3"
-  },
-  "trustedDependencies": [
-    "@biomejs/biome",
-    "@swc/core",
-    "es5-ext",
-    "esbuild"
-  ]
+	"name": "@usirin/monorepo",
+	"version": "1.0.0",
+	"description": "usirin stack",
+	"author": "Umut Sirin <mail@usir.in>",
+	"license": "MIT",
+	"volta": {
+		"node": "23.7.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.7.3",
+		"turbo": "^1.13.3"
+	},
+	"trustedDependencies": [
+		"@biomejs/biome",
+		"@swc/core",
+		"es5-ext",
+		"esbuild"
+	],
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"@biomejs/biome",
+			"es5-ext",
+			"sharp"
+		]
+	}
 }
