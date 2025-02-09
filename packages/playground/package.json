@@ -1,0 +1,14 @@
+{
+  "name": "@umut/playground",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "effect": "^3.10.16"
+  }
+}

@@ -1,0 +1,50 @@
+version: "3"
+
+services:
+  web:
+    entrypoint: pnpx turbo dev --filter @binclusive/web
+    build:
+      context: ../../
+      args:
+        - WORKSPACE=@binclusive/web
+      dockerfile: docker/dev/Dockerfile
+    ports:
+      - "3001:3000"
+  checker:
+    entrypoint: pnpx turbo dev --filter @b8e-svc/checker
+    build:
+      context: ../../
+      args:
+        - WORKSPACE=@b8e-svc/checker
+      dockerfile: docker/dev/Dockerfile
+    ports:
+      - "4002:3000"
+    environment:
+      - NODE_ENV=development
+      - CRAWLER_API_URL=http://crawler:3000
+      - TEST_RUNNER_API_URL=http://test-runner:3000
+  crawler:
+    entrypoint: pnpx turbo dev --filter @b8e-svc/crawler
+    build:
+      context: ../../
+      args:
+        - WORKSPACE=@b8e-svc/crawler
+      dockerfile: docker/dev/Dockerfile.playwright
+    ports:
+      - "4003:3000"
+    environment:
+      - NODE_ENV=development
+  test-runner:
+    entrypoint: pnpx turbo dev --filter @b8e-svc/test-runner
+    build:
+      context: ../../
+      args:
+        - WORKSPACE=@b8e-svc/test-runner
+      dockerfile: docker/dev/Dockerfile.playwright
+    ports:
+      - "4004:3000"
+    environment:
+      - NODE_ENV=development
+networks:
+  app_network:
+    external: true

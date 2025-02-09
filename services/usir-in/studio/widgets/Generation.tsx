@@ -2,7 +2,7 @@
 
 import {readStreamableValue} from "ai/rsc";
 import {useState} from "react";
-import {generate} from "./actions";
+import {generate} from "./generation-actions";
 
 export function Generation() {
 	const [generation, setGeneration] = useState<string>("");

@@ -9,6 +9,9 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "base-x": "^4.0.0"
+    "base-x": "^4.0.0",
+    "p-queue": "^8.0.1",
+    "p-wait-for": "^5.0.2",
+    "radix3": "^1.1.2"
   }
 }
