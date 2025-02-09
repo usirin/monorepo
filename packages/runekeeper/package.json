@@ -3,7 +3,7 @@
 	"module": "index.ts",
 	"type": "module",
 	"dependencies": {
-		"xstate": "^5.18.2"
+		"xstate": "catalog:"
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
@@ -11,6 +11,6 @@
 		"@types/jsdom": "latest"
 	},
 	"peerDependencies": {
-		"typescript": "^5.0.0"
+		"typescript": "catalog:"
 	}
 }

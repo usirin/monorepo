@@ -6,12 +6,12 @@
 	"dependencies": {
 		"@umut/layout-tree": "workspace:*",
 		"@umut/forge": "workspace:*",
-		"immer": "^10.1.0"
+		"immer": "catalog:"
 	},
 	"devDependencies": {
 		"@types/bun": "latest"
 	},
 	"peerDependencies": {
-		"typescript": "^5.0.0"
+		"typescript": "catalog:"
 	}
 }
