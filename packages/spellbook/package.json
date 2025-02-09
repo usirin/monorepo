@@ -4,12 +4,12 @@
 	"module": "./index.ts",
 	"type": "module",
 	"dependencies": {
-		"zod": "^3.22.4"
+		"zod": "catalog:"
 	},
 	"devDependencies": {
 		"@types/bun": "latest"
 	},
 	"peerDependencies": {
-		"typescript": "^5.0.0"
+		"typescript": "catalog:"
 	}
 }
