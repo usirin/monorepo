@@ -1,15 +1,24 @@
 {
+	"$schema": "https://json.schemastore.org/package",
 	"name": "@usirin/monorepo",
 	"version": "1.0.0",
 	"description": "usirin stack",
 	"author": "Umut Sirin <mail@usir.in>",
 	"license": "MIT",
+	"packageManager": "pnpm@10.2.1",
+	"scripts": {
+		"dev": "turbo dev",
+		"build": "turbo build",
+		"start": "turbo start",
+		"lint": "turbo lint",
+		"test": "turbo test"
+	},
 	"volta": {
 		"node": "23.7.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.7.3",
-		"turbo": "^1.13.3"
+		"turbo": "^2.4.2"
 	},
 	"trustedDependencies": [
 		"@biomejs/biome",
