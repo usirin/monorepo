@@ -3,11 +3,11 @@
 import {createOpenAI} from "@ai-sdk/openai";
 import {generateText, streamText, tool} from "ai";
 import {createStreamableValue} from "ai/rsc";
-import {getEnv} from "waku";
+// import {getEnv} from "waku";
 import {z} from "zod";
 
 const openai = createOpenAI({
-	apiKey: getEnv("OPENAI_API_KEY"),
+	apiKey: process.env.OPENAI_API_KEY,
 });
 
 const generateSystemPrompt = () => {

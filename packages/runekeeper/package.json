@@ -3,7 +3,8 @@
 	"module": "index.ts",
 	"type": "module",
 	"dependencies": {
-		"xstate": "catalog:"
+		"xstate": "catalog:",
+		"immer": "catalog:"
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
