@@ -1,4 +1,4 @@
-import {factory} from "@usirin/forge";
+import {type Ref, factory} from "@usirin/forge";
 import {produce} from "immer";
 import {type Workspace, createWorkspace} from "./workspace";
 
@@ -20,11 +20,11 @@ export function addWorkspace(studio: Studio) {
 	});
 }
 
-export function getWorkspace(studio: Studio, id: Workspace["id"]) {
+export function getWorkspace(studio: Studio, id: Ref<Workspace>) {
 	return studio.workspaces[id];
 }
 
-export function setActiveWorkspace(studio: Studio, id: Workspace["id"]) {
+export function setActiveWorkspace(studio: Studio, id: Ref<Workspace>) {
 	return produce(studio, (draft) => {
 		if (id in draft.workspaces) {
 			draft.activeWorkspace = id;
@@ -32,16 +32,16 @@ export function setActiveWorkspace(studio: Studio, id: Workspace["id"]) {
 	});
 }
 
-export function removeWorkspace(studio: Studio, id: Workspace["id"] = studio.activeWorkspace) {
+export function removeWorkspace(studio: Studio, id: Ref<Workspace> = studio.activeWorkspace) {
 	return produce(studio, (draft) => {
-		const ids = Object.keys(draft.workspaces);
+		const ids = Object.keys(draft.workspaces) as Ref<Workspace>[];
 		if (ids.length === 1) {
 			return;
 		}
 
 		const index = ids.indexOf(id);
 		delete draft.workspaces[id];
-		draft.activeWorkspace = (ids[index + 1] ?? ids[index - 1] ?? ids[0]) as Workspace["id"];
+		draft.activeWorkspace = ids[index + 1] ?? ids[index - 1] ?? ids[0];
 	});
 }
 

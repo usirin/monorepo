@@ -14,6 +14,7 @@
 		"@dnd-kit/core": "^6.1.0",
 		"@dnd-kit/utilities": "^3.2.2",
 		"@radix-ui/react-icons": "catalog:",
+		"@radix-ui/react-use-callback-ref": "^1.1.0",
 		"@radix-ui/themes": "catalog:",
 		"@usirin/forge": "workspace:*",
 		"@usirin/layout-tree": "workspace:*",

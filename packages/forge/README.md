@@ -1,92 +1,80 @@
 # @usirin/forge
 
-A lightweight TypeScript utility for creating and managing typed entities with unique identifiers.
+Create type-safe, uniquely identifiable entities for your domain model. It's simple and focused on making entity management in TypeScript a breeze.
 
-## Features
+### What?
 
-- Type-safe entity creation
-- Unique ID generation with prefixes
-- Factory pattern for creating complex entities
-- Zero dependencies
+While developing domain models, you often need entities that are:
+1. Always uniquely identifiable
+2. Type-safe when referenced
+3. Easy to compose
+4. Simple to validate
 
-## Installation
-
-```bash
-npx jsr add @usirin/forge
-# or
-bunx jsr add @usirin/forge
-```
-
-Or with Deno:
-```bash
-deno add @usirin/forge
-```
-
-## Usage
-
-### Basic Entity Creation
+Here is how forge makes this easy:
 
 ```typescript
-import { entity, type Entity } from '@usirin/forge';
+import { factory } from '@usirin/forge'
 
-// Create a basic entity
-const user = entity('user');
-// Result: { tag: 'user', id: 'user:x7f2k...' }
+// Define a post entity
+const createPost = factory('post', (title: string, body: string) => ({
+  title,
+  body
+}))
 
-// Type definition
-type UserEntity = Entity<'user'>;
-```
+type PostEntity = ReturnType<typeof createPost>
 
-### Using the Factory Pattern
-
-```typescript
-import { factory } from '@usirin/forge';
-
-// Define a factory for creating users with additional properties
-const createUser = factory('user', (name: string, age: number) => ({
-  name,
-  age
-}));
-
-// Create a user
-const user = createUser('John', 30);
+// Create a post - automatically gets unique ID
+const post = createPost('Hello World', 'This is my first post')
 // Result: {
-//   tag: 'user',
-//   id: 'user:x7f2k...',
-//   name: 'John',
-//   age: 30
+//   tag: 'post',
+//   id: 'post_x7f2k...',
+//   title: 'Hello World',
+//   body: 'This is my first post'
 // }
 ```
 
-### Working with References
+It doesn't try to solve every use case, but since it focuses on making entities uniquely identifiable and type-safe, it should cover most of your domain modeling needs.
 
-```typescript
-import { type Ref } from '@usirin/forge';
+### Install
 
-type UserEntity = Entity<'user'>;
-type UserRef = Ref<UserEntity>; // Type: 'user:string'
+```bash
+# npm
+npm install @usirin/forge
 
-// Use refs to store references to entities
-const userRef: UserRef = user.id;
+# pnpm
+pnpm add @usirin/forge
+
+# bun
+bun add @usirin/forge
 ```
 
-## API
+### Entity Relationships
 
-### `Entity<T>`
-Type definition for an entity with a tag and unique ID.
+You can easily model relationships between entities:
 
-### `Ref<T>`
-Type helper for referencing an entity by its ID.
+```typescript
+import { factory, type Ref, type Entity } from '@usirin/forge'
 
-### `id(prefix)`
-Generates a unique ID with the given prefix.
+const createComment = factory('comment', (postID: Ref<PostEntity>, text: string) => ({
+  postID,
+  text
+}))
 
-### `entity(tag)`
-Creates a basic entity with a tag and generated ID.
+type CommentEntity = ReturnType<typeof createComment>
 
-### `factory(tag, factory)`
-Creates a factory function that produces tagged entities with additional properties.
+// Create a comment for a post
+const comment = createComment(post.id, 'Great post!')
+// Result: {
+//   tag: 'comment',
+//   id: 'comment_j9k2l...',
+//   postID: 'post_x7f2k...',
+//   text: 'Great post!'
+// }
 
-## License
+// Type system ensures you can't use wrong ID types
+createComment('wrong_id', 'text') // Type error!
+```
+
+### License
 
 MIT
