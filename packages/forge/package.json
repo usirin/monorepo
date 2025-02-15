@@ -1,10 +1,25 @@
 {
 	"name": "@usirin/forge",
 	"version": "0.0.0",
-	"main": "index.ts",
-	"types": "index.ts",
-	"dependencies": {},
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/src/index.d.ts",
+			"import": "./dist/index.js"
+		}
+	},
+	"module": "./dist/index.js",
+	"types": "./dist/src/index.d.ts",
+	"files": ["dist"],
+	"scripts": {
+		"build": "rslib build",
+		"dev": "rslib build --watch"
+	},
+	"dependencies": {
+		"base-x": "^4.0.0"
+	},
 	"devDependencies": {
-		"bun-types": "latest"
+		"@rslib/core": "catalog:",
+		"@types/bun": "latest"
 	}
 }

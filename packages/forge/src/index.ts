@@ -1,3 +1,5 @@
+import {b58} from "./id";
+
 /**
  * Represents a uniquely identifiable entity with a type tag
  *
@@ -5,9 +7,9 @@
  * type UserEntity = Entity<'user'>;
  * // Result: { tag: 'user', id: 'user_x7f2k...' }
  */
-export type Entity<T extends string> = {
-	tag: T;
-	id: `${T}_${string}`;
+export type Entity<Tag extends string> = {
+	tag: Tag;
+	id: `${Tag}_${string}`;
 };
 
 /**
@@ -29,22 +31,19 @@ export type Ref<T extends Entity<string>> = T["id"];
  * // Result: 'user_x7f2k...'
  * ```
  */
-export const id = <T extends string>(prefix: T): `${T}_${string}` =>
-	`${prefix}_${Math.random().toString(36).substring(2, 15)}`;
+export const id = <Tag extends string>(prefix: Tag): `${Tag}_${string}` => `${prefix}_${b58()}`;
 
 /**
  * Creates a basic entity with a tag and generated ID
  *
+ * @internal
  * @example
  * ```ts
  * const user = entity('user');
  * // Result: { tag: 'user', id: 'user_x7f2k...' }
  * ```
  */
-export const entity = <T extends string>(tag: T): Entity<T> => ({
-	tag,
-	id: id(tag),
-});
+const entity = <T extends string>(tag: T): Entity<T> => ({tag, id: id(tag)});
 
 /**
  * Creates a factory function that produces tagged entities with additional properties.
@@ -68,9 +67,12 @@ export const entity = <T extends string>(tag: T): Entity<T> => ({
  * }
  * ```
  */
-export const factory =
-	<T extends string, U, A extends any[]>(tag: T, _factory: (...args: A) => U) =>
-	(...args: A): Entity<T> & U => ({
+export function factory<Tag extends string, CustomProps, Args extends any[]>(
+	tag: Tag,
+	customPropsFactory: (...args: Args) => CustomProps,
+) {
+	return (...args: Args): Entity<Tag> & CustomProps => ({
 		...entity(tag),
-		..._factory(...args),
+		...customPropsFactory(...args),
 	});
+}
