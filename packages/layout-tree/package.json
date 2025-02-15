@@ -1,14 +1,29 @@
 {
 	"name": "@usirin/layout-tree",
-	"version": "0.0.0",
+	"version": "0.1.0",
+	"private": false,
 	"type": "module",
-	"module": "index.ts",
+	"exports": {
+		".": {
+			"types": "./dist/src/index.d.ts",
+			"import": "./dist/index.js"
+		}
+	},
+	"module": "./dist/index.js",
+	"types": "./dist/src/index.d.ts",
+	"files": ["dist"],
+	"scripts": {
+		"build": "rslib build",
+		"dev": "rslib build --watch",
+		"test": "bun test"
+	},
 	"dependencies": {
 		"@usirin/forge": "workspace:*",
 		"immer": "catalog:",
 		"lodash.get": "^4.4.2"
 	},
 	"devDependencies": {
+		"@rslib/core": "catalog:",
 		"@types/bun": "latest",
 		"@types/lodash.get": "^4.4.9"
 	},
