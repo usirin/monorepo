@@ -7,25 +7,24 @@ describe("Spellbook.create", () => {
 		const spellbook = Spellbook.create()
 			.command("test", {
 				description: "Test command",
-				input: () =>
-					z.object({
-						foo: z.string().optional().default("bar"),
-					}),
-				execute: async ({input}) => {
-					expect(input.foo).toBe("bar");
+				input: z.object({
+					foo: z.string().optional().default("bar"),
+				}),
+				execute: async (context) => {
+					expect(context.input.foo).toBe("bar");
 					return "test-result";
 				},
 			})
 			.command("foo", {
 				description: "Foo command",
-				input: async () => z.object({bar: z.string()}),
+				input: z.object({bar: z.string()}),
 				execute: async ({input}) => {
 					expect(input.bar).toBe("baz");
 				},
 			})
 			.command("nested:foo", {
 				description: "Nested foo command",
-				input: () => z.object({baz: z.string()}),
+				input: z.object({baz: z.string()}),
 				execute: ({input}) => {
 					expect(input.baz).toBe("qux");
 					return 42;
@@ -33,7 +32,7 @@ describe("Spellbook.create", () => {
 			})
 			.build();
 
-		const testResult = await spellbook.execute("test");
+		const testResult = await spellbook.execute("test", {});
 		expect(testResult).toBe("test-result");
 
 		const fooResult = await spellbook.execute("foo", {bar: "baz"});

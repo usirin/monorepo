@@ -40,7 +40,7 @@ export const useStudioManager = create<StudioState>()(
 export const spellbook = Spellbook.create()
 	.command("workspace:create", {
 		description: "Create a new workspace",
-		input: () => z.void(),
+		input: z.void(),
 		execute: async () => {
 			useStudioManager.setState((studio) => ({
 				state: addWorkspace(studio.state),
@@ -49,7 +49,7 @@ export const spellbook = Spellbook.create()
 	})
 	.command("workspace:remove", {
 		description: "Remove the active workspace",
-		input: () => z.object({id: z.string()}).optional(),
+		input: z.object({id: z.string().optional()}),
 		execute: async ({input}) => {
 			useStudioManager.setState((studio) => ({
 				state: removeWorkspace(
@@ -62,7 +62,7 @@ export const spellbook = Spellbook.create()
 	.command("workspace:set-active", {
 		description: "Set the active workspace",
 		meta: {hidden: true},
-		input: () => z.object({id: z.string()}),
+		input: z.object({id: z.string()}),
 		execute: async ({input}) => {
 			useStudioManager.setState((studio) => ({
 				state: setActiveWorkspace(studio.state, input.id as `workspace_${string}`),
@@ -72,7 +72,7 @@ export const spellbook = Spellbook.create()
 	// Split Commands
 	.command("window:split-horizontal", {
 		description: "Split the focused window horizontally",
-		input: () => z.void(),
+		input: z.void(),
 		execute: async () => {
 			useStudioManager.setState((studio) => {
 				const workspace = getActiveWorkspace(studio.state);
@@ -84,7 +84,7 @@ export const spellbook = Spellbook.create()
 	})
 	.command("window:split-vertical", {
 		description: "Split the focused window vertically",
-		input: () => z.void(),
+		input: z.void(),
 		execute: async () => {
 			useStudioManager.setState((studio) => {
 				const workspace = getWorkspace(studio.state, studio.state.activeWorkspace);
@@ -97,7 +97,7 @@ export const spellbook = Spellbook.create()
 	// Window Management Commands
 	.command("window:close", {
 		description: "Close the focused window",
-		input: () => z.void(),
+		input: z.void(),
 		execute: async () => {
 			useStudioManager.setState((state) => {
 				const workspace = getActiveWorkspace(state.state);
@@ -111,7 +111,7 @@ export const spellbook = Spellbook.create()
 	// Focus Commands
 	.command("window:focus-left", {
 		description: "Focus the window to the left",
-		input: () => z.void(),
+		input: z.void(),
 		execute: async () => {
 			useStudioManager.setState((studio) => {
 				const workspace = getActiveWorkspace(studio.state);
@@ -130,7 +130,7 @@ export const spellbook = Spellbook.create()
 	})
 	.command("window:focus-right", {
 		description: "Focus the window to the right",
-		input: () => z.void(),
+		input: z.void(),
 		execute: async () => {
 			useStudioManager.setState((studio) => {
 				const workspace = getActiveWorkspace(studio.state);
@@ -149,7 +149,7 @@ export const spellbook = Spellbook.create()
 	})
 	.command("window:focus-up", {
 		description: "Focus the window above",
-		input: () => z.void(),
+		input: z.void(),
 		execute: async () => {
 			useStudioManager.setState((studio) => {
 				const workspace = getActiveWorkspace(studio.state);
@@ -168,7 +168,7 @@ export const spellbook = Spellbook.create()
 	})
 	.command("window:focus-down", {
 		description: "Focus the window below",
-		input: () => z.void(),
+		input: z.void(),
 		execute: async () => {
 			useStudioManager.setState((studio) => {
 				const workspace = getActiveWorkspace(studio.state);
@@ -188,7 +188,7 @@ export const spellbook = Spellbook.create()
 	.command("window:focus", {
 		description: "Focus the window",
 		meta: {hidden: true},
-		input: () => z.object({path: z.array(z.number())}),
+		input: z.object({path: z.array(z.number())}),
 		execute: async ({input}) => {
 			useStudioManager.setState((studio) => {
 				const workspace = getActiveWorkspace(studio.state);

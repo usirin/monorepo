@@ -14,7 +14,7 @@ export interface Command<TSchema extends z.ZodType, TReturn = void> {
 		group?: string;
 		hidden?: boolean;
 	};
-	input: () => Promise<TSchema> | TSchema;
+	input: TSchema;
 	execute: CommandHandler<TSchema, TReturn>;
 }
 
@@ -25,16 +25,14 @@ function createSpellbook<TCommands extends Record<string, Command<z.ZodType, any
 		commands,
 		execute: async <TKey extends keyof TCommands>(
 			key: TKey,
-			args?: z.input<Awaited<ReturnType<TCommands[TKey]["input"]>>>,
+			args: z.input<TCommands[TKey]["input"]>,
 		): Promise<ReturnType<TCommands[TKey]["execute"]>> => {
 			const command = commands[key];
 			if (!command) {
 				throw new Error(`Command not found: ${key as string}`);
 			}
 
-			const input = await command.input();
-
-			const parsed = input.safeParse(args);
+			const parsed = command.input.safeParse(args);
 			if (!parsed.success) {
 				throw parsed.error;
 			}
