@@ -19,6 +19,5 @@ catalog:
   "xstate": 5.19.2
   "ts-pattern": 5.6.2
   "typescript": 5.7.3
-  "zod": 3.23.8
+  "zod": 3.24.2
   "zustand": 5.0.3
-

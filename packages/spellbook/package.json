@@ -1,17 +1,31 @@
 {
 	"name": "@usirin/spellbook",
-	"version": "0.0.1",
-	"module": "./index.ts",
+	"version": "0.0.0",
 	"type": "module",
+	"private": false,
+	"exports": {
+		".": {
+			"types": "./dist/src/index.d.ts",
+			"import": "./dist/index.js"
+		}
+	},
+	"module": "./dist/index.js",
+	"types": "./dist/src/index.d.ts",
+	"files": ["dist"],
 	"scripts": {
+		"build": "rslib build",
+		"dev": "rslib build --watch",
 		"test": "bun test"
 	},
 	"dependencies": {
 		"@standard-schema/spec": "^1.0.0",
+		"@usirin/forge": "workspace:*",
 		"zod": "catalog:"
 	},
 	"devDependencies": {
-		"@types/bun": "latest"
+		"@rslib/core": "catalog:",
+		"@types/bun": "latest",
+		"valibot": "1.0.0-rc.0"
 	},
 	"peerDependencies": {
 		"typescript": "catalog:"

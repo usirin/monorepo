@@ -7,8 +7,6 @@ import {
 	focusWindow,
 	getActiveWorkspace,
 	getWorkspace,
-	moveWindowAfter,
-	moveWindowBefore,
 	removeWindow,
 	removeWorkspace,
 	setActiveWorkspace,
