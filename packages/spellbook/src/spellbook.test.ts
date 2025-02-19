@@ -29,23 +29,23 @@ describe("createSpell", () => {
 		expect(await frostbolt.execute({target: "enemy"})).toEqual({damage: 10, target: "enemy"});
 	});
 });
-const frostbolt = createSpell({
-	description: "Casts a frostbolt at the target",
-	parameters: z.object({target: z.string()}),
-	execute: async ({target}) => {
-		return {damage: 10, target};
-	},
-});
-
-const fireball = createSpell({
-	description: "Casts a fireball at the target",
-	parameters: z.object({target: z.string()}),
-	execute: async ({target}) => {
-		return {damage: 20, target};
-	},
-});
-
 describe("createSpellbook", () => {
+	const frostbolt = createSpell({
+		description: "Casts a frostbolt at the target",
+		parameters: z.object({target: z.string()}),
+		execute: async ({target}) => {
+			return {damage: 10, target};
+		},
+	});
+
+	const fireball = createSpell({
+		description: "Casts a fireball at the target",
+		parameters: z.object({target: z.string()}),
+		execute: async ({target}) => {
+			return {damage: 20, target};
+		},
+	});
+
 	it("creates a spellbook with multiple spells", async () => {
 		const spellbook = createSpellbook({
 			frostbolt,
