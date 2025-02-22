@@ -7,7 +7,7 @@ import {Panel} from "~/studio/panel";
 import {PanelGroup} from "~/studio/panel-group";
 import {ResizeHandle} from "~/studio/resize-handle";
 import {useRunekeeper} from "~/studio/runekeeper-manager";
-import {spellbook, useStudioManager} from "~/studio/studio-manager";
+import {newSpellbook, useStudioManager} from "~/studio/studio-manager";
 import {PanelLayout} from "./panel-layout";
 import {PanelStack} from "./stack-panel";
 
@@ -37,27 +37,27 @@ export function WorkspaceContainer({workspace}: {workspace: Workspace}) {
 
 	useEffect(() => {
 		runekeeper.map("normal", "-", () => {
-			spellbook.execute("window:split-horizontal");
+			newSpellbook.execute("window:split-horizontal");
 		});
 
 		runekeeper.map("normal", "|", () => {
-			spellbook.execute("window:split-vertical");
+			newSpellbook.execute("window:split-vertical", {});
 		});
 
 		runekeeper.map("normal", "<c-j>", () => {
-			spellbook.execute("window:focus-down");
+			newSpellbook.execute("window:focus-down", {});
 		});
 
 		runekeeper.map("normal", "<c-k>", () => {
-			spellbook.execute("window:focus-up");
+			newSpellbook.execute("window:focus-up", {});
 		});
 
 		runekeeper.map("normal", "<c-l>", () => {
-			spellbook.execute("window:focus-right");
+			newSpellbook.execute("window:focus-right", {});
 		});
 
 		runekeeper.map("normal", "<c-h>", () => {
-			spellbook.execute("window:focus-left");
+			newSpellbook.execute("window:focus-left", {});
 		});
 
 		return () => {

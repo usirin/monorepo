@@ -70,7 +70,3 @@ export class Spellbook<TCommands extends Record<string, Command<z.ZodType, any>>
 		return createSpellbook(this.commands);
 	}
 }
-
-export * from "./types";
-export * from "./spellbook";
-export * from "./memory-transport";

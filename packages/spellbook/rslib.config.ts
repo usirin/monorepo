@@ -10,9 +10,9 @@ export default defineConfig({
 		},
 	],
 	source: {
-		exclude: ["**/*.test.ts"],
+		exclude: ["**/*.test.ts", "**/*playground*"],
 		entry: {
-			index: ["./src/**", "!**/*.test.ts"],
+			index: ["./src/**", "!**/*.test.ts", "!**/*playground*"],
 		},
 	},
 });

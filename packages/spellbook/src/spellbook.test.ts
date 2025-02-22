@@ -2,7 +2,7 @@ import {describe, expect, it} from "bun:test";
 import * as v from "valibot";
 import {z} from "zod";
 
-import {createSpell, createSpellCaster, createSpellbook} from "./spellbook";
+import {createSpell, createSpellbook} from "./spellbook";
 
 describe("createSpell", () => {
 	it("creates a single executable spell with input validation using zod", async () => {
