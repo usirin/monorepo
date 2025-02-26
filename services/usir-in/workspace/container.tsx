@@ -1,13 +1,14 @@
 "use client";
 
 import {Text} from "@radix-ui/themes";
+import {execute} from "@usirin/spellbook/spellbook";
 import {type Workspace, getActiveWorkspace} from "@usirin/studio";
 import {useEffect} from "react";
 import {Panel} from "~/studio/panel";
 import {PanelGroup} from "~/studio/panel-group";
 import {ResizeHandle} from "~/studio/resize-handle";
 import {useRunekeeper} from "~/studio/runekeeper-manager";
-import {spellbook, useStudioManager} from "~/studio/studio-manager";
+import {newSpellbook, useStudioManager} from "~/studio/studio-manager";
 import {PanelLayout} from "./panel-layout";
 import {PanelStack} from "./stack-panel";
 
@@ -37,27 +38,27 @@ export function WorkspaceContainer({workspace}: {workspace: Workspace}) {
 
 	useEffect(() => {
 		runekeeper.map("normal", "-", () => {
-			spellbook.execute("window:split-horizontal");
+			execute(newSpellbook, "window:split-horizontal", undefined);
 		});
 
 		runekeeper.map("normal", "|", () => {
-			spellbook.execute("window:split-vertical");
+			execute(newSpellbook, "window:split-vertical", {});
 		});
 
 		runekeeper.map("normal", "<c-j>", () => {
-			spellbook.execute("window:focus-down");
+			execute(newSpellbook, "window:focus-down", undefined);
 		});
 
 		runekeeper.map("normal", "<c-k>", () => {
-			spellbook.execute("window:focus-up");
+			execute(newSpellbook, "window:focus-up", {});
 		});
 
 		runekeeper.map("normal", "<c-l>", () => {
-			spellbook.execute("window:focus-right");
+			execute(newSpellbook, "window:focus-right", {});
 		});
 
 		runekeeper.map("normal", "<c-h>", () => {
-			spellbook.execute("window:focus-left");
+			execute(newSpellbook, "window:focus-left", {});
 		});
 
 		return () => {

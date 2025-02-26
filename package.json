@@ -29,8 +29,11 @@
 	"pnpm": {
 		"onlyBuiltDependencies": [
 			"@biomejs/biome",
+			"core-js",
 			"es5-ext",
-			"sharp"
+			"esbuild",
+			"sharp",
+			"workerd"
 		]
 	}
 }

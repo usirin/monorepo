@@ -1,9 +1,9 @@
 "use client";
 
-import {Code, Flex, ScrollArea, Text} from "@radix-ui/themes";
-import type {Command as SpellbookCommand} from "@usirin/spellbook";
+import {Code, Flex, Text} from "@radix-ui/themes";
+import {execute} from "@usirin/spellbook/spellbook";
 import {type ReactNode, isValidElement, useCallback, useState} from "react";
-import {spellbook} from "~/studio/studio-manager";
+import {newSpellbook} from "~/studio/studio-manager";
 import {
 	Command,
 	CommandEmpty,
@@ -37,7 +37,10 @@ export function CommandPalette({onSelect}: {onSelect?: (key: string) => void}) {
 	const navigation = useNavigationApi();
 
 	const handleSelect = async (key: string) => {
-		const result = await spellbook.execute(key as keyof typeof spellbook.commands);
+		const spell = newSpellbook.spells[key as keyof typeof newSpellbook.spells];
+		if (!spell) return;
+
+		const result = await execute(newSpellbook, key as keyof typeof newSpellbook.spells, {});
 		if (isValidElement(result)) {
 			navigation.push(result);
 		}
@@ -77,14 +80,16 @@ export function CommandPalette({onSelect}: {onSelect?: (key: string) => void}) {
 }
 
 function RootCommand({onSelect}: {onSelect: (key: string) => void}) {
-	const groupedCommands = Object.entries(spellbook.commands).reduce<
-		Record<string, Array<[string, SpellbookCommand<any, any>]>>
-	>((acc, [key, command]) => {
+	type SpellType = (typeof newSpellbook.spells)[keyof typeof newSpellbook.spells];
+
+	const groupedCommands = Object.entries(newSpellbook.spells).reduce<
+		Record<string, Array<[string, SpellType]>>
+	>((acc, [key, spell]) => {
 		const group = key.split(":")[0];
 		if (!acc[group]) {
 			acc[group] = [];
 		}
-		acc[group].push([key, command]);
+		acc[group].push([key, spell]);
 		return acc;
 	}, {});
 
@@ -92,22 +97,18 @@ function RootCommand({onSelect}: {onSelect: (key: string) => void}) {
 		<>
 			{Object.entries(groupedCommands).map(([group, commands]) => (
 				<CommandGroup key={group} heading={group}>
-					{commands.map(
-						([key, command]) =>
-							!command.meta?.hidden && (
-								<CommandItem key={key} value={key} onSelect={() => onSelect(key)}>
-									<Flex align="center" gap="2">
-										{command.meta?.icon && <Text size="2">{command.meta.icon}</Text>}
-										<Text size="1">{command.description}</Text>
-									</Flex>
-									<Flex align="center" gap="2">
-										<Code size="1" variant="soft" style={{opacity: 0.5}}>
-											{key}
-										</Code>
-									</Flex>
-								</CommandItem>
-							),
-					)}
+					{commands.map(([key, spell]) => (
+						<CommandItem key={key} value={key} onSelect={() => onSelect(key)}>
+							<Flex align="center" gap="2">
+								<Text size="1">{spell.description}</Text>
+							</Flex>
+							<Flex align="center" gap="2">
+								<Code size="1" variant="soft" style={{opacity: 0.5}}>
+									{key}
+								</Code>
+							</Flex>
+						</CommandItem>
+					))}
 				</CommandGroup>
 			))}
 		</>
