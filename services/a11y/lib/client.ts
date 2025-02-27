@@ -1,7 +1,6 @@
 import type {JsonRpcRequest, JsonRpcResponse, RpcMethod} from "./types";
 
 export class JsonRpcClient<
-	// biome-ignore lint/suspicious/noExplicitAny: we know that the RpcMethods generic is a Record<string, (...args: any[]) => any>
 	RpcMethods extends Record<TKey, RpcMethod<any, any>>,
 	TKey extends string = string,
 > {

@@ -9,6 +9,7 @@ catalog:
   "@xstate/react": 5.0.2
   "@types/react": 19.0.8
   "@types/react-dom": 19.0.3
+  "@types/ws": 8.5.14
   "immer": 10.1.1
   "lucide-react": 0.475.0
   "next": 15.1.6
@@ -19,6 +20,6 @@ catalog:
   "xstate": 5.19.2
   "ts-pattern": 5.6.2
   "typescript": 5.7.3
-  "zod": 3.23.8
+  "ws": 8.18.1
+  "zod": 3.24.2
   "zustand": 5.0.3
-
