@@ -5,180 +5,144 @@ Type-safe API surfaces that work across process boundaries.
 [![npm version](https://img.shields.io/npm/v/@usirin/spellbook.svg)](https://www.npmjs.com/package/@usirin/spellbook)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## Overview
+Define once, run anywhere. Spellbook lets you create type-safe APIs that work seamlessly across different execution environments with full validation and error handling.
 
-Spellbook allows you to define complete type-safe API surfaces and connect them through various transports, enabling seamless transitions from local to distributed systems. Define once, run anywhere.
+## Quick Example: Chat API
 
 ```typescript
-// Define your API surface
-const todoBook = createSpellbook({
-  // Add a new todo
-  add: createSpell({
-    description: "Add a new todo",
+// Define your API with any Standard Schema library (Zod shown here)
+import { z } from "zod";
+import { createSpell, createSpellbook } from "@usirin/spellbook";
+
+const chatBook = createSpellbook({
+  sendMessage: createSpell({
+    description: "Send a message to a channel",
     parameters: z.object({
-      text: z.string()
+      channelID: z.string().uuid(),
+      content: z.string().min(1).max(2000),
+      mentions: z.array(z.string().uuid()).optional(),
+      attachments: z.array(z.object({
+        type: z.enum(["image", "file"]),
+        url: z.string().url(),
+        name: z.string(),
+      })).optional(),
     }),
-    execute: async ({ text }) => {
-      // Implementation details...
-      return { id: "123", text, completed: false };
+    result: z.object({
+      messageID: z.string().uuid(),
+      timestamp: z.string().datetime(),
+      status: z.enum(["sent", "delivered", "read"]),
+    }),
+    execute: async ({ channelID, content, mentions, attachments }) => {
+      // Implementation would send the message...
+      return {
+        messageID: crypto.randomUUID(),
+        timestamp: new Date().toISOString(),
+        status: "sent"
+      };
     }
   }),
   
-  // Toggle todo completion
-  toggle: createSpell({
-    description: "Toggle todo completion",
+  getMessages: createSpell({
+    description: "Get messages from a channel",
     parameters: z.object({
-      id: z.string()
+      channelID: z.string().uuid(),
+      limit: z.number().int().min(1).max(100).default(50),
+      before: z.string().uuid().optional(),
     }),
-    execute: async ({ id }) => {
-      // Implementation details...
-      return { id, completed: true };
+    result: z.object({
+      messages: z.array(z.object({
+        messageID: z.string().uuid(),
+        content: z.string(),
+        authorID: z.string().uuid(),
+        timestamp: z.string().datetime(),
+        edited: z.boolean(),
+      })),
+      hasMore: z.boolean(),
+    }),
+    execute: async ({ channelID, limit, before }) => {
+      // Implementation would fetch messages...
+      return {
+        messages: [{
+          messageID: crypto.randomUUID(),
+          content: "Hello world!",
+          authorID: crypto.randomUUID(),
+          timestamp: new Date().toISOString(),
+          edited: false,
+        }],
+        hasMore: false
+      };
     }
   })
 });
 
-// The type of your API surface
-type TodoAPI = typeof todoBook;
+export type ChatAPI = typeof chatBook;
 ```
 
-## Features
+### Use Directly (Same Process)
 
-- **Type-Safe API Surfaces**: Define your complete API with full TypeScript support
-- **Transport Agnostic**: Run the same API locally or remotely without changing code
-- **Progressive Enhancement**: Start with everything in-process, then scale as needed
-- **Flexible Implementation**: Use any serializable schema library (Zod, Valibot)
-- **Modern Architecture**: Built on Web Streams for efficient data flow
+```typescript
+// Execute in the same process
+import { execute } from "@usirin/spellbook";
+
+const result = await execute(chatBook, "sendMessage", {
+  channelID: "123e4567-e89b-12d3-a456-426614174000",
+  content: "Hello, world!"
+});
+```
+
+### Use Remotely (WebSocket)
+
+```typescript
+// Server
+const wss = new WebSocketServer({ port: 8080 });
+wss.on('connection', (ws) => {
+  serve(chatBook, createServerWebSocketTransport(ws));
+});
+
+// Client
+const ws = new WebSocket('ws://localhost:8080');
+ws.addEventListener('open', () => {
+  const chat = createSpellCaster<ChatAPI>({ 
+    transport: createClientWebSocketTransport(ws) 
+  });
+  
+  chat.cast("sendMessage", {
+    channelID: "123e4567-e89b-12d3-a456-426614174000",
+    content: "Hello from the client!"
+  }).then(console.log);
+});
+```
 
 ## Installation
 
 ```bash
-# Using npm
 npm install @usirin/spellbook
-
-# Using yarn
-yarn add @usirin/spellbook
-
-# Using pnpm
-pnpm add @usirin/spellbook
+# or: yarn add @usirin/spellbook
+# or: pnpm add @usirin/spellbook
 ```
 
-## Quick Start
+## Key Concepts
 
-### 1. Define your API surface
+- **Spells**: Individual operations with typed parameters and results
+- **Spellbooks**: Collections of spells that form a complete API surface
+- **Transports**: Communication channels (WebSocket, EventEmitter, etc.)
+- **SpellCaster**: Client for casting spells through a transport
 
-```typescript
-import { z } from "zod";
-import { createSpell, createSpellbook } from "@usirin/spellbook";
+## Features
 
-const counterBook = createSpellbook({
-  increment: createSpell({
-    description: "Increment the counter",
-    parameters: z.object({
-      amount: z.number().default(1)
-    }),
-    execute: async ({ amount }) => {
-      return { newValue: amount }; // Simplified example
-    }
-  }),
-  
-  decrement: createSpell({
-    description: "Decrement the counter",
-    parameters: z.object({
-      amount: z.number().default(1)
-    }),
-    execute: async ({ amount }) => {
-      return { newValue: -amount }; // Simplified example
-    }
-  })
-});
-
-// Export the type for client use
-export type CounterBook = typeof counterBook;
-```
-
-### 2. Local Development
-
-```typescript
-import { createEmitterPair } from "@usirin/spellbook/transports/emitter";
-import { serve } from "@usirin/spellbook/server";
-import { createSpellCaster } from "@usirin/spellbook/caster";
-import { counterBook } from "./counter";
-
-// Create transport pair
-const [clientEmitter, serverEmitter] = createEmitterPair();
-const clientTransport = createClientTransport(clientEmitter);
-const serverTransport = createServerTransport(serverEmitter);
-
-// Create server
-serve(counterBook, serverTransport);
-
-// Create client
-const counter = createSpellCaster<typeof counterBook>({
-  transport: clientTransport
-});
-
-// Use the API
-async function demo() {
-  const { newValue } = await counter.cast("increment", { amount: 5 });
-  console.log("New value:", newValue);
-}
-
-demo();
-```
-
-### 3. WebSocket Server
-
-```typescript
-import { WebSocketServer } from 'ws';
-import { createServerWebSocketTransport } from "@usirin/spellbook/transports/websocket";
-import { serve } from "@usirin/spellbook/server";
-
-const wss = new WebSocketServer({ port: 8080 });
-
-wss.on('connection', (ws) => {
-  const transport = createServerWebSocketTransport(ws);
-  serve(counterBook, transport);
-});
-```
-
-### 4. WebSocket Client
-
-```typescript
-import { createClientWebSocketTransport } from "@usirin/spellbook/transports/websocket";
-import { createSpellCaster } from "@usirin/spellbook/caster";
-
-const ws = new WebSocket('ws://localhost:8080');
-
-ws.addEventListener('open', () => {
-  const transport = createClientWebSocketTransport(ws);
-  const counter = createSpellCaster<CounterBook>({ 
-    transport 
-  });
-  
-  // Use the remote API with the same type safety
-  counter.cast("increment", { amount: 5 })
-    .then(({ newValue }) => console.log("New value:", newValue));
-});
-```
+- **Type Safety**: End-to-end TypeScript type safety across process boundaries
+- **Schema Validation**: [Standard Schema](https://standardschema.dev/) support for Zod, Valibot, ArkType, etc.
+- **Transport Agnostic**: Works with any transport (WebSocket, EventEmitter, or custom)
+- **Progressive Scaling**: Start with everything in-process, scale out as needed
 
 ## Documentation
 
-For more detailed documentation, please see:
-
-- [Getting Started Guide](./docs/getting-started.md)
-- [API Reference](./docs/api.md)
-- [Transport Protocol](./docs/transport-protocol.md)
-- [SpellCaster Documentation](./docs/spellcaster.md)
-- [SpellbookServer Documentation](./docs/spellbook-server.md)
-
-## Examples
-
-Check out the [examples directory](./examples) for complete working examples.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+See the [docs directory](./docs) for detailed documentation:
+- [Core Concepts](./docs/core-concepts.md)
+- [API Reference](./docs/api-reference.md)
+- [Transports](./docs/transports.md)
+- [Schema Validation](./docs/schema-validation.md)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+[MIT](LICENSE)
