@@ -35,7 +35,7 @@ describe("struct", () => {
 	});
 
 	it("should only work with object schemas", () => {
-		// @ts-expect-error
+		// @ts-expect-error -- should only accept object schemas
 		const createUser = struct("user", z.string());
 		expect(() => createUser({name: "John Doe"})).toThrow();
 	});

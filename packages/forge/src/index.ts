@@ -79,8 +79,7 @@ export function factory<Tag extends string, CustomProps, Args extends any[]>(
 	});
 }
 
-// biome-ignore lint/complexity/noBannedTypes: i want empty object
-type EmptyObject = {};
+type EmptyObject = {[key: string]: any};
 
 /**
  * Creates a factory function that produces tagged entities with additional properties.
