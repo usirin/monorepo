@@ -1,6 +1,7 @@
 import {PlusIcon} from "@radix-ui/react-icons";
-import {Button, Card, Code, Flex, IconButton, Inset, Text, Tooltip} from "@radix-ui/themes";
-import {spellbook, useStudioManager} from "./studio-manager";
+import {Card, Code, Flex, IconButton, Text, Tooltip} from "@radix-ui/themes";
+import {execute} from "@usirin/spellbook";
+import {newSpellbook, useStudioManager} from "./studio-manager";
 
 export function Menubar() {
 	// Use separate selectors for primitives to avoid object creation
@@ -30,11 +31,11 @@ export function Menubar() {
 						<IconButton
 							key={workspace.id}
 							variant={workspace.id === studio.state.activeWorkspace ? "solid" : "soft"}
-							onClick={() => spellbook.execute("workspace:set-active", {id: workspace.id})}
+							onClick={() => execute(newSpellbook, "workspace:set-active", {id: workspace.id})}
 							onAuxClick={(e) => {
 								if (e.button === 1) {
 									e.preventDefault();
-									spellbook.execute("workspace:remove", {id: workspace.id});
+									execute(newSpellbook, "workspace:remove", {id: workspace.id});
 								}
 							}}
 							size="1"
@@ -49,7 +50,7 @@ export function Menubar() {
 				))}
 				<IconButton
 					variant="surface"
-					onClick={() => spellbook.execute("workspace:create")}
+					onClick={() => execute(newSpellbook, "workspace:create", undefined)}
 					style={{width: 20, height: 20}}
 					size="1"
 					color="gray"

@@ -1,7 +1,7 @@
 "use client";
 
 import {Text} from "@radix-ui/themes";
-import {execute} from "@usirin/spellbook/spellbook";
+import {execute} from "@usirin/spellbook";
 import {type Workspace, getActiveWorkspace} from "@usirin/studio";
 import {useEffect} from "react";
 import {Panel} from "~/studio/panel";
@@ -42,7 +42,7 @@ export function WorkspaceContainer({workspace}: {workspace: Workspace}) {
 		});
 
 		runekeeper.map("normal", "|", () => {
-			execute(newSpellbook, "window:split-vertical", {});
+			execute(newSpellbook, "window:split-vertical", undefined);
 		});
 
 		runekeeper.map("normal", "<c-j>", () => {
@@ -50,15 +50,15 @@ export function WorkspaceContainer({workspace}: {workspace: Workspace}) {
 		});
 
 		runekeeper.map("normal", "<c-k>", () => {
-			execute(newSpellbook, "window:focus-up", {});
+			execute(newSpellbook, "window:focus-up", undefined);
 		});
 
 		runekeeper.map("normal", "<c-l>", () => {
-			execute(newSpellbook, "window:focus-right", {});
+			execute(newSpellbook, "window:focus-right", undefined);
 		});
 
 		runekeeper.map("normal", "<c-h>", () => {
-			execute(newSpellbook, "window:focus-left", {});
+			execute(newSpellbook, "window:focus-left", undefined);
 		});
 
 		return () => {
