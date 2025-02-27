@@ -1,4 +1,6 @@
+import type {StandardSchemaV1 as StandardV1} from "@standard-schema/spec";
 import {b58} from "./id";
+import {validateSync} from "./validate";
 
 /**
  * Represents a uniquely identifiable entity with a type tag
@@ -74,5 +76,37 @@ export function factory<Tag extends string, CustomProps, Args extends any[]>(
 	return (...args: Args): Entity<Tag> & CustomProps => ({
 		...entity(tag),
 		...customPropsFactory(...args),
+	});
+}
+
+type EmptyObject = {[key: string]: any};
+
+/**
+ * Creates a factory function that produces tagged entities with additional properties.
+ * Combines a basic entity (tag + id) with custom properties.
+ *
+ * @example
+ * ```ts
+ * // Define a factory for creating users
+ * import {z} from 'zod';
+ * import * as v from 'valibot';
+ * // with zod
+ * const createUser = struct('user', z.object({name: z.string()}));
+ *
+ * // with valibot
+ * const createUser = struct('user', v.object({name: v.string()}));
+ *
+ * // Create a user with the factory
+ * const user = createUser({name: 'John'});
+ * // Result: { tag: 'user', id: 'user_x7f2k...', name: 'John' }
+ * ```
+ */
+export function struct<Tag extends string, T extends StandardV1<EmptyObject, EmptyObject>>(
+	tag: Tag,
+	schema: T,
+) {
+	return factory(tag, (parameters: StandardV1.InferInput<T>) => {
+		const result = validateSync(schema, parameters);
+		return result;
 	});
 }

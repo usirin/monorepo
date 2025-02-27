@@ -15,6 +15,9 @@ catalogs:
     '@rslib/core':
       specifier: 0.4.1
       version: 0.4.1
+    '@standard-schema/spec':
+      specifier: 1.0.0
+      version: 1.0.0
     '@types/ws':
       specifier: 8.5.14
       version: 8.5.14
@@ -71,6 +74,9 @@ importers:
 
   packages/forge:
     dependencies:
+      '@standard-schema/spec':
+        specifier: 'catalog:'
+        version: 1.0.0
       base-x:
         specifier: ^4.0.0
         version: 4.0.0
@@ -81,6 +87,9 @@ importers:
       '@types/bun':
         specifier: latest
         version: 1.2.3
+      zod:
+        specifier: 'catalog:'
+        version: 3.24.2
 
   packages/layout-tree:
     dependencies:
@@ -167,7 +176,7 @@ importers:
   packages/spellbook:
     dependencies:
       '@standard-schema/spec':
-        specifier: ^1.0.0
+        specifier: 'catalog:'
         version: 1.0.0
       '@usirin/forge':
         specifier: 'workspace:'

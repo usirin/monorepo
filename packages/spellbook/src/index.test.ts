@@ -3,7 +3,7 @@ import {z} from "zod";
 import {createSpellCaster} from "./caster";
 import {createSpellbookServer} from "./server";
 import {createSpell, createSpellbook} from "./spellbook";
-import * as Transport from "./transport";
+
 import {
 	createClientTransport,
 	createEmitterPair,

@@ -1,5 +1,6 @@
 import {describe, expect, it} from "bun:test";
-import {type Ref, factory} from ".";
+import {z} from "zod";
+import {type Ref, factory, struct} from ".";
 
 describe("factory", () => {
 	it("should work", () => {
@@ -23,5 +24,19 @@ describe("relationships", () => {
 		const comment = createComment(post.id, "Great post!");
 		expect(comment.postID).toEqual(post.id);
 		expect(comment.text).toEqual("Great post!");
+	});
+});
+
+describe("struct", () => {
+	it("should work", async () => {
+		const createUser = struct("user", z.object({name: z.string()}));
+		const user = createUser({name: "John Doe"});
+		expect(user.name).toEqual("John Doe");
+	});
+
+	it("should only work with object schemas", () => {
+		// @ts-expect-error -- should only accept object schemas
+		const createUser = struct("user", z.string());
+		expect(() => createUser({name: "John Doe"})).toThrow();
 	});
 });

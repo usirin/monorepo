@@ -18,10 +18,12 @@
 		"test": "bun test"
 	},
 	"dependencies": {
-		"base-x": "^4.0.0"
+		"base-x": "^4.0.0",
+		"@standard-schema/spec": "catalog:"
 	},
 	"devDependencies": {
 		"@rslib/core": "catalog:",
-		"@types/bun": "latest"
+		"@types/bun": "latest",
+		"zod": "catalog:"
 	}
 }
