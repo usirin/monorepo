@@ -12,7 +12,7 @@ import {produce} from "immer";
  * @returns A new workspace instance
  */
 export const createWorkspace = factory("workspace", () => ({
-	layout: Layout.createTree(Layout.createStack("vertical", [Layout.createWindow("scratch")])),
+	layout: Layout.createTree(Layout.createStack("vertical", [Layout.createWindow("chat")])),
 	focused: [0],
 }));
 

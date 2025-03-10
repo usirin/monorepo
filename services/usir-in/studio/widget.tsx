@@ -1,4 +1,5 @@
 import {FlowManager, useStore as useFlowStore} from "~/flow/manager";
+import {Chat} from "./widgets/VercelChat";
 import {Counter, useStore as useCounterStore} from "./widgets/Counter";
 import {Scratch, useStore as useScratchStore} from "./widgets/Scratch";
 import {ThemePanel as ThemeSettings} from "./widgets/ThemeSettings";
@@ -13,6 +14,7 @@ const widgets = {
 	"theme-settings": {useStore: useScratchStore, Component: () => <ThemeSettings />},
 	time: {useStore: useTimeStore, Component: () => <Time />},
 	flow: {useStore: useFlowStore, Component: () => <FlowManager />},
+	chat: {useStore: useScratchStore, Component: () => <Chat />},
 };
 
 export type WidgetID = keyof typeof widgets;
