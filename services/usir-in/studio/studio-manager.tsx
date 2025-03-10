@@ -1,5 +1,5 @@
-import {findSibling, findWindowPath} from "@usirin/layout-tree";
-import {createSpell, createSpellbook} from "@usirin/spellbook/spellbook";
+import {type Window, findSibling, findWindowPath} from "@usirin/layout-tree";
+import {createSpell, createSpellbook, execute} from "@usirin/spellbook/spellbook";
 import {
 	type Studio,
 	addWorkspace,
@@ -11,11 +11,14 @@ import {
 	removeWorkspace,
 	setActiveWorkspace,
 	splitWindow,
+	updateWindow,
 } from "@usirin/studio";
 import {z} from "zod";
 import {create} from "zustand";
 import {createJSONStorage, devtools, persist} from "zustand/middleware";
 import {immer} from "zustand/middleware/immer";
+import type {WidgetID} from "./widget";
+import {widgets} from "./widgets";
 
 interface StudioState {
 	state: Studio;
@@ -202,6 +205,87 @@ export const newSpellbook = createSpellbook({
 				const workspace = getActiveWorkspace(studio.state);
 				if (!workspace) return studio;
 				studio.state.workspaces[workspace.id] = focusWindow(workspace, path);
+			});
+		},
+	}),
+	"widget:list": createSpell({
+		description: "List all available widgets",
+		parameters: z.void(),
+		result: z.any(),
+		execute: async (_params) => {
+			return createSpellbook({
+				"widget:counter": createSpell({
+					description: "Information about counter widget",
+					parameters: z.void(),
+					result: z.void(),
+					execute: async () => {
+						useStudioManager.setState((studio) => {
+							const workspace = getActiveWorkspace(studio.state);
+							if (!workspace) return studio;
+
+							studio.state.workspaces[workspace.id] = updateWindow(
+								workspace,
+								workspace.focused,
+								"counter",
+							);
+							return studio;
+						});
+					},
+				}),
+				"widget:time": createSpell({
+					description: "Information about time widget",
+					parameters: z.void(),
+					result: z.void(),
+					execute: async () => {
+						useStudioManager.setState((studio) => {
+							const workspace = getActiveWorkspace(studio.state);
+							if (!workspace) return studio;
+
+							studio.state.workspaces[workspace.id] = updateWindow(
+								workspace,
+								workspace.focused,
+								"time",
+							);
+							return studio;
+						});
+					},
+				}),
+				"widget:scratch": createSpell({
+					description: "Information about scratch widget",
+					parameters: z.void(),
+					result: z.void(),
+					execute: async () => {
+						useStudioManager.setState((studio) => {
+							const workspace = getActiveWorkspace(studio.state);
+							if (!workspace) return studio;
+
+							studio.state.workspaces[workspace.id] = updateWindow(
+								workspace,
+								workspace.focused,
+								"scratch",
+							);
+							return studio;
+						});
+					},
+				}),
+				"widget:flow": createSpell({
+					description: "render flow widget",
+					parameters: z.void(),
+					result: z.void(),
+					execute: async () => {
+						useStudioManager.setState((studio) => {
+							const workspace = getActiveWorkspace(studio.state);
+							if (!workspace) return studio;
+
+							studio.state.workspaces[workspace.id] = updateWindow(
+								workspace,
+								workspace.focused,
+								"flow",
+							);
+							return studio;
+						});
+					},
+				}),
 			});
 		},
 	}),

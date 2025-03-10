@@ -1,4 +1,4 @@
-import {Box, Card, type CardProps, Flex, Inset, ScrollArea, Text} from "@radix-ui/themes";
+import {Box, Card, type CardProps, Flex, Inset, ScrollArea} from "@radix-ui/themes";
 import React from "react";
 
 function InsetAll({children}: {children: React.ReactNode}) {
@@ -43,9 +43,7 @@ export function PanelHeader({
 }: {isSelected?: boolean; children: React.ReactNode}) {
 	return (
 		<Box px="2" py="1" style={{backgroundColor: "var(--color-surface)"}}>
-			<Text size="1" truncate>
-				{children}
-			</Text>
+			{children}
 		</Box>
 	);
 }
