@@ -9,7 +9,7 @@ import {WorkspaceContainer} from "~/workspace/container";
 import {Menubar} from "./menubar";
 import {RunekeeperContextManager, useRunekeeper} from "./runekeeper-manager";
 import {Statusbar} from "./statusbar";
-import {useStudioManager} from "./studio-manager";
+import {newSpellbook, useStudioManager} from "./studio-manager";
 
 // TODO: move this to studio-manager state
 const useSpellbookState = create<{open: boolean; setOpen: (open: boolean) => void}>()((set) => ({
@@ -38,7 +38,7 @@ function Spellbook() {
 				<Dialog.Title>Command Palette</Dialog.Title>
 			</VisuallyHidden>
 			<Dialog.Content size="1" maxHeight="400px" aria-describedby={undefined}>
-				<CommandPalette onSelect={() => setOpen(false)} />
+				<CommandPalette onSelect={() => setOpen(false)} spellbook={newSpellbook} />
 			</Dialog.Content>
 		</Dialog.Root>
 	);
