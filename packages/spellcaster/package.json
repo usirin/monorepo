@@ -1,0 +1,55 @@
+{
+	"name": "@usirin/spellcaster",
+	"version": "0.0.0",
+	"description": "Remote execution of spells defined in spellbooks",
+	"type": "module",
+	"private": false,
+	"exports": {
+		".": {
+			"types": "./dist/src/index.d.ts",
+			"default": "./dist/index.js"
+		},
+		"./caster": {
+			"types": "./dist/src/caster.d.ts",
+			"default": "./dist/caster.js"
+		},
+		"./server": {
+			"types": "./dist/src/server.d.ts",
+			"default": "./dist/server.js"
+		},
+		"./transport": {
+			"types": "./dist/src/transport.d.ts",
+			"default": "./dist/transport.js"
+		},
+		"./transports/emitter": {
+			"types": "./dist/src/transports/emitter.d.ts",
+			"default": "./dist/transports/emitter.js"
+		},
+		"./transports/websocket": {
+			"types": "./dist/src/transports/websocket.d.ts",
+			"default": "./dist/transports/websocket.js"
+		}
+	},
+	"files": ["dist", "README.md", "LICENSE"],
+	"keywords": ["rpc", "typescript", "typesafe", "api", "remote", "transport", "websocket"],
+	"scripts": {
+		"build": "rslib build",
+		"dev": "rslib build --watch",
+		"test": "bun test"
+	},
+	"dependencies": {
+		"@standard-schema/spec": "catalog:",
+		"@usirin/forge": "workspace:*",
+		"@usirin/spellbook": "workspace:*",
+		"ws": "catalog:"
+	},
+	"devDependencies": {
+		"@rslib/core": "catalog:",
+		"@types/bun": "latest",
+		"@types/ws": "catalog:",
+		"zod": "catalog:"
+	},
+	"peerDependencies": {
+		"typescript": "catalog:"
+	}
+}

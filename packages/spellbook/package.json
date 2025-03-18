@@ -12,42 +12,10 @@
 		"./spellbook": {
 			"types": "./dist/src/spellbook.d.ts",
 			"default": "./dist/spellbook.js"
-		},
-		"./caster": {
-			"types": "./dist/src/caster.d.ts",
-			"default": "./dist/caster.js"
-		},
-		"./server": {
-			"types": "./dist/src/server.d.ts",
-			"default": "./dist/server.js"
-		},
-		"./transport": {
-			"types": "./dist/src/transport.d.ts",
-			"default": "./dist/transport.js"
-		},
-		"./transports/emitter": {
-			"types": "./dist/src/transports/emitter.d.ts",
-			"default": "./dist/transports/emitter.js"
-		},
-		"./transports/websocket": {
-			"types": "./dist/src/transports/websocket.d.ts",
-			"default": "./dist/transports/websocket.js"
 		}
 	},
-	"files": [
-		"dist",
-		"README.md",
-		"LICENSE"
-	],
-	"keywords": [
-		"api",
-		"typescript",
-		"typesafe",
-		"rpc",
-		"transport",
-		"websocket",
-		"communication"
-	],
+	"files": ["dist", "README.md", "LICENSE"],
+	"keywords": ["api", "typescript", "typesafe", "rpc", "transport", "websocket", "communication"],
 	"scripts": {
 		"build": "rslib build",
 		"dev": "rslib build --watch",
@@ -56,14 +24,12 @@
 	"dependencies": {
 		"@standard-schema/spec": "catalog:",
 		"@usirin/forge": "workspace:",
-		"ws": "catalog:",
 		"zod": "catalog:"
 	},
 	"devDependencies": {
 		"@rslib/core": "catalog:",
 		"@types/bun": "latest",
-		"@types/ws": "catalog:",
-		"valibot": "1.0.0-rc.0"
+		"valibot": "catalog:"
 	},
 	"peerDependencies": {
 		"typescript": "catalog:"
