@@ -1,5 +1,5 @@
 import {factory} from "@usirin/forge";
-import type {Spellbook} from "./spellbook";
+import type {Spellbook} from "@usirin/spellbook";
 import {type ServerTransport, createSpellbookStream} from "./transport";
 
 /**

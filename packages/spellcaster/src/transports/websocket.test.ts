@@ -1,9 +1,9 @@
 import {afterAll, beforeAll, describe, expect, it} from "bun:test";
+import {createSpell, createSpellbook} from "@usirin/spellbook";
 import {WebSocket, WebSocketServer} from "ws";
 import {z} from "zod";
 import {cast} from "../caster";
 import {serve} from "../server";
-import {createSpell, createSpellbook} from "../spellbook";
 import {createClientWebSocketTransport, createServerWebSocketTransport} from "./websocket";
 
 const spellbook = createSpellbook({

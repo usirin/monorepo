@@ -1,8 +1,8 @@
 import {describe, expect, it} from "bun:test";
 import {EventEmitter} from "node:events";
+import {createSpell, createSpellbook} from "@usirin/spellbook";
 import {z} from "zod";
 import {serve} from "./server";
-import {createSpell, createSpellbook} from "./spellbook";
 import * as Transport from "./transport";
 
 describe("Transport", () => {

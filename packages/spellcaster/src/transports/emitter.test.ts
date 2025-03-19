@@ -1,8 +1,8 @@
 import {describe, expect, it} from "bun:test";
+import {createSpell, createSpellbook} from "@usirin/spellbook";
 import {z} from "zod";
 import {cast} from "../caster";
 import {serve} from "../server";
-import {createSpell, createSpellbook} from "../spellbook";
 import {createClientTransport, createEmitterPair, createServerTransport} from "./emitter";
 
 const spellbook = createSpellbook({
