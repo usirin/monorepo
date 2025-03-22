@@ -1,17 +1,25 @@
 {
 	"name": "@usirin/forge",
-	"version": "0.0.0",
+	"version": "0.1.0",
+	"description": "A library for creating and managing type-safe entities",
 	"type": "module",
 	"private": false,
 	"exports": {
 		".": {
 			"types": "./dist/src/index.d.ts",
-			"import": "./dist/index.js"
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
 		}
 	},
+	"main": "./dist/index.cjs",
 	"module": "./dist/index.js",
 	"types": "./dist/src/index.d.ts",
-	"files": ["dist"],
+	"files": ["dist", "README.md", "LICENSE"],
+	"homepage": "https://github.com/usirin/monorepo/packages/forge",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/usirin/monorepo"
+	},
 	"scripts": {
 		"build": "rslib build",
 		"dev": "rslib build --watch",
