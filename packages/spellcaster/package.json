@@ -1,41 +1,55 @@
 {
+	"$schema": "https://json.schemastore.org/package",
 	"name": "@usirin/spellcaster",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "Remote execution of spells defined in spellbooks",
 	"type": "module",
 	"private": false,
 	"exports": {
 		".": {
 			"types": "./dist/src/index.d.ts",
-			"default": "./dist/index.js"
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
 		},
 		"./caster": {
 			"types": "./dist/src/caster.d.ts",
-			"default": "./dist/caster.js"
+			"import": "./dist/caster.js",
+			"require": "./dist/caster.cjs"
 		},
 		"./server": {
 			"types": "./dist/src/server.d.ts",
-			"default": "./dist/server.js"
+			"import": "./dist/server.js",
+			"require": "./dist/server.cjs"
 		},
 		"./transport": {
 			"types": "./dist/src/transport.d.ts",
-			"default": "./dist/transport.js"
+			"import": "./dist/transport.js",
+			"require": "./dist/transport.cjs"
 		},
 		"./transports/emitter": {
 			"types": "./dist/src/transports/emitter.d.ts",
-			"default": "./dist/transports/emitter.js"
+			"import": "./dist/transports/emitter.js",
+			"require": "./dist/transports/emitter.cjs"
 		},
 		"./transports/websocket": {
 			"types": "./dist/src/transports/websocket.d.ts",
-			"default": "./dist/transports/websocket.js"
+			"import": "./dist/transports/websocket.js",
+			"require": "./dist/transports/websocket.cjs"
 		}
+	},
+	"homepage": "https://github.com/usirin/monorepo/packages/spellcaster",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/usirin/monorepo"
 	},
 	"files": ["dist", "README.md", "LICENSE"],
 	"keywords": ["rpc", "typescript", "typesafe", "api", "remote", "transport", "websocket"],
 	"scripts": {
 		"build": "rslib build",
 		"dev": "rslib build --watch",
-		"test": "bun test"
+		"test": "bun test",
+		"prepublishOnly": "pnpm build"
 	},
 	"dependencies": {
 		"@standard-schema/spec": "catalog:",
