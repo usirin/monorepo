@@ -182,7 +182,7 @@ importers:
         specifier: 'catalog:'
         version: 1.0.0
       '@usirin/forge':
-        specifier: 'workspace:'
+        specifier: workspace:*
         version: link:../forge
       typescript:
         specifier: 'catalog:'
