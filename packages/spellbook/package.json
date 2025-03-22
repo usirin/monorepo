@@ -11,13 +11,13 @@
 	"exports": {
 		".": {
 			"types": "./dist/src/index.d.ts",
-			"default": "./dist/index.js",
-			"require": "./dist/index.cjs"
+			"require": "./dist/index.cjs",
+			"default": "./dist/index.js"
 		},
 		"./spellbook": {
 			"types": "./dist/src/spellbook.d.ts",
-			"default": "./dist/spellbook.js",
-			"require": "./dist/spellbook.cjs"
+			"require": "./dist/spellbook.cjs",
+			"default": "./dist/spellbook.js"
 		}
 	},
 	"files": ["dist", "README.md", "LICENSE"],
