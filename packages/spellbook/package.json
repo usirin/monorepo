@@ -12,12 +12,12 @@
 		".": {
 			"types": "./dist/src/index.d.ts",
 			"require": "./dist/index.cjs",
-			"default": "./dist/index.js"
+			"import": "./dist/index.js"
 		},
 		"./spellbook": {
 			"types": "./dist/src/spellbook.d.ts",
 			"require": "./dist/spellbook.cjs",
-			"default": "./dist/spellbook.js"
+			"import": "./dist/spellbook.js"
 		}
 	},
 	"files": ["dist", "README.md", "LICENSE"],
