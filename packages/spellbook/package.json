@@ -1,20 +1,30 @@
 {
 	"name": "@usirin/spellbook",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "Type-safe API surfaces that work across process boundaries",
 	"type": "module",
 	"private": false,
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/src/index.d.ts",
 	"exports": {
 		".": {
 			"types": "./dist/src/index.d.ts",
-			"default": "./dist/index.js"
+			"default": "./dist/index.js",
+			"require": "./dist/index.cjs"
 		},
 		"./spellbook": {
 			"types": "./dist/src/spellbook.d.ts",
-			"default": "./dist/spellbook.js"
+			"default": "./dist/spellbook.js",
+			"require": "./dist/spellbook.cjs"
 		}
 	},
 	"files": ["dist", "README.md", "LICENSE"],
+	"homepage": "https://github.com/usirin/monorepo/packages/spellbook",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/usirin/monorepo"
+	},
 	"keywords": ["api", "typescript", "typesafe", "rpc", "transport", "websocket", "communication"],
 	"scripts": {
 		"build": "rslib build",
