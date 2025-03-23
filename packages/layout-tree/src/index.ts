@@ -5,7 +5,6 @@
 
 import {type Entity, factory} from "@usirin/forge";
 import {produce} from "immer";
-import get from "lodash.get";
 
 /** Represents the orientation of a stack of windows */
 export type Orientation = "horizontal" | "vertical";
@@ -95,12 +94,17 @@ export const createTree = factory("tree", (root?: Stack) => ({
  */
 export function getAt(stack: Stack, stackPath: StackPath): Stack | Window | null {
 	if (stackPath.length === 0) return stack;
-	const thing = get(
-		stack,
-		stackPath.flatMap((n) => ["children", n]),
-	);
 
-	return (thing as Stack | Window) ?? null;
+	let current: any = stack;
+	for (let i = 0; i < stackPath.length; i++) {
+		const index = stackPath[i];
+		if (!current.children || !current.children[index]) {
+			return null;
+		}
+		current = current.children[index];
+	}
+
+	return current as Stack | Window;
 }
 
 /**

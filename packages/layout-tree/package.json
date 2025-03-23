@@ -1,17 +1,28 @@
 {
+	"$schema": "https://json.schemastore.org/package",
 	"name": "@usirin/layout-tree",
-	"version": "0.1.0",
-	"private": false,
+	"version": "0.2.0",
+	"description": "Layout tree management for UI components",
 	"type": "module",
+	"private": false,
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/src/index.d.ts",
 	"exports": {
 		".": {
 			"types": "./dist/src/index.d.ts",
+			"require": "./dist/index.cjs",
 			"import": "./dist/index.js"
 		}
 	},
-	"module": "./dist/index.js",
-	"types": "./dist/src/index.d.ts",
-	"files": ["dist"],
+	"files": ["dist", "README.md"],
+	"homepage": "https://github.com/usirin/monorepo/packages/layout-tree",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/usirin/monorepo"
+	},
+	"keywords": ["layout", "tree", "ui", "components", "typescript"],
 	"scripts": {
 		"build": "rslib build",
 		"dev": "rslib build --watch",
@@ -19,13 +30,11 @@
 	},
 	"dependencies": {
 		"@usirin/forge": "workspace:*",
-		"immer": "catalog:",
-		"lodash.get": "^4.4.2"
+		"immer": "catalog:"
 	},
 	"devDependencies": {
 		"@rslib/core": "catalog:",
-		"@types/bun": "latest",
-		"@types/lodash.get": "^4.4.9"
+		"@types/bun": "latest"
 	},
 	"peerDependencies": {
 		"typescript": "catalog:"
