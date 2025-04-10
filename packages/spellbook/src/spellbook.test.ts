@@ -2,7 +2,7 @@ import {describe, expect, it} from "bun:test";
 import * as v from "valibot";
 import {z} from "zod";
 
-import {createSpell, createSpellbook, execute} from "./spellbook";
+import {createSpell, createSpellbook} from "./spellbook";
 
 describe("createSpell", () => {
 	it("works with zod", async () => {
@@ -28,7 +28,9 @@ describe("createSpell", () => {
 			},
 		});
 
-		expect(await frostbolt.execute({target: "enemy"})).toEqual({damage: 10, target: "enemy"});
+		const result = await frostbolt.execute({target: "enemy"});
+
+		expect(result).toEqual({damage: 10, target: "enemy"});
 	});
 });
 
@@ -57,13 +59,12 @@ describe("createSpellbook", () => {
 			fireball,
 		});
 
-		expect(await execute(spellbook, "frostbolt", {target: "enemy"})).toEqual({
-			damage: 10,
-			target: "enemy",
-		});
-		expect(await execute(spellbook, "fireball", {target: "enemy"})).toEqual({
-			damage: 20,
-			target: "enemy",
-		});
+		// Check if the direct execute works and infers the type correctly
+		const frostboltResult = await spellbook.execute("frostbolt", {target: "enemy"});
+		expect(frostboltResult).toEqual({damage: 10, target: "enemy"});
+
+		// Check the other spell
+		const fireballResult = await spellbook.execute("fireball", {target: "enemy"});
+		expect(fireballResult).toEqual({damage: 20, target: "enemy"});
 	});
 });

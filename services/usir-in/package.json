@@ -20,7 +20,7 @@
 		"@usirin/forge": "workspace:*",
 		"@usirin/layout-tree": "workspace:*",
 		"@usirin/runekeeper": "workspace:*",
-		"@usirin/spellbook": "workspace:*",
+		"@usirin/spellbook": "0.3.0",
 		"@usirin/studio": "workspace:*",
 		"@xstate/react": "catalog:",
 		"@xyflow/react": "^12.3.2",

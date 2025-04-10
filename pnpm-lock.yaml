@@ -204,8 +204,8 @@ importers:
         specifier: workspace:*
         version: link:../forge
       '@usirin/spellbook':
-        specifier: workspace:*
-        version: link:../spellbook
+        specifier: 0.3.0
+        version: 0.3.0(typescript@5.7.3)
       typescript:
         specifier: 'catalog:'
         version: 5.7.3
@@ -319,8 +319,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/runekeeper
       '@usirin/spellbook':
-        specifier: workspace:*
-        version: link:../../packages/spellbook
+        specifier: 0.3.0
+        version: 0.3.0(typescript@5.7.3)
       '@usirin/studio':
         specifier: workspace:*
         version: link:../../packages/studio
@@ -1954,6 +1954,14 @@ packages:
 
   '@types/ws@8.5.14':
     resolution: {integrity: sha512-bd/YFLW+URhBzMXurx7lWByOu+xzU9+kb3RboOteXYDfW+tr+JZa99OyNmPINEGB/ahzKrEuc8rcv4gnpJmxTw==}
+
+  '@usirin/forge@0.1.0':
+    resolution: {integrity: sha512-Mb3suEAj0N8UXVOt93gi1+cToZ8JYqareT67UqQLcjyLe1YVMOeMRqJzJZELc0eMvVXB7bVsE9EHsR1rB636xQ==}
+
+  '@usirin/spellbook@0.3.0':
+    resolution: {integrity: sha512-mFMYpw8lJECKOpfyUNxyt9cwlmVMHiZOioaJlw65AdOtrUcNy7GDp4LwQ44HeRuZo1QtBls8qUcy010SU2Vqcg==}
+    peerDependencies:
+      typescript: 5.7.3
 
   '@vue/compiler-core@3.5.13':
     resolution: {integrity: sha512-oOdAkwqUfW1WqpwSYJce06wvt6HljgY3fGeM9NcVA1HaYOij3mZG9Rkysn0OHuyUAGMbEbARIpsG+LPVlBJ5/Q==}
@@ -4848,6 +4856,17 @@ snapshots:
   '@types/ws@8.5.14':
     dependencies:
       '@types/node': 22.13.1
+
+  '@usirin/forge@0.1.0':
+    dependencies:
+      '@standard-schema/spec': 1.0.0
+      base-x: 4.0.0
+
+  '@usirin/spellbook@0.3.0(typescript@5.7.3)':
+    dependencies:
+      '@standard-schema/spec': 1.0.0
+      '@usirin/forge': 0.1.0
+      typescript: 5.7.3
 
   '@vue/compiler-core@3.5.13':
     dependencies:

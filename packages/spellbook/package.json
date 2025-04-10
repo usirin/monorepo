@@ -1,7 +1,7 @@
 {
 	"$schema": "https://json.schemastore.org/package",
 	"name": "@usirin/spellbook",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"description": "Type-safe API surfaces that work across process boundaries",
 	"type": "module",
 	"private": false,

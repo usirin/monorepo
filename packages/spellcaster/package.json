@@ -54,7 +54,7 @@
 	"dependencies": {
 		"@standard-schema/spec": "catalog:",
 		"@usirin/forge": "workspace:*",
-		"@usirin/spellbook": "workspace:*",
+		"@usirin/spellbook": "0.3.0",
 		"ws": "catalog:"
 	},
 	"devDependencies": {
