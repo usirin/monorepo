@@ -319,8 +319,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/runekeeper
       '@usirin/spellbook':
-        specifier: workspace:*
-        version: link:../../packages/spellbook
+        specifier: 0.3.0
+        version: 0.3.0(typescript@5.7.3)
       '@usirin/studio':
         specifier: workspace:*
         version: link:../../packages/studio
