@@ -128,12 +128,11 @@ export type TodoAPI = typeof todoAPI;
 Spellbook provides a simple execution model with full type safety:
 
 ```typescript
-import { execute } from "@usirin/spellbook";
 import { todoAPI } from "./todo-api";
 
 async function todoOperations() {
   // Add a new todo with validation
-  const newTodo = await execute(todoAPI, "todo:create", {
+  const newTodo = await todoAPI.execute("todo:create", {
     text: "Build an API with Spellbook",
   });
   
@@ -141,19 +140,19 @@ async function todoOperations() {
   console.log(`Created: ${newTodo.text} (${newTodo.id})`);
 
   // Toggle its completion status
-  const updated = await execute(todoAPI, "todo:toggle", {
+  const updated = await todoAPI.execute("todo:toggle", {
     id: newTodo.id,
     completed: true,
   });
   
   // Get all active todos
-  const { todos, activeCount } = await execute(todoAPI, "todo:list", {
+  const { todos, activeCount } = await todoAPI.execute("todo:list", {
     filter: "active",
   });
   
-  // Validation catches errors
+  // Validation catches errors automatically during execution
   try {
-    await execute(todoAPI, "todo:create", {
+    await todoAPI.execute("todo:create", {
       text: "", // Invalid: text must not be empty
     });
   } catch (error) {
@@ -250,7 +249,7 @@ Benefits of Standard Schema integration:
 
 - Use your preferred validation library
 - Full type inference for parameters and results
-- Runtime validation for both inputs and outputs
+- Runtime validation for both inputs and outputs, handled automatically within the spell's `execute` method
 - Consistent error handling
 
 ## Integration with Forge
@@ -267,7 +266,7 @@ Spellbook is designed around these core principles:
 
 - **Define Once, Use Anywhere**: Write your API definition in one place
 - **Type Safety First**: End-to-end type safety from definition to usage
-- **Schema Validation**: All inputs and outputs are validated for runtime safety
+- **Schema Validation**: Inputs and outputs are automatically validated within each spell execution for runtime safety
 - **Composable APIs**: Build complex operations from simple, reusable pieces
 
 ## Documentation
