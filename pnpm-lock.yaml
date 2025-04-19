@@ -178,9 +178,6 @@ importers:
       '@usirin/forge':
         specifier: workspace:*
         version: link:../forge
-      typescript:
-        specifier: 'catalog:'
-        version: 5.7.3
     devDependencies:
       '@rslib/core':
         specifier: 'catalog:'

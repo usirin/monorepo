@@ -1,15 +1,7 @@
 import type {StandardSchemaV1 as StandardV1} from "@standard-schema/spec";
 import {factory} from "@usirin/forge";
+import type {SpellSpec} from "./types";
 import {standardValidate} from "./validate-standard-schema";
-
-interface SpellSpec<TParamsSchema extends StandardV1, TResultSchema extends StandardV1> {
-	description: string;
-	parameters: TParamsSchema;
-	result: TResultSchema;
-	execute: (
-		parameters: StandardV1.InferOutput<TParamsSchema>,
-	) => Promise<StandardV1.InferOutput<TResultSchema>>;
-}
 
 export const createSpell = factory(
 	"spell",
