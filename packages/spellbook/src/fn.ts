@@ -34,20 +34,12 @@ export type Spell<
 	_tag: string;
 };
 
-export function createSpellbook<TSpells extends Record<string, Spell<any, any>>>(
-	spells: TSpells = {} as TSpells,
-) {
-	return <TName extends keyof TSpells>(
-		name: TName,
-		parameters: Parameters<TSpells[TName]>[0],
-	): Promise<StandardV1.InferOutput<TSpells[TName]["_spec"]["result"]>> => {
-		const spell = spells[name];
-		if (!spell) {
-			throw new Error(`Spell not found: ${name as string}`);
-		}
-
-		return spell(parameters);
-	};
+export function createSpellbook<TSpells extends Record<string, Spell<any, any>>>(spells: TSpells) {
+	return spells;
 }
 
-export type Spellbook = ReturnType<typeof createSpellbook>;
+export type Spellbook<
+	TSpells extends Record<string, Spell<any, any>> = Record<string, Spell<any, any>>,
+> = {
+	[K in keyof TSpells]: TSpells[K];
+};

@@ -59,25 +59,10 @@ describe("createSpellbook", () => {
 			fireball,
 		});
 
-		const frostboltResult = await spellbook("frostbolt", {target: "enemy"});
+		const frostboltResult = await spellbook.frostbolt({target: "enemy"});
 		expect(frostboltResult).toEqual({damage: 10, target: "enemy"});
 
-		const fireballResult = await spellbook("fireball", {target: "enemy"});
+		const fireballResult = await spellbook.fireball({target: "enemy"});
 		expect(fireballResult).toEqual({damage: 20, target: "enemy"});
-	});
-
-	it("throws an error when spell is not found", async () => {
-		const spellbook = createSpellbook({
-			frostbolt,
-		});
-
-		// Use try/catch to test for thrown error
-		try {
-			await spellbook("nonexistent" as any, {target: "enemy"});
-			// If we get here, the test should fail
-			expect(false).toBe(true);
-		} catch (error: any) {
-			expect(error.message).toBe("Spell not found: nonexistent");
-		}
 	});
 });
