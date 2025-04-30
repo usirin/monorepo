@@ -1,49 +1,89 @@
 import type {StandardSchemaV1 as StandardV1} from "@standard-schema/spec";
-import {factory} from "@usirin/forge";
 import type {SpellSpec} from "./types";
 import {standardValidate} from "./validate-standard-schema";
 
-export const createSpell = factory(
-	"spell",
-	<TParams extends StandardV1, TResult extends StandardV1>(spec: SpellSpec<TParams, TResult>) => {
-		return {
-			...spec,
-			execute: async (
-				parameters: StandardV1.InferInput<TParams>,
-			): Promise<StandardV1.InferOutput<TResult>> => {
-				const validatedParams = await standardValidate(spec.parameters, parameters);
+// Empty object schema for spells that don't need context
+export function createSpell<
+	TParams extends StandardV1,
+	TResult extends StandardV1,
+	TContext extends StandardV1,
+>(spec: SpellSpec<TParams, TResult, TContext>) {
+	const spell = async (
+		parameters: StandardV1.InferInput<TParams>,
+		context?: StandardV1.InferOutput<TContext>,
+	): Promise<StandardV1.InferOutput<TResult>> => {
+		const validatedParams = await standardValidate(spec.parameters, parameters);
 
-				const result = await spec.execute(validatedParams);
+		// Validate context against schema (or empty object schema if not provided)
+		const validatedContext = spec.context ? await standardValidate(spec.context, context) : {};
 
-				const validatedResult = await standardValidate(spec.result, result);
+		const result = await spec.execute(validatedParams, validatedContext);
 
-				return validatedResult;
-			},
-		};
-	},
-);
+		const validatedResult = await standardValidate(spec.result, result);
+
+		return validatedResult;
+	};
+
+	spell._spec = spec;
+	spell._tag = "spell";
+
+	return spell;
+}
 
 export type Spell<
 	TParamsSchema extends StandardV1 = StandardV1<any, any>,
 	TResultSchema extends StandardV1 = StandardV1<any, any>,
-> = ReturnType<typeof createSpell<TParamsSchema, TResultSchema>>;
+	TContextSchema extends StandardV1 = StandardV1<any, any>,
+> = {
+	(
+		parameters: StandardV1.InferInput<TParamsSchema>,
+		context?: StandardV1.InferOutput<TContextSchema>,
+	): Promise<StandardV1.InferOutput<TResultSchema>>;
+	_spec: SpellSpec<TParamsSchema, TResultSchema, TContextSchema>;
+	_tag: string;
+};
 
-export const createSpellbook = factory(
-	"spellbook",
-	<TSpells extends Record<string, Spell>>(spells: TSpells = {} as TSpells) => ({
-		spells,
-		execute: async <TSpellName extends keyof TSpells>(
-			name: TSpellName,
-			parameters: StandardV1.InferInput<TSpells[TSpellName]["parameters"]>,
-		): Promise<StandardV1.InferOutput<TSpells[TSpellName]["result"]>> => {
-			const spell = spells[name];
-			if (!spell) {
-				throw new Error(`Spell not found: ${name as string}`);
-			}
+// Helper type to extract context type from a Spell
+type ContextTypeOf<S> = S extends Spell<any, any, infer C> ? StandardV1.InferOutput<C> : never;
 
-			return spell.execute(parameters);
-		},
-	}),
-);
+// Convert union to intersection (used for deriving combined context type)
+type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) extends (x: infer I) => void
+	? I
+	: never;
 
-export type Spellbook = ReturnType<typeof createSpellbook>;
+// Derive combined context type from a record of spells
+export type DerivedContextType<TSpells extends Record<string, Spell<any, any, any>>> =
+	UnionToIntersection<ContextTypeOf<TSpells[keyof TSpells]>>;
+
+export function createSpellbook<
+	TSpells extends Record<string, Spell<any, any, any>>,
+	TContext extends Partial<DerivedContextType<TSpells>> = DerivedContextType<TSpells>,
+>(spells: TSpells, context: TContext = {} as TContext) {
+	const wrappedSpells: Record<string, any> = {};
+
+	for (const spellName in spells) {
+		const originalSpell = spells[spellName];
+
+		// Create a wrapped spell that automatically provides the context
+		const wrappedSpell = async (parameters: any): Promise<any> => {
+			return originalSpell(parameters, context);
+		};
+
+		// Preserve the spell metadata
+		wrappedSpell._spec = originalSpell._spec;
+		wrappedSpell._tag = originalSpell._tag;
+
+		wrappedSpells[spellName] = wrappedSpell;
+	}
+
+	return wrappedSpells as Spellbook<TSpells, TContext>;
+}
+
+export type Spellbook<
+	TSpells extends Record<string, Spell<any, any, any>> = Record<string, Spell<any, any, any>>,
+	TContext = DerivedContextType<TSpells>,
+> = {
+	[K in keyof TSpells]: (parameters: Parameters<TSpells[K]>[0]) => ReturnType<TSpells[K]>;
+} & {
+	_context: TContext;
+};
