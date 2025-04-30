@@ -1,6 +1,8 @@
 import type {StandardSchemaV1 as StandardV1} from "@standard-schema/spec";
-import {b58} from "./id";
+import {monotonicFactory} from "ulidx";
 import {validateSync} from "./validate";
+
+const ulid = monotonicFactory();
 
 /**
  * Represents a uniquely identifiable entity with a type tag
@@ -33,7 +35,8 @@ export type Ref<T extends Entity<string>> = T["id"];
  * // Result: 'user_x7f2k...'
  * ```
  */
-export const id = <Tag extends string>(prefix: Tag): `${Tag}_${string}` => `${prefix}_${b58()}`;
+export const id = <Tag extends string>(prefix: Tag): `${Tag}_${string}` =>
+	`${prefix}_${ulid(Date.now()).toLowerCase()}`;
 
 /**
  * Creates a basic entity with a tag and generated ID
