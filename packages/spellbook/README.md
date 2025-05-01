@@ -13,6 +13,7 @@ Spellbook lets you create type-safe APIs with full validation and error handling
 - **Validated**: Schema validation with any [Standard Schema](https://standardschema.dev/) compatible library
 - **Composable**: Build complex APIs from simple, reusable operations
 - **Consistent**: Standard patterns for defining and consuming APIs
+- **Context-Aware**: Share context across API operations
 
 ## Installation
 
@@ -29,7 +30,7 @@ Here's how to create a type-safe API for a TodoMVC application:
 
 ```typescript
 import { z } from "zod";
-import { createSpell, createSpellbook, execute } from "@usirin/spellbook";
+import { createSpell, createSpellbook } from "@usirin/spellbook";
 
 // 1. Define your Todo schema
 const TodoSchema = z.object({
@@ -39,125 +40,87 @@ const TodoSchema = z.object({
   createdAt: z.string().datetime(),
 });
 
-// 2. Create your API
-const todoAPI = createSpellbook({
-  // Get todos with filtering
-  "todo:list": createSpell({
-    description: "Get todos with optional filtering",
-    parameters: z.object({
-      filter: z.enum(["all", "active", "completed"]).default("all"),
-    }),
-    result: z.object({
-      todos: z.array(TodoSchema),
-      activeCount: z.number().int(),
-      totalCount: z.number().int(),
-    }),
-    execute: async ({ filter }) => {
-      // Implementation would query from database
-      const todos = [
-        { id: "abc-123", text: "Learn Spellbook", completed: true, createdAt: "2023-01-01T12:00:00Z" },
-        { id: "def-456", text: "Build TodoMVC API", completed: false, createdAt: "2023-01-02T12:00:00Z" },
-      ];
-
-      const filteredTodos = filter === "all" 
-        ? todos 
-        : filter === "active" ? todos.filter(t => !t.completed) : todos.filter(t => t.completed);
-
-      return {
-        todos: filteredTodos,
-        activeCount: todos.filter(t => !t.completed).length,
-        totalCount: todos.length,
-      };
-    }
-  }),
-
-  // Add a new todo
-  "todo:create": createSpell({
-    description: "Add a new todo item",
-    parameters: z.object({
-      text: z.string().min(1).max(200),
-    }),
-    result: TodoSchema,
-    execute: async ({ text }) => {
-      // Implementation would save to database
-      return {
-        id: crypto.randomUUID(),
-        text,
-        completed: false,
-        createdAt: new Date().toISOString(),
-      };
-    }
-  }),
-
-  // Toggle completion status
-  "todo:toggle": createSpell({
-    description: "Toggle a todo's completed status",
-    parameters: z.object({
-      id: z.string().uuid(),
-      completed: z.boolean(),
-    }),
-    result: TodoSchema,
-    execute: async ({ id, completed }) => {
-      // Implementation would update in database
-      return { id, text: "Example Todo", completed, createdAt: "2023-01-01T12:00:00Z" };
-    }
-  }),
-
-  // Other operations (simplified for brevity)
-  "todo:delete": createSpell({
-    description: "Delete a todo item",
-    parameters: z.object({ id: z.string().uuid() }),
-    result: z.object({ success: z.boolean() }),
-    execute: async ({ id }) => ({ success: true }),
-  }),
-
-  "todo:clearCompleted": createSpell({
-    description: "Clear all completed todos",
-    parameters: z.object({}),
-    result: z.object({ deletedCount: z.number().int() }),
-    execute: async () => ({ deletedCount: 2 }),
-  }),
+// 2. Define the context shared across all spells
+const contextSchema = z.object({
+  db: z.any(), // Your database connection
+  logger: z.any(), // Logging utilities
 });
 
-// 3. Export the API type for consumers
+// 3. Create your spells
+const listTodos = createSpell({
+  description: "Get all todo items",
+  parameters: z.object({}), // No parameters needed to list all
+  result: z.object({
+    todos: z.array(TodoSchema),
+  }),
+  context: contextSchema,
+  execute: async ({}, { db, logger }) => {
+    logger.info(`Listing all todos`);
+    // Implementation would query from database
+    const todos = [
+      { id: "abc-123", text: "Learn Spellbook", completed: true, createdAt: "2023-01-01T12:00:00Z" },
+      { id: "def-456", text: "Build TodoMVC API", completed: false, createdAt: "2023-01-02T12:00:00Z" },
+    ];
+
+    // Return all todos directly
+    return { todos };
+  }
+});
+
+const createTodo = createSpell({
+  description: "Add a new todo item",
+  parameters: z.object({
+    text: z.string().min(1).max(200),
+  }),
+  result: TodoSchema,
+  context: contextSchema,
+  execute: async ({ text }, { db, logger }) => {
+    logger.info(`Creating new todo: ${text}`);
+    // Implementation would save to database
+    return {
+      id: crypto.randomUUID(),
+      text,
+      completed: false,
+      createdAt: new Date().toISOString(),
+    };
+  }
+});
+
+// Spells for toggleTodo, deleteTodo, clearCompleted removed for brevity
+
+// 4. Create the shared context instance
+const context = {
+  db: { /* your database connection */ },
+  logger: {
+    info: (message) => console.log(`[INFO] ${message}`),
+    error: (message) => console.error(`[ERROR] ${message}`)
+  }
+};
+
+// 5. Create your API with context
+const todoAPI = createSpellbook({
+  listTodos,     // Use camelCase keys
+  createTodo,
+}, context);
+
+// 6. Export the API type for consumers
 export type TodoAPI = typeof todoAPI;
-```
-
-## Using Your API
-
-Spellbook provides a simple execution model with full type safety:
-
-```typescript
-import { todoAPI } from "./todo-api";
 
 async function todoOperations() {
   // Add a new todo with validation
-  const newTodo = await todoAPI.execute("todo:create", {
+  const newTodo = await todoAPI.createTodo({ // Use camelCase access
     text: "Build an API with Spellbook",
   });
   
   // TypeScript knows the exact shape of newTodo
   console.log(`Created: ${newTodo.text} (${newTodo.id})`);
 
-  // Toggle its completion status
-  const updated = await todoAPI.execute("todo:toggle", {
-    id: newTodo.id,
-    completed: true,
-  });
-  
-  // Get all active todos
-  const { todos, activeCount } = await todoAPI.execute("todo:list", {
-    filter: "active",
-  });
-  
-  // Validation catches errors automatically during execution
-  try {
-    await todoAPI.execute("todo:create", {
-      text: "", // Invalid: text must not be empty
-    });
-  } catch (error) {
-    console.error("Validation failed:", error);
-  }
+  // Get all todos
+  const { todos } = await todoAPI.listTodos({}); // Use camelCase access, no filter
+
+  console.log(`Fetched ${todos.length} todos.`);
+
+  // Examples for toggle, delete, validation removed for brevity
 }
 ```
 
@@ -167,7 +130,7 @@ Your API can be used in any JS/TS environment - frontend frameworks like React, 
 
 ### Spells
 
-A spell is a single API operation with parameters, result schema, and implementation:
+A spell is a single API operation with parameters, result schema, context, and implementation:
 
 ```typescript
 const getUserSpell = createSpell({
@@ -184,7 +147,11 @@ const getUserSpell = createSpell({
       avatarUrl: z.string().url().optional(),
     }),
   }),
-  execute: async ({ id }) => {
+  context: z.object({
+    db: z.any(),
+    authManager: z.any()
+  }),
+  execute: async ({ id }, { db, authManager }) => {
     // Implementation would fetch user from database
     return {
       id,
@@ -204,24 +171,74 @@ Key aspects of a spell:
 - **Description**: Human-readable description of what the operation does
 - **Parameters**: Input schema with validation rules
 - **Result**: Output schema defining the expected return type
+- **Context**: Shared resources and dependencies required by the spell
 - **Execute**: Implementation function that performs the operation
+
+### Context Handling
+
+Spellbook provides a robust system for managing shared context across your API:
+
+```typescript
+// Define context schema shared by multiple spells
+const apiContext = z.object({
+  db: z.any(),
+  logger: z.any(),
+  config: z.object({
+    apiVersion: z.string(),
+    maxItems: z.number()
+  })
+});
+
+// Create spells with the shared context
+const listItems = createSpell({
+  // ...other properties
+  context: apiContext,
+  execute: async (params, { db, logger, config }) => {
+    logger.info(`Listing items with max: ${config.maxItems}`);
+    // Implementation
+  }
+});
+
+// Create a context instance with actual dependencies
+const contextInstance = {
+  db: new Database(),
+  logger: new Logger(),
+  config: {
+    apiVersion: "v1",
+    maxItems: 100
+  }
+};
+
+// Create a spellbook with the context
+const api = createSpellbook({
+  listItems,
+  // ...other spells
+}, contextInstance);
+```
+
+The context is:
+- **Type-safe**: TypeScript infers and validates the context structure
+- **Automatic**: Provided to each spell without manually passing it
+- **Validated**: Context validation happens at runtime
+- **Shared**: Reuse the same dependencies across operations
 
 ### Spellbooks
 
-A spellbook is a collection of related spells forming a complete API surface:
+A spellbook is a collection of related spells forming a complete API surface with shared context:
 
 ```typescript
 const userAPI = createSpellbook({
-  "user:get": getUserSpell,
-  "user:create": createUserSpell,
-  "user:update": updateUserSpell,
-  "user:delete": deleteUserSpell,
-});
+  getUser: getUserSpell,
+  createUser: createUserSpell,
+  updateUser: updateUserSpell,
+  deleteUser: deleteUserSpell,
+}, contextInstance);
 ```
 
 Spellbooks allow you to:
 
 - Group related operations
+- Share context across operations
 - Export a single API type for consumers
 - Provide a unified interface for execution
 
@@ -252,29 +269,11 @@ Benefits of Standard Schema integration:
 - Runtime validation for both inputs and outputs, handled automatically within the spell's `execute` method
 - Consistent error handling
 
-## Integration with Forge
 
-Spellbook is built on [@usirin/forge](https://github.com/usirin/monorepo/tree/main/packages/forge) for entity creation, providing:
-
-- Unique identifiers for spells and spellbooks
-- Type-safe references between entities
-- Consistent structure for API components
-
-## Philosophy
-
-Spellbook is designed around these core principles:
-
-- **Define Once, Use Anywhere**: Write your API definition in one place
-- **Type Safety First**: End-to-end type safety from definition to usage
-- **Schema Validation**: Inputs and outputs are automatically validated within each spell execution for runtime safety
-- **Composable APIs**: Build complex operations from simple, reusable pieces
-
-## Documentation
-
-See the [docs directory](./docs) for detailed documentation:
-- [Core Concepts](./docs/core-concepts.md)
-- [API Reference](./docs/api-reference.md)
-- [Schema Validation](./docs/schema-validation.md)
+This type system enables:
+- Complete inference of parameter and result types
+- Automatic derivation of context types
+- Type-safe API consumption
 
 ## License
 
