@@ -1,6 +1,20 @@
 import type {StandardSchemaV1 as StandardV1} from "@standard-schema/spec";
-import type {SpellSpec} from "./types";
 import {standardValidate} from "./validate-standard-schema";
+
+export interface SpellSpec<
+	TParamsSchema extends StandardV1,
+	TResultSchema extends StandardV1,
+	TContextSchema extends StandardV1,
+> {
+	description: string;
+	parameters: TParamsSchema;
+	result: TResultSchema;
+	context: TContextSchema;
+	execute: (
+		parameters: StandardV1.InferOutput<TParamsSchema>,
+		context: StandardV1.InferOutput<TContextSchema>,
+	) => Promise<StandardV1.InferOutput<TResultSchema>>;
+}
 
 // Empty object schema for spells that don't need context
 export function createSpell<
@@ -10,12 +24,12 @@ export function createSpell<
 >(spec: SpellSpec<TParams, TResult, TContext>) {
 	const spell = async (
 		parameters: StandardV1.InferInput<TParams>,
-		context?: StandardV1.InferOutput<TContext>,
+		context: StandardV1.InferInput<TContext>,
 	): Promise<StandardV1.InferOutput<TResult>> => {
-		const validatedParams = await standardValidate(spec.parameters, parameters);
-
-		// Validate context against schema (or empty object schema if not provided)
-		const validatedContext = spec.context ? await standardValidate(spec.context, context) : {};
+		const [validatedParams, validatedContext] = await Promise.all([
+			standardValidate(spec.parameters, parameters),
+			standardValidate(spec.context, context),
+		]);
 
 		const result = await spec.execute(validatedParams, validatedContext);
 
@@ -37,14 +51,14 @@ export type Spell<
 > = {
 	(
 		parameters: StandardV1.InferInput<TParamsSchema>,
-		context?: StandardV1.InferOutput<TContextSchema>,
+		context: StandardV1.InferOutput<TContextSchema>,
 	): Promise<StandardV1.InferOutput<TResultSchema>>;
 	_spec: SpellSpec<TParamsSchema, TResultSchema, TContextSchema>;
 	_tag: string;
 };
 
 // Helper type to extract context type from a Spell
-type ContextTypeOf<S> = S extends Spell<any, any, infer C> ? StandardV1.InferOutput<C> : never;
+type ContextTypeOf<S> = S extends Spell<any, any, infer C> ? StandardV1.InferInput<C> : never;
 
 // Convert union to intersection (used for deriving combined context type)
 type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) extends (x: infer I) => void
@@ -57,8 +71,8 @@ export type DerivedContextType<TSpells extends Record<string, Spell<any, any, an
 
 export function createSpellbook<
 	TSpells extends Record<string, Spell<any, any, any>>,
-	TContext extends Partial<DerivedContextType<TSpells>> = DerivedContextType<TSpells>,
->(spells: TSpells, context: TContext = {} as TContext) {
+	TContext extends DerivedContextType<TSpells>,
+>(spells: TSpells, context: TContext) {
 	const wrappedSpells: Record<string, any> = {};
 
 	for (const spellName in spells) {

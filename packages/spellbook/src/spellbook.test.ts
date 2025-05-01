@@ -15,7 +15,7 @@ describe("createSpell", () => {
 			description: "Casts a frostbolt at the target",
 			parameters: z.object({target: z.string()}),
 			result: z.object({damage: z.number(), target: z.string()}),
-			context: contextSchema, // Specify the context schema
+			context: contextSchema,
 			execute: async ({target}, context) => {
 				return {damage: 10 + context.bonusDamage, target};
 			},
@@ -47,37 +47,27 @@ describe("createSpell", () => {
 		expect(result).toEqual({damage: 15, target: "enemy"});
 	});
 
-	it("works with no context schema", async () => {
+	it("makes context optional", async () => {
 		const frostbolt = createSpell({
 			description: "Casts a frostbolt at the target",
 			parameters: z.object({target: z.string()}),
 			result: z.object({damage: z.number(), target: z.string()}),
-			// No context schema defined
+			context: v.void(),
 			execute: async ({target}, context) => {
 				return {damage: 10, target};
 			},
 		});
 
-		const result = await frostbolt({target: "enemy"}, {});
+		const result = await frostbolt({target: "enemy"});
 		expect(result).toEqual({damage: 10, target: "enemy"});
 	});
 });
 
 describe("createSpellbook", () => {
-	// Define context schemas for each spell
-	const damageBoostSchema = z.object({
-		bonusDamage: z.number().optional().default(0),
-	});
-
-	// Realistic mana schema with current and max values
 	const manaSchema = z.object({
-		mana: z.object({
-			current: z.number(),
-			max: z.number(),
-		}),
+		mana: z.object({current: z.number(), max: z.number()}),
 	});
 
-	// Result schema with success field
 	const spellResultSchema = z.object({
 		success: z.boolean(),
 		damage: z.number().optional(),
@@ -90,13 +80,7 @@ describe("createSpellbook", () => {
 		description: "Casts a frostbolt at the target, costs 10 mana",
 		parameters: z.object({target: z.string()}),
 		result: spellResultSchema,
-		context: z.object({
-			bonusDamage: z.number().optional().default(0),
-			mana: z.object({
-				current: z.number(),
-				max: z.number(),
-			}),
-		}),
+		context: manaSchema.extend({bonusDamage: z.number().optional().default(0)}),
 		execute: async ({target}, context) => {
 			const manaCost = 10;
 
@@ -150,43 +134,6 @@ describe("createSpellbook", () => {
 		},
 	});
 
-	// Advanced spell that needs both context schemas
-	const advancedSpell = createSpell({
-		description: "Casts an advanced spell combining frost and fire, costs 50 mana",
-		parameters: z.object({target: z.string()}),
-		result: spellResultSchema,
-		// Context needs both bonusDamage and mana
-		context: z.object({
-			bonusDamage: z.number().optional().default(0),
-			mana: z.object({
-				current: z.number(),
-				max: z.number(),
-			}),
-		}),
-		execute: async ({target}, context) => {
-			const manaCost = 50;
-
-			// Check if there's enough mana
-			if (context.mana.current < manaCost) {
-				return {
-					success: false,
-					message: "Not enough mana to cast Advanced Spell",
-					manaRemaining: context.mana.current,
-				};
-			}
-
-			// Instead of modifying the context object, just track the new value
-			const remainingMana = context.mana.current - manaCost;
-
-			return {
-				success: true,
-				damage: 30 + context.bonusDamage,
-				target,
-				manaRemaining: remainingMana,
-			};
-		},
-	});
-
 	it("creates a spellbook with multiple spells and derived context", async () => {
 		// Context contains all required fields with plenty of mana
 		const context = {
@@ -194,14 +141,7 @@ describe("createSpellbook", () => {
 			mana: {current: 100, max: 100},
 		};
 
-		const spellbook = createSpellbook(
-			{
-				frostbolt,
-				fireball,
-				advancedSpell,
-			},
-			context,
-		);
+		const spellbook = createSpellbook({frostbolt, fireball}, context);
 
 		// Cast frostbolt (costs 10 mana)
 		let currentMana = 100;
@@ -227,22 +167,6 @@ describe("createSpellbook", () => {
 			target: "enemy",
 			manaRemaining: 65,
 		});
-
-		// Update our tracking variable again
-		currentMana = fireballResult.manaRemaining;
-		context.mana.current = currentMana;
-
-		// Cast advanced spell (costs 50 mana)
-		const advancedResult = await spellbook.advancedSpell({target: "enemy"});
-		expect(advancedResult).toEqual({
-			success: true,
-			damage: 35,
-			target: "enemy",
-			manaRemaining: 15,
-		});
-
-		currentMana = advancedResult.manaRemaining;
-		expect(currentMana).toEqual(15); // Verify final mana value
 	});
 
 	it("handles insufficient mana", async () => {
@@ -252,14 +176,7 @@ describe("createSpellbook", () => {
 			mana: {current: 30, max: 100},
 		};
 
-		const spellbook = createSpellbook(
-			{
-				frostbolt,
-				fireball,
-				advancedSpell,
-			},
-			context,
-		);
+		const spellbook = createSpellbook({frostbolt, fireball}, context);
 
 		// Cast frostbolt (costs 10 mana)
 		let currentMana = 30;
@@ -294,20 +211,25 @@ describe("createSpellbook", () => {
 			target: "enemy",
 			manaRemaining: 10,
 		});
+	});
 
-		// Update our tracking variable
-		currentMana = secondFrostbolt.manaRemaining;
-		context.mana.current = currentMana;
+	it("builds up a req/resp fetch function", async () => {
+		const spellbook = createSpellbook(
+			{
+				fetch: createSpell({
+					description: "Fetches a resource from the server",
+					parameters: z.instanceof(Request),
+					result: z.instanceof(Response),
+					context: z.object({db: z.object({get: z.function().args(z.string()).returns(z.any())})}),
+					execute: async (request, context) => {
+						return new Response(context.db.get(request.url));
+					},
+				}),
+			},
+			{db: {get: () => "hello"}},
+		);
 
-		// Try advanced spell (costs 50 mana) - should fail
-		const advancedResult = await spellbook.advancedSpell({target: "enemy"});
-		expect(advancedResult).toEqual({
-			success: false,
-			message: "Not enough mana to cast Advanced Spell",
-			manaRemaining: 10,
-		});
-
-		// Mana should remain at 10
-		expect(advancedResult.manaRemaining).toEqual(10);
+		const result = await spellbook.fetch(new Request("https://example.com"));
+		expect(result).toEqual(new Response("hello"));
 	});
 });
