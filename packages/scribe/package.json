@@ -1,0 +1,54 @@
+{
+	"$schema": "https://json.schemastore.org/package",
+	"name": "@usirin/scribe",
+	"version": "0.1.0",
+	"description": "An experiment to build a personal coding agent",
+	"type": "module",
+	"private": false,
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/src/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/src/index.d.ts",
+			"require": "./dist/index.cjs",
+			"import": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"homepage": "https://github.com/usirin/monorepo/packages/scribe",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/usirin/monorepo"
+	},
+	"keywords": [
+		"agent",
+		"ai",
+		"coding",
+		"typescript",
+		"javascript"
+	],
+	"scripts": {
+		"build": "rslib build",
+		"dev": "rslib build --watch",
+		"test": "bun test"
+	},
+	"dependencies": {
+		"@anthropic-ai/sdk": "^0.54.0",
+		"@inquirer/prompts": "^7.5.3",
+		"@usirin/forge": "workspace:*",
+		"@usirin/spellbook": "workspace:*",
+		"chalk": "^5.4.1",
+		"zod": "catalog:",
+		"zod-to-json-schema": "^3.24.5"
+	},
+	"devDependencies": {
+		"@rslib/core": "catalog:",
+		"@types/bun": "latest"
+	}
+}
