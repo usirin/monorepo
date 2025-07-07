@@ -1,9 +1,4 @@
-import {Box, Card, type CardProps, Flex, Inset, ScrollArea} from "@radix-ui/themes";
-import React from "react";
-
-function InsetAll({children}: {children: React.ReactNode}) {
-	return <Inset side="all">{children}</Inset>;
-}
+import {Box, Card, type CardProps, ScrollArea} from "@radix-ui/themes";
 
 export function PanelLayout({
 	header,
@@ -18,21 +13,25 @@ export function PanelLayout({
 	onClick?: () => void;
 	variant?: CardProps["variant"];
 }) {
-	const InsetComponent = variant === "ghost" ? React.Fragment : InsetAll;
-
 	return (
 		<Card
 			variant={variant}
 			onClick={onClick}
 			size="1"
-			style={{height: "100%", opacity: isSelected ? 1 : 0.65}}
+			style={{
+				height: "100%",
+				opacity: isSelected ? 1 : 0.65,
+				paddingLeft: 0,
+				paddingRight: 0,
+				paddingTop: 0,
+			}}
 		>
-			<InsetComponent>
-				<Flex direction="column" width="100%" height="100%">
-					{header}
-					<ScrollArea type="hover">{children}</ScrollArea>
-				</Flex>
-			</InsetComponent>
+			{header}
+			<ScrollArea type="hover" asChild>
+				<Box pl="2" pr="4" pt="1">
+					{children}
+				</Box>
+			</ScrollArea>
 		</Card>
 	);
 }
