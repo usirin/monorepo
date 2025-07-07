@@ -17,8 +17,7 @@ import type {
 	Viewport,
 } from "@xyflow/react";
 import {addEdge, applyEdgeChanges, applyNodeChanges} from "@xyflow/react";
-import omit from "lodash.omit";
-import {createJSONStorage, persist} from "zustand/middleware";
+import {persist} from "zustand/middleware";
 
 type CountNode = Node<{count: number; label: string}, "base">;
 

@@ -2,6 +2,7 @@
 
 import {useChat} from "@ai-sdk/react";
 import {TextField} from "@radix-ui/themes";
+import Markdown from "react-markdown";
 import {create} from "zustand";
 import {createJSONStorage, devtools, persist} from "zustand/middleware";
 import {immer} from "zustand/middleware/immer";
@@ -52,21 +53,25 @@ export function Chat() {
 	};
 
 	return (
-		<div>
+		<div style={{position: "relative"}}>
 			{messages.map((m) => (
 				<div key={m.id}>
-					{m.role === "user"
-						? "User: "
-						: m.role === "assistant"
-							? "AI: "
-							: m.role === "system"
-								? "System: "
-								: "Data: "}
-					{m.content}
+					<Markdown>
+						{(m.role === "user"
+							? "User: "
+							: m.role === "assistant"
+								? "AI: "
+								: m.role === "system"
+									? "System: "
+									: "Data: ") + m.content}
+					</Markdown>
 				</div>
 			))}
 
-			<form onSubmit={onSubmit}>
+			<form
+				onSubmit={onSubmit}
+				style={{position: "absolute", bottom: 0, right: 0, left: 0, backgroundColor: "black"}}
+			>
 				<TextField.Root value={input} placeholder="Say something..." onChange={onChange} />
 			</form>
 		</div>

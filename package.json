@@ -18,22 +18,11 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.7.3",
+		"@effect/language-service": "catalog:",
 		"turbo": "catalog:"
 	},
-	"trustedDependencies": [
-		"@biomejs/biome",
-		"@swc/core",
-		"es5-ext",
-		"esbuild"
-	],
+	"trustedDependencies": ["@biomejs/biome", "@swc/core", "es5-ext", "esbuild"],
 	"pnpm": {
-		"onlyBuiltDependencies": [
-			"@biomejs/biome",
-			"core-js",
-			"es5-ext",
-			"esbuild",
-			"sharp",
-			"workerd"
-		]
+		"onlyBuiltDependencies": ["@biomejs/biome", "core-js", "es5-ext", "esbuild", "sharp", "workerd"]
 	}
 }
