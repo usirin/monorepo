@@ -1,7 +1,7 @@
 "use client";
 
 import {useChat} from "@ai-sdk/react";
-import {Box, ScrollArea, TextField} from "@radix-ui/themes";
+import {TextField} from "@radix-ui/themes";
 import Markdown from "react-markdown";
 import {create} from "zustand";
 import {createJSONStorage, devtools, persist} from "zustand/middleware";
