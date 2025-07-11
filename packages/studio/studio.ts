@@ -1,6 +1,6 @@
-import {type Ref, factory} from "@usirin/forge";
+import {factory, type Ref} from "@usirin/forge";
 import {produce} from "immer";
-import {type Workspace, createWorkspace} from "./workspace";
+import {createWorkspace, type Workspace} from "./workspace";
 
 export const createStudio = factory(
 	"studio",

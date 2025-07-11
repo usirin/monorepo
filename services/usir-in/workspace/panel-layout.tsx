@@ -39,7 +39,10 @@ export function PanelLayout({
 export function PanelHeader({
 	children,
 	// isSelected,
-}: {isSelected?: boolean; children: React.ReactNode}) {
+}: {
+	isSelected?: boolean;
+	children: React.ReactNode;
+}) {
 	return (
 		<Box px="2" py="1" style={{backgroundColor: "var(--color-surface)"}}>
 			{children}

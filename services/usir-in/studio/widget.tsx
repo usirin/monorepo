@@ -1,9 +1,9 @@
 import {FlowManager, useStore as useFlowStore} from "~/flow/manager";
-import {Chat} from "./widgets/VercelChat";
 import {Counter, useStore as useCounterStore} from "./widgets/Counter";
 import {Scratch, useStore as useScratchStore} from "./widgets/Scratch";
 import {ThemePanel as ThemeSettings} from "./widgets/ThemeSettings";
 import {Time, useStore as useTimeStore} from "./widgets/Time";
+import {Chat} from "./widgets/VercelChat";
 
 const widgets = {
 	counter: {

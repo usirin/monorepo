@@ -1,8 +1,6 @@
 "use client";
 
 import {useCallbackRef} from "@radix-ui/react-use-callback-ref";
-import * as React from "react";
-
 import {
 	AccessibleIcon,
 	Box,
@@ -21,9 +19,10 @@ import {themePropDefs} from "@radix-ui/themes/dist/esm/components/theme.props.js
 import type {GetPropDefTypes} from "@radix-ui/themes/dist/esm/props/prop-def.js";
 import {
 	type ComponentPropsWithout,
-	type RemovedProps,
 	getMatchingGrayColor,
+	type RemovedProps,
 } from "@radix-ui/themes/helpers";
+import * as React from "react";
 
 interface ThemePanelProps extends Omit<ThemePanelImplProps, keyof ThemePanelImplPrivateProps> {
 	defaultOpen?: boolean;
@@ -91,8 +90,8 @@ const ThemePanelImpl = React.forwardRef<ThemePanelImplElement, ThemePanelImplPro
 		const autoMatchedGray = getMatchingGrayColor(accentColor);
 		const resolvedGrayColor = grayColor === "auto" ? autoMatchedGray : grayColor;
 
-		const [copyState, setCopyState] = React.useState<"idle" | "copying" | "copied">("idle");
-		async function handleCopyThemeConfig() {
+		const [_copyState, setCopyState] = React.useState<"idle" | "copying" | "copied">("idle");
+		async function _handleCopyThemeConfig() {
 			const theme = {
 				appearance: appearance === themePropDefs.appearance.default ? undefined : appearance,
 				accentColor: accentColor === themePropDefs.accentColor.default ? undefined : accentColor,

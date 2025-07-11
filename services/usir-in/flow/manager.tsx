@@ -2,9 +2,6 @@
 
 import {Background, Controls, Handle, Position, ReactFlow} from "@xyflow/react";
 import "@xyflow/react/dist/base.css";
-import {create} from "zustand";
-import {useShallow} from "zustand/react/shallow";
-
 import {Card} from "@radix-ui/themes";
 import type {
 	BuiltInNode,
@@ -17,7 +14,9 @@ import type {
 	Viewport,
 } from "@xyflow/react";
 import {addEdge, applyEdgeChanges, applyNodeChanges} from "@xyflow/react";
+import {create} from "zustand";
 import {persist} from "zustand/middleware";
+import {useShallow} from "zustand/react/shallow";
 
 type CountNode = Node<{count: number; label: string}, "base">;
 

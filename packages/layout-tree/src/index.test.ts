@@ -1,14 +1,14 @@
 import {describe, expect, it} from "bun:test";
 import {
-	type Stack,
-	type Window,
 	createStack,
 	createTree,
 	createWindow,
 	findSibling,
 	getAt,
 	remove,
+	type Stack,
 	split,
+	type Window,
 } from "./index";
 
 describe("getAt", () => {

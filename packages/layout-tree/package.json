@@ -15,14 +15,23 @@
 			"import": "./dist/index.js"
 		}
 	},
-	"files": ["dist", "README.md"],
+	"files": [
+		"dist",
+		"README.md"
+	],
 	"homepage": "https://github.com/usirin/monorepo/packages/layout-tree",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/usirin/monorepo"
 	},
-	"keywords": ["layout", "tree", "ui", "components", "typescript"],
+	"keywords": [
+		"layout",
+		"tree",
+		"ui",
+		"components",
+		"typescript"
+	],
 	"scripts": {
 		"build": "rslib build",
 		"dev": "rslib build --watch",

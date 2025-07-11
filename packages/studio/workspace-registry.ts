@@ -1,4 +1,4 @@
-import {type Ref, factory} from "@usirin/forge";
+import {factory, type Ref} from "@usirin/forge";
 import {enableMapSet, produce} from "immer";
 import type {Workspace} from "./workspace";
 

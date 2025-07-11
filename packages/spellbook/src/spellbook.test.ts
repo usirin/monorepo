@@ -53,7 +53,7 @@ describe("createSpell", () => {
 			parameters: z.object({target: z.string()}),
 			result: z.object({damage: z.number(), target: z.string()}),
 			context: v.void(),
-			execute: async ({target}, context) => {
+			execute: async ({target}, _context) => {
 				return {damage: 10, target};
 			},
 		});
