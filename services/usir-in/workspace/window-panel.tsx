@@ -3,7 +3,7 @@ import {execute} from "@usirin/spellbook";
 import {getActiveWorkspace} from "@usirin/studio";
 import {MemoryRouter, Route, Routes} from "react-router";
 import {newSpellbook, useStudioManager} from "~/studio/studio-manager";
-import {type WidgetID, renderWidget} from "~/studio/widget";
+import {renderWidget, type WidgetID} from "~/studio/widget";
 import {PanelHeader, PanelLayout} from "./panel-layout";
 
 // TODO: make this work with react-focus-rings

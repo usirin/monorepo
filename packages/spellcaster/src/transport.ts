@@ -1,6 +1,6 @@
 import type {StandardSchemaV1} from "@standard-schema/spec";
 import {factory} from "@usirin/forge";
-import {type Spellbook, execute} from "@usirin/spellbook";
+import {execute, type Spellbook} from "@usirin/spellbook";
 
 interface RequestSpec<TName extends keyof Spellbook["spells"] = keyof Spellbook["spells"]> {
 	name: TName;

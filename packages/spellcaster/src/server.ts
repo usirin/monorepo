@@ -1,6 +1,6 @@
 import {factory} from "@usirin/forge";
 import type {Spellbook} from "@usirin/spellbook";
-import {type ServerTransport, createSpellbookStream} from "./transport";
+import {createSpellbookStream, type ServerTransport} from "./transport";
 
 /**
  * Options for creating a SpellbookServer
@@ -49,14 +49,14 @@ export const createSpellbookServer = factory(
 	"server",
 	<TSpellbook extends Spellbook>(spellbook: TSpellbook, options: SpellbookServerOptions) => {
 		let running = false;
-		let serverPromise: Promise<void> | null = null;
+		let _serverPromise: Promise<void> | null = null;
 
 		return {
 			start() {
 				if (running) return;
 				running = true;
 
-				serverPromise = serve(spellbook, options.transport);
+				_serverPromise = serve(spellbook, options.transport);
 			},
 
 			stop() {

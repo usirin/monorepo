@@ -1,8 +1,14 @@
 "use client";
 
 import {createRunekeeper} from "@usirin/runekeeper";
-import {type PropsWithChildren, createContext, useContext, useEffect, useMemo} from "react";
-import {useSyncExternalStore} from "react";
+import {
+	createContext,
+	type PropsWithChildren,
+	useContext,
+	useEffect,
+	useMemo,
+	useSyncExternalStore,
+} from "react";
 import {useModeState} from "./studio-state";
 
 const MODE_KEYS = ["normal", "command"] as const;

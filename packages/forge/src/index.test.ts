@@ -1,6 +1,6 @@
 import {describe, expect, it} from "bun:test";
 import {z} from "zod";
-import {type Ref, factory, struct} from ".";
+import {factory, type Ref, struct} from ".";
 
 describe("factory", () => {
 	it("should work", () => {

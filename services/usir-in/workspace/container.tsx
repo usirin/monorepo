@@ -2,7 +2,7 @@
 
 import {Text} from "@radix-ui/themes";
 import {execute} from "@usirin/spellbook";
-import {type Workspace, getActiveWorkspace} from "@usirin/studio";
+import {getActiveWorkspace, type Workspace} from "@usirin/studio";
 import {useEffect} from "react";
 import {Panel} from "~/studio/panel";
 import {PanelGroup} from "~/studio/panel-group";

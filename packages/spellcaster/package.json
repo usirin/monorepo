@@ -43,8 +43,20 @@
 		"type": "git",
 		"url": "https://github.com/usirin/monorepo"
 	},
-	"files": ["dist", "README.md", "LICENSE"],
-	"keywords": ["rpc", "typescript", "typesafe", "api", "remote", "transport", "websocket"],
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"keywords": [
+		"rpc",
+		"typescript",
+		"typesafe",
+		"api",
+		"remote",
+		"transport",
+		"websocket"
+	],
 	"scripts": {
 		"build": "rslib build",
 		"dev": "rslib build --watch",

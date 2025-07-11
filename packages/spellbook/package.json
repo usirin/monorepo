@@ -20,14 +20,26 @@
 			"import": "./dist/spellbook.js"
 		}
 	},
-	"files": ["dist", "README.md", "LICENSE"],
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
 	"homepage": "https://github.com/usirin/monorepo/packages/spellbook",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/usirin/monorepo"
 	},
-	"keywords": ["api", "typescript", "typesafe", "rpc", "transport", "websocket", "communication"],
+	"keywords": [
+		"api",
+		"typescript",
+		"typesafe",
+		"rpc",
+		"transport",
+		"websocket",
+		"communication"
+	],
 	"scripts": {
 		"build": "rslib build",
 		"dev": "rslib build --watch",

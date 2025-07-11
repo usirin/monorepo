@@ -1,7 +1,6 @@
 "use client";
 
-import {use, useEffect, useRef, useState} from "react";
-import {createRoot} from "react-dom/client";
+import {use, useEffect, useState} from "react";
 // @ts-expect-error
 import {createFromFetch} from "react-server-dom-webpack/client";
 

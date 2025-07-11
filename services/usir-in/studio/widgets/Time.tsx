@@ -1,9 +1,10 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 
 import {useLocation} from "react-router";
 import {create} from "zustand";
+
 interface TimeState {
 	time: Date;
 	actions: {

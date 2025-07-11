@@ -1,54 +1,51 @@
 .Panel {
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  height: 100%;
-  position: relative;
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	height: 100%;
+	position: relative;
 }
 
 .ResizeHandleOuter {
-  position: relative;
-  flex: 0 0 4px;
-  outline: none;
+	position: relative;
+	flex: 0 0 4px;
+	outline: none;
 
-  --background-color: transparent;
-  &[data-resize-handle-active] {
-    --background-color: var(--color-solid-resize-bar-handle);
-  }
+	--background-color: transparent;
+	&[data-resize-handle-active] {
+		--background-color: var(--color-solid-resize-bar-handle);
+	}
 }
-
 
 .ResizeHandleInner {
-  position: absolute;
-  top: 1px;
-  bottom: 1px;
-  left: 0px;
-  right: 0px;
-  background-color: var(--background-color);
-  transition: background-color 0.2s linear;
-  border-radius: 1px;
+	position: absolute;
+	top: 1px;
+	bottom: 1px;
+	left: 0px;
+	right: 0px;
+	background-color: var(--background-color);
+	transition: background-color 0.2s linear;
+	border-radius: 1px;
 }
-
 
 .DropHandleOuter {
-  flex: 0 0 4px;
-  position: relative;
-  outline: none;
+	flex: 0 0 4px;
+	position: relative;
+	outline: none;
 
-  --background-color: transparent;
-  &.IsOver {
-    --background-color: tomato;
-  }
+	--background-color: transparent;
+	&.IsOver {
+		--background-color: tomato;
+	}
 }
 
-
 .DropHandleInner {
-  position: absolute;
-  top: 2px;
-  bottom: 2px;
-  left: 2px;
-  right: 2px;
-  background-color: var(--background-color);
-  transition: background-color 0.2s linear;
-  border-radius: 0.25rem;
+	position: absolute;
+	top: 2px;
+	bottom: 2px;
+	left: 2px;
+	right: 2px;
+	background-color: var(--background-color);
+	transition: background-color 0.2s linear;
+	border-radius: 0.25rem;
 }

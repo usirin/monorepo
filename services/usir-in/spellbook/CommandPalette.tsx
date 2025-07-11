@@ -1,8 +1,8 @@
 "use client";
 
 import {Code, Flex, Text} from "@radix-ui/themes";
-import {type Spellbook, execute} from "@usirin/spellbook/spellbook";
-import {type ReactNode, isValidElement, useCallback, useState} from "react";
+import {execute, type Spellbook} from "@usirin/spellbook/spellbook";
+import {isValidElement, type ReactNode, useCallback, useState} from "react";
 import {
 	Command,
 	CommandEmpty,

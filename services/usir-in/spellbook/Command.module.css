@@ -1,73 +1,72 @@
 .Command {
-  border-radius: var(--radius-2);
+	border-radius: var(--radius-2);
 
-  & [cmdk-group]:not([hidden]) ~ [cmdk-group] {
-    padding-top: 0;
-  }
+	& [cmdk-group]:not([hidden]) ~ [cmdk-group] {
+		padding-top: 0;
+	}
 
-  /* Command Input Wrapper SVG */
-  & [cmdk-input-wrapper] svg {
-    height: 20px;
-    width: 20px;
-  }
+	/* Command Input Wrapper SVG */
+	& [cmdk-input-wrapper] svg {
+		height: 20px;
+		width: 20px;
+	}
 
-  & [cmdk-item] svg {
-    height: 20px;
-    width: 20px;
-  }
+	& [cmdk-item] svg {
+		height: 20px;
+		width: 20px;
+	}
 }
 
 .CommandInput {
-  width: 100%;
-  background-color: transparent;
-  border-radius: var(--radius-2);
-  border: none;
-  padding: var(--space-1) var(--space-4);
-  margin-bottom: var(--space-1);
-  outline: none;
+	width: 100%;
+	background-color: transparent;
+	border-radius: var(--radius-2);
+	border: none;
+	padding: var(--space-1) var(--space-4);
+	margin-bottom: var(--space-1);
+	outline: none;
 }
 
 .CommandGroup {
-  color: var(--gray-12);
+	color: var(--gray-12);
 
-  & [cmdk-group-heading] {
-    padding: var(--space-2);
-    font-size: var(--font-size-1);
-    font-weight: var(--font-weight-bold);
-    color: var(--gray-11);
-  }
+	& [cmdk-group-heading] {
+		padding: var(--space-2);
+		font-size: var(--font-size-1);
+		font-weight: var(--font-weight-bold);
+		color: var(--gray-11);
+	}
 }
 
 .CommandItem {
-  position: relative;
-  display: flex;
-  cursor: default;
-  gap: var(--space-2);
-  overflow: visible;
+	position: relative;
+	display: flex;
+	cursor: default;
+	gap: var(--space-2);
+	overflow: visible;
 
-  padding: var(--space-2);
-  align-items: center;
-  justify-content: space-between;
-  font-size: var(--font-size-1);
-  font-weight: var(--font-weight-medium);
-  outline: none;
-  user-select: none;
-  color: var(--gray-12);
+	padding: var(--space-2);
+	align-items: center;
+	justify-content: space-between;
+	font-size: var(--font-size-1);
+	font-weight: var(--font-weight-medium);
+	outline: none;
+	user-select: none;
+	color: var(--gray-12);
 
-  &[data-disabled="true"] {
-    pointer-events: none;
-    opacity: 0.5;
-  }
+	&[data-disabled="true"] {
+		pointer-events: none;
+		opacity: 0.5;
+	}
 
-  &[data-selected="true"] {
-    background-color: var(--gray-3);
-    color: var(--accent-12);
-  }
+	&[data-selected="true"] {
+		background-color: var(--gray-3);
+		color: var(--accent-12);
+	}
 
-  & svg {
-    pointer-events: none;
-    height: 20px;
-    width: 20px;
-  }
+	& svg {
+		pointer-events: none;
+		height: 20px;
+		width: 20px;
+	}
 }
-

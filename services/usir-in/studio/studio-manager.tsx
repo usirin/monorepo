@@ -1,7 +1,6 @@
 import {findSibling, findWindowPath} from "@usirin/layout-tree";
 import {createSpell, createSpellbook} from "@usirin/spellbook/spellbook";
 import {
-	type Studio,
 	addWorkspace,
 	createStudio,
 	focusWindow,
@@ -9,6 +8,7 @@ import {
 	getWorkspace,
 	removeWindow,
 	removeWorkspace,
+	type Studio,
 	setActiveWorkspace,
 	splitWindow,
 	updateWindow,
