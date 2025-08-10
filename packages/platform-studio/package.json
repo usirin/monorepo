@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json.schemastore.org/package",
+  "name": "@usirin/platform-studio",
+  "version": "0.1.0",
+  "description": "Platform-specific effect-ts services for the u5 studio",
+  "type": "module",
+  "private": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    },
+    "./StudioCommandExecutor": {
+      "types": "./dist/src/StudioCommandExecutor.d.ts",
+      "require": "./dist/StudioCommandExecutor.cjs",
+      "import": "./dist/StudioCommandExecutor.js"
+    },
+    "./StudioContext": {
+      "types": "./dist/src/StudioContext.d.ts",
+      "require": "./dist/StudioContext.cjs",
+      "import": "./dist/StudioContext.js"
+    },
+    "./StudioFileSystem": {
+      "types": "./dist/src/StudioFileSystem.d.ts",
+      "require": "./dist/StudioFileSystem.cjs",
+      "import": "./dist/StudioFileSystem.js"
+    },
+    "./StudioConsole": {
+      "types": "./dist/src/StudioConsole.d.ts",
+      "require": "./dist/StudioConsole.cjs",
+      "import": "./dist/StudioConsole.js"
+    },
+    "./StudioPath": {
+      "types": "./dist/src/StudioPath.d.ts",
+      "require": "./dist/StudioPath.cjs",
+      "import": "./dist/StudioPath.js"
+    },
+    "./StudioTerminal": {
+      "types": "./dist/src/StudioTerminal.d.ts",
+      "require": "./dist/StudioTerminal.cjs",
+      "import": "./dist/StudioTerminal.js"
+    },
+    "./StudioTerminalInput": {
+      "types": "./dist/src/StudioTerminalInput.d.ts",
+      "require": "./dist/StudioTerminalInput.cjs",
+      "import": "./dist/StudioTerminalInput.js"
+    },
+    "./StudioTerminalOutput": {
+      "types": "./dist/src/StudioTerminalOutput.d.ts",
+      "require": "./dist/StudioTerminalOutput.cjs",
+      "import": "./dist/StudioTerminalOutput.js"
+    },
+    "./StudioTerminalReadline": {
+      "types": "./dist/src/StudioTerminalReadline.d.ts",
+      "require": "./dist/StudioTerminalReadline.cjs",
+      "import": "./dist/StudioTerminalReadline.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "homepage": "https://github.com/usirin/monorepo/packages/platform-studio",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usirin/monorepo"
+  },
+  "keywords": [
+    "api",
+    "typescript",
+    "typesafe",
+    "rpc",
+    "transport",
+    "websocket",
+    "communication"
+  ],
+  "scripts": {
+    "build": "rslib build",
+    "dev": "rslib build --watch",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@effect/cli": "catalog:",
+    "@effect/platform": "catalog:",
+    "@effect/platform-browser": "catalog:",
+    "@standard-schema/spec": "catalog:",
+    "@usirin/forge": "workspace:*",
+    "effect": "catalog:",
+    "memfs": "catalog:",
+    "path-browserify": "catalog:"
+  },
+  "devDependencies": {
+    "@effect/language-service": "catalog:",
+    "@rslib/core": "catalog:",
+    "@types/bun": "latest",
+    "@types/path-browserify": "catalog:",
+    "valibot": "catalog:",
+    "zod": "catalog:"
+  },
+  "volta": {
+    "node": "24.4.1"
+  }
+}
