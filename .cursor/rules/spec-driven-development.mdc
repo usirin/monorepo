@@ -1,0 +1,89 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+## Development Workflow - Spec-Driven Development
+
+This project follows a **spec-driven development** approach where every feature is thoroughly specified before implementation.
+
+**CRITICAL RULE: NEVER IMPLEMENT WITHOUT FOLLOWING THE COMPLETE SPEC FLOW**
+
+### Mandatory Workflow Steps
+
+**AUTHORIZATION PROTOCOL**: Before proceeding to any phase (2-5), you MUST:
+1. Present the completed work from the current phase
+2. Explicitly ask for user authorization to proceed  
+3. Wait for clear user approval before continuing
+4. NEVER assume permission or proceed automatically
+
+### Phase-by-Phase Process
+
+**Phase 1**: Create `instructions.md` (initial requirements capture)
+- Create feature folder and capture user requirements
+- Document user stories, acceptance criteria, constraints
+
+**Phase 2**: Derive `requirements.md` from instructions - **REQUIRES USER APPROVAL**
+- Structured analysis of functional/non-functional requirements
+- STOP and ask for authorization before proceeding to Phase 3
+
+**Phase 3**: Create `design.md` from requirements - **REQUIRES USER APPROVAL** 
+- Technical design and implementation strategy
+- STOP and ask for authorization before proceeding to Phase 4
+
+**Phase 4**: Generate `plan.md` from design - **REQUIRES USER APPROVAL**
+- Implementation roadmap and task breakdown  
+- STOP and ask for authorization before proceeding to Phase 5
+
+**Phase 5**: Execute implementation - **REQUIRES USER APPROVAL**
+- Follow the plan exactly as specified
+- NEVER start implementation without explicit user approval
+
+### Specification Structure
+
+#### Feature Directory Listing
+**File**: `specs/README.md`
+- **Purpose**: Simple directory listing of all features with completion status
+- **Content**: Checkbox list with feature links and brief descriptions
+- **Format**: `- [x] **[feature-name](./feature-name/)** - Brief feature description`
+- **Keep Simple**: No detailed documentation, just directory navigation
+- **Update**: Add new features as single line entries when created
+
+#### Individual Feature Documentation
+For each feature, create a folder `specs/[feature-name]/` containing:
+
+#### 1. `instructions.md`
+- **Purpose**: Capture initial feature requirements and user stories
+- **Content**: Raw requirements, use cases, acceptance criteria
+- **When**: Created first when a new feature is requested
+
+#### 2. `requirements.md` 
+- **Purpose**: Detailed, structured requirements derived from instructions
+- **Content**: Functional/non-functional requirements, constraints, dependencies
+- **When**: Created after analyzing instructions.md
+
+#### 3. `design.md`
+- **Purpose**: Technical design and implementation strategy
+- **Content**: Architecture decisions, API design, data models, Error handling, Effect patterns to use
+- **When**: Created after requirements are finalized
+
+#### 4. `plan.md`
+- **Purpose**: Implementation plan and progress tracking
+- **Content**: Task breakdown, development phases, progress updates, blockers/issues
+- **When**: Created from design.md, updated throughout implementation
+
+### File Templates
+
+Each specification file should follow consistent templates:
+- Include clear headings and structure
+- Reference related specifications when applicable
+- Maintain traceability from instructions → requirements → design → plan
+- Update files as understanding evolves
+
+### Best Practices
+
+- **One feature per spec folder**: Keep features focused and manageable
+- **Iterative refinement**: Specs can evolve but major changes should be documented
+- **Cross-reference**: Link between instruction/requirement/design/plan files
+- **Progress tracking**: Update plan.md regularly during implementation
+- **Effect-first design**: Consider Effect patterns and error handling in design phasen

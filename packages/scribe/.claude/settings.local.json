@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "additionalDirectories": [
+      "/Users/usirin/code/github.com/usirin/monorepo"
+    ],
+    "allow": [
+      "Bash(node:*)"
+    ]
+  }
+}

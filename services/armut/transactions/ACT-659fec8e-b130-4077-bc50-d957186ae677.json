@@ -1,0 +1,313 @@
+{
+  "org": {
+    "domain": "card.apple.com",
+    "sfin-url": "https://beta-bridge.simplefin.org/simplefin",
+    "name": "Apple Card (Updated Monthly)",
+    "url": "https://card.apple.com/",
+    "id": "card.apple.com"
+  },
+  "id": "ACT-659fec8e-b130-4077-bc50-d957186ae677",
+  "name": "Apple Card",
+  "currency": "USD",
+  "balance": "-6164.46",
+  "available-balance": "0.00",
+  "balance-date": 1754961586,
+  "transactions": [
+    {
+      "id": "TRN-47e77123-c007-473a-b432-195a9b38f956",
+      "posted": 1753790400,
+      "amount": "-39.77",
+      "description": "AMAZON MARK* 0Z7TQ1EV3410 Terry Avenue North SEATTLE 98109 WA USA",
+      "memo": "",
+      "transacted_at": 1753790400
+    },
+    {
+      "id": "TRN-bbeef758-13d5-49cb-916e-d0eaedfe40f7",
+      "posted": 1753704000,
+      "amount": "-8.40",
+      "description": "SQSP* INV191853693 225 Varick St NEW YORK 10014 NY USA",
+      "memo": "",
+      "transacted_at": 1753704000
+    },
+    {
+      "id": "TRN-fe01f9ec-e0dd-4b9e-8798-45ae56ef85cd",
+      "posted": 1753704000,
+      "amount": "-9.00",
+      "description": "livecamshelp.com Mariettahof 25 15143341887 2033 WS NLDNLD",
+      "memo": "",
+      "transacted_at": 1753704000
+    },
+    {
+      "id": "TRN-4f9e091e-dce4-4240-aaea-1954a226dc6d",
+      "posted": 1753704000,
+      "amount": "-9.99",
+      "description": "APPLE.COM/BILL ONE APPLE PARK WAY 866-712-7753 95014 CA USA",
+      "memo": "",
+      "transacted_at": 1753704000
+    },
+    {
+      "id": "TRN-0f23ba96-17d6-4e34-b239-a62758d9c77f",
+      "posted": 1753617600,
+      "amount": "-98.00",
+      "description": "COMCAST / XFINITY 3055 COMCAST PL 800-266-2278 94551 CA USA",
+      "memo": "",
+      "transacted_at": 1753617600
+    },
+    {
+      "id": "TRN-0f03accd-6df6-4e6a-8d73-785ba746fe9d",
+      "posted": 1753617600,
+      "amount": "-40.81",
+      "description": "AMAZON RETA* GU0ZY8PH3410 Terry Avenue North SEATTLE 98109 WA USA",
+      "memo": "",
+      "transacted_at": 1753617600
+    },
+    {
+      "id": "TRN-1c3bd4a2-98c8-48f9-b650-ff72a73cecac",
+      "posted": 1753617600,
+      "amount": "-40.87",
+      "description": "AMAZON MARK* 1H1E76JH3410 Terry Avenue North SEATTLE 98109 WA USA",
+      "memo": "",
+      "transacted_at": 1753617600
+    },
+    {
+      "id": "TRN-540ba33d-a4dd-4624-9540-c7098cbb60cd",
+      "posted": 1753617600,
+      "amount": "-15.00",
+      "description": "IMPARK00270156U 735 Vallejo Street SAN FRANCISCO94133 CA USA",
+      "memo": "",
+      "transacted_at": 1753617600
+    },
+    {
+      "id": "TRN-c3029f98-7fdc-4938-a330-9181377299fc",
+      "posted": 1753617600,
+      "amount": "-22.08",
+      "description": "AMAZON MARK* I83WS41B3410 Terry Avenue North SEATTLE 98109 WA USA",
+      "memo": "",
+      "transacted_at": 1753617600
+    },
+    {
+      "id": "TRN-01b2a928-5baa-4d26-be8a-8c08bd83817e",
+      "posted": 1753531200,
+      "amount": "-80.98",
+      "description": "FLAX ART AND DESIGN 2 MARINA BLVD BLDG D SAN FRANCISCO94123 CA USA",
+      "memo": "",
+      "transacted_at": 1753531200
+    },
+    {
+      "id": "TRN-ff510469-b4b5-4426-8e52-6bcee2f57d39",
+      "posted": 1753531200,
+      "amount": "-130.32",
+      "description": "RANDY S MARKET 2390 Powell St EMERYVILLE 94608 CA USA",
+      "memo": "",
+      "transacted_at": 1753531200
+    },
+    {
+      "id": "TRN-fac76d32-bd4e-4f8b-aa35-2130c1a8908d",
+      "posted": 1753444800,
+      "amount": "-20.00",
+      "description": "VERCEL INC. 440 N Barranca Ave #4133 COVINA 91723 CA USA",
+      "memo": "",
+      "transacted_at": 1753444800
+    },
+    {
+      "id": "TRN-9861b185-c2d8-44bd-b4af-cd3c9fe1b05b",
+      "posted": 1753444800,
+      "amount": "-20.00",
+      "description": "CLAUDE.AI SUBSCRIPTION548 Market Street PMB 90375 SAN FRANCISCO94104 CA USA",
+      "memo": "",
+      "transacted_at": 1753444800
+    },
+    {
+      "id": "TRN-dc524188-eaf4-4b32-99a8-cfbf3427438b",
+      "posted": 1753444800,
+      "amount": "-40.00",
+      "description": "VERCEL INC. 440 N Barranca Ave #4133 COVINA 91723 CA USA",
+      "memo": "",
+      "transacted_at": 1753444800
+    },
+    {
+      "id": "TRN-81bed5fe-a554-4076-b8fe-eaaefe63205a",
+      "posted": 1753358400,
+      "amount": "-2.99",
+      "description": "APPLE.COM/BILL ONE APPLE PARK CUPERTINO 95014 CA USA",
+      "memo": "",
+      "transacted_at": 1753358400
+    },
+    {
+      "id": "TRN-68e2995e-0aba-4635-91cc-028ad4bd7ac8",
+      "posted": 1753358400,
+      "amount": "-9.00",
+      "description": "livecamshelp.com Mariettahof 25 15143341887 2033 WS NLDNLD",
+      "memo": "",
+      "transacted_at": 1753358400
+    },
+    {
+      "id": "TRN-2e0fd3db-0dce-4c92-ba53-5392b9c01d9d",
+      "posted": 1753358400,
+      "amount": "-118.80",
+      "description": "GEICO *AUTO One GEICO Plaza 800-841-3000 20076 DC USA",
+      "memo": "",
+      "transacted_at": 1753358400
+    },
+    {
+      "id": "TRN-dfb56f9d-b3c5-4fe6-8afc-2b62d1ce7bfb",
+      "posted": 1753358400,
+      "amount": "-43.42",
+      "description": "76 - EMERY BAY 76 1700 POWELL ST EMERYVILLE 94608 CA USA",
+      "memo": "",
+      "transacted_at": 1753358400
+    },
+    {
+      "id": "TRN-019ad108-31d4-4e4d-920b-1bd57fe07b53",
+      "posted": 1753358400,
+      "amount": "-33.39",
+      "description": "DD *DOORDASHCHIPOTLEME303 2ND STREET 8559731040 94107 CA USA",
+      "memo": "",
+      "transacted_at": 1753358400
+    },
+    {
+      "id": "TRN-b19b63ca-7ffb-4545-ae90-f934adc37ad9",
+      "posted": 1753272000,
+      "amount": "-7.00",
+      "description": "Amazon Tips*VZ0U49BX3 440 Terry Ave N Amzn.com/bill98109 WA USA",
+      "memo": "",
+      "transacted_at": 1753272000
+    },
+    {
+      "id": "TRN-464c5f22-402f-4110-a85c-ff9765ae3557",
+      "posted": 1753272000,
+      "amount": "-9.99",
+      "description": "APPLE.COM/BILL ONE APPLE PARK WAY 866-712-7753 95014 CA USA",
+      "memo": "",
+      "transacted_at": 1753272000
+    },
+    {
+      "id": "TRN-2a90bd98-ea45-4f6f-b6fd-0121ea3dd932",
+      "posted": 1753185600,
+      "amount": "-69.50",
+      "description": "IPHONE CITIZENSONELOAN1000 LAFAYETTE BLVD BRIDGEPORT 06604 CT USA",
+      "memo": "",
+      "transacted_at": 1753185600
+    },
+    {
+      "id": "TRN-460ca3ee-fdeb-4b08-a4ad-a44f248cd831",
+      "posted": 1753185600,
+      "amount": "-10.00",
+      "description": "MIDJOURNEY INC. 611 Gateway Blvd Suite 120 SOUTH SAN FRA94080 CA USA",
+      "memo": "",
+      "transacted_at": 1753185600
+    },
+    {
+      "id": "TRN-8df41bb1-839f-4f81-882d-8e4d1d333800",
+      "posted": 1753185600,
+      "amount": "-7.00",
+      "description": "livecamshelp.com Mariettahof 25 15143341887 2033 WS NLDNLD",
+      "memo": "",
+      "transacted_at": 1753185600
+    },
+    {
+      "id": "TRN-4555f0c0-c8d1-43d7-95e5-cb1b2856dff5",
+      "posted": 1753185600,
+      "amount": "-88.39",
+      "description": "AMAZON GROCE*N18IC1J82440 TERRY AVE N. SEATTLE 98109 WA USA",
+      "memo": "",
+      "transacted_at": 1753185600
+    },
+    {
+      "id": "TRN-3fe541a1-e37b-4042-a485-f45db2a35cca",
+      "posted": 1753185600,
+      "amount": "-12.97",
+      "description": "TARGET 000276721555 40TH ST EMERYVILLE 94608 CA USA",
+      "memo": "",
+      "transacted_at": 1753185600
+    },
+    {
+      "id": "TRN-204e1d7a-e3fb-4330-b2c1-0211a151393b",
+      "posted": 1753099200,
+      "amount": "-20.00",
+      "description": "CURSOR, AI POWERED IDE801 West End Avenue NEW YORK 10025 NY USA",
+      "memo": "",
+      "transacted_at": 1753099200
+    },
+    {
+      "id": "TRN-2e314c18-c98b-49f2-a90f-740701b124f2",
+      "posted": 1753099200,
+      "amount": "-6.60",
+      "description": "AMAZON MARK* 5P9Y88U83410 Terry Avenue North SEATTLE 98109 WA USA",
+      "memo": "",
+      "transacted_at": 1753099200
+    },
+    {
+      "id": "TRN-98c1f865-f254-4a7d-991a-3fa80812566e",
+      "posted": 1753099200,
+      "amount": "-40.87",
+      "description": "AMAZON MARK* 0Y5IS9T93410 Terry Avenue North SEATTLE 98109 WA USA",
+      "memo": "",
+      "transacted_at": 1753099200
+    },
+    {
+      "id": "TRN-4f00c635-3db1-467e-a3a5-ffa80b5a64d2",
+      "posted": 1753099200,
+      "amount": "-29.90",
+      "description": "DD *DOORDASHCHIPOTLEME303 2ND STREET 8559731040 94107 CA USA",
+      "memo": "",
+      "transacted_at": 1753099200
+    },
+    {
+      "id": "TRN-50e57361-9eef-45bb-99da-dbd60423f1e6",
+      "posted": 1753012800,
+      "amount": "-70.00",
+      "description": "FASTRAK CSC 375 BEALE ST STE 210 SAN FRANCISCO94105 CA USA",
+      "memo": "",
+      "transacted_at": 1753012800
+    },
+    {
+      "id": "TRN-eb2b9a29-277c-4c8e-97b3-22d6fb75cb41",
+      "posted": 1753012800,
+      "amount": "-5.00",
+      "description": "livecamshelp.com Mariettahof 25 15143341887 2033 WS NLDNLD",
+      "memo": "",
+      "transacted_at": 1753012800
+    },
+    {
+      "id": "TRN-f173d415-8f34-4688-aa8b-289aa4c994b1",
+      "posted": 1753012800,
+      "amount": "-355.00",
+      "description": "GITHUB 88 Colin P Kelly Jr St SAN FRANCISCO94107 CA USA",
+      "memo": "",
+      "transacted_at": 1753012800
+    },
+    {
+      "id": "TRN-24ccc61d-c760-4acd-9106-30db557962eb",
+      "posted": 1753012800,
+      "amount": "-4.00",
+      "description": "GITHUB, INC. 88 Colin P Kelly Jr. Street SAN FRANCISCO94107 CA USA",
+      "memo": "",
+      "transacted_at": 1753012800
+    },
+    {
+      "id": "TRN-5979b3c0-1a7e-486c-9a8d-43c7515dd260",
+      "posted": 1753012800,
+      "amount": "-20.01",
+      "description": "ANTHROPIC 548 Market Street PMB 90375 SAN FRANCISCO94104 CA USA",
+      "memo": "",
+      "transacted_at": 1753012800
+    },
+    {
+      "id": "TRN-29f16c16-4016-40d8-b1dc-86b6d81420b3",
+      "posted": 1752926400,
+      "amount": "-7.26",
+      "description": "NETFLIX.COM Keizersgracht 440 Fl 2 NETFLIX.COM 1016 GD NLDNLD",
+      "memo": "",
+      "transacted_at": 1752926400
+    },
+    {
+      "id": "TRN-2fa9b5d3-e912-436f-88d4-fb3666032f2b",
+      "posted": 1752926400,
+      "amount": "-7.00",
+      "description": "Amazon Tips*ZW4GD2DJ3 440 Terry Ave N Amzn.com/bill98109 WA USA",
+      "memo": "",
+      "transacted_at": 1752926400
+    }
+  ]
+}

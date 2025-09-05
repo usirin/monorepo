@@ -52,6 +52,7 @@
 	"devDependencies": {
 		"@rslib/core": "catalog:",
 		"@types/bun": "latest",
+		"effect": "catalog:",
 		"valibot": "catalog:",
 		"zod": "catalog:"
 	}

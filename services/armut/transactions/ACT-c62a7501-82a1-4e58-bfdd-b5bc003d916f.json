@@ -1,0 +1,16 @@
+{
+  "org": {
+    "domain": "www.chase.com",
+    "sfin-url": "https://beta-bridge.simplefin.org/simplefin",
+    "name": "Chase Bank",
+    "url": "https://www.chase.com",
+    "id": "www.chase.com"
+  },
+  "id": "ACT-c62a7501-82a1-4e58-bfdd-b5bc003d916f",
+  "name": "CHASE SAVINGS",
+  "currency": "USD",
+  "balance": "307.21",
+  "available-balance": "307.21",
+  "balance-date": 1756312485,
+  "transactions": []
+}

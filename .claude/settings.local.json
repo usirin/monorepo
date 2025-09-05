@@ -1,6 +1,18 @@
 {
-	"permissions": {
-		"allow": ["WebFetch(domain:biomejs.dev)", "Bash(pnpm list:*)"],
-		"deny": []
-	}
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:biomejs.dev)",
+      "Bash(pnpm list:*)",
+      "Bash(ls:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm test:*)",
+      "Bash(bun test:*)",
+      "WebFetch(domain:www.simplefin.org)",
+      "Bash(npm view:*)",
+      "Bash(for pkg in \"@effect/ai\" \"@effect/ai-anthropic\" \"@effect/experimental\" \"@effect/language-service\" \"@effect/platform-browser\" \"@effect/platform-bun\" \"@effect/rpc\" \"@effect/sql\" \"@effect/sql-pg\")",
+      "Bash(done)",
+      "Bash(pnpm install:*)"
+    ],
+    "deny": []
+  }
 }

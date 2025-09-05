@@ -58,9 +58,8 @@ export const createRunekeeperMachine = <TMode extends string>(modes: TMode[]) =>
 								draft.set(event.mode, new Map());
 							}
 							const modeMap = draft.get(event.mode);
-							if (modeMap) {
-								modeMap.set(event.sequence, event.command);
-							}
+							// biome-ignore lint/style/noNonNullAssertion: we know that the modeMap is not null
+							modeMap!.set(event.sequence, event.command);
 						}
 					}),
 			}),

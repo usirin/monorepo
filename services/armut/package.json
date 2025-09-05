@@ -1,0 +1,31 @@
+{
+  "name": "armut",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run index.ts",
+    "start": "bun run index.ts",
+    "migrate": "bun run ./database/run-migrations.ts",
+    "mcp": "bun run mcp-server.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-code": "catalog:",
+    "@effect/ai": "catalog:",
+    "@effect/experimental": "catalog:",
+    "@effect/platform": "0.90.1",
+    "@effect/platform-bun": "catalog:",
+    "@effect/rpc": "catalog:",
+    "@effect/sql": "catalog:",
+    "@effect/sql-pg": "catalog:",
+    "@google/genai": "catalog:",
+    "effect": "catalog:",
+    "plaid": "catalog:"
+  }
+}

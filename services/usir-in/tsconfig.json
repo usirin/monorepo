@@ -30,6 +30,12 @@
 		},
 		"baseUrl": "."
 	},
-	"include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
+	"include": [
+		"next-env.d.ts",
+		".next/types/**/*.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		"../../packages/platform-studio/src/error.ts"
+	],
 	"exclude": ["node_modules"]
 }

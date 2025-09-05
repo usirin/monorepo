@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: armut
+      POSTGRES_USER: armut
+      POSTGRES_PASSWORD: armut_dev_password
+    ports:
+      - "15432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U armut -d armut"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+      
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_SERVER_JSON_FILE: /pgadmin4/servers.json
+    ports:
+      - "15433:80"
+    volumes:
+      - ./servers.json:/pgadmin4/servers.json:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # armut:
+  #   build:
+  #     context: ../../
+  #     dockerfile: services/armut/Dockerfile
+  #   environment:
+  #     DATABASE_URL: postgres://armut:armut_dev_password@postgres:5432/armut
+  #     SIMPLEFIN_TOKEN: ${SIMPLEFIN_TOKEN}
+  #     PLAID_CLIENT_ID: ${PLAID_CLIENT_ID}
+  #     PLAID_SECRET: ${PLAID_SECRET}
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   volumes:
+  #     - ../../:/monorepo
+  #     - /monorepo/node_modules
+  #   working_dir: /monorepo/services/armut
+  #   command: pnpm run dev
+
+volumes:
+  postgres_data:

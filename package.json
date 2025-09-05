@@ -5,7 +5,7 @@
 	"description": "usirin stack",
 	"author": "Umut Sirin <mail@usir.in>",
 	"license": "MIT",
-	"packageManager": "pnpm@10.12.4",
+	"packageManager": "pnpm@10.15.1",
 	"scripts": {
 		"dev": "turbo dev",
 		"build": "turbo build",
@@ -14,12 +14,14 @@
 		"test": "turbo test"
 	},
 	"volta": {
-		"node": "23.7.0"
+		"node": "24.4.1"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "catalog:",
 		"@effect/language-service": "catalog:",
-		"turbo": "catalog:"
+		"@niklaserik/effect-mcp": "catalog:",
+		"turbo": "catalog:",
+		"typescript": "catalog:"
 	},
 	"trustedDependencies": [
 		"@biomejs/biome",
@@ -30,9 +32,11 @@
 	"pnpm": {
 		"onlyBuiltDependencies": [
 			"@biomejs/biome",
+			"@parcel/watcher",
 			"core-js",
 			"es5-ext",
 			"esbuild",
+			"msgpackr-extract",
 			"sharp",
 			"workerd"
 		]

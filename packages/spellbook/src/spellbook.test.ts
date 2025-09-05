@@ -1,4 +1,5 @@
 import {describe, expect, it} from "bun:test";
+import {Effect, Schema} from "effect";
 import * as v from "valibot";
 import {z} from "zod";
 
@@ -231,5 +232,19 @@ describe("createSpellbook", () => {
 
 		const result = await spellbook.fetch(new Request("https://example.com"));
 		expect(result).toEqual(new Response("hello"));
+	});
+
+	it("works with effect schema", async () => {
+		const spell = createSpell({
+			description: "An effect-based spell",
+			parameters: Schema.standardSchemaV1(Schema.Struct({value: Schema.Number})),
+			result: Schema.standardSchemaV1(Schema.Number),
+			context: Schema.standardSchemaV1(Schema.Struct({multiplier: Schema.Number})),
+			execute: ({value}, {multiplier}) => Effect.runPromise(Effect.succeed(value * multiplier)),
+		});
+
+		Effect.fn;
+
+		expect(await spell({value: 3}, {multiplier: 10})).toBe(30);
 	});
 });

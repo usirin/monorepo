@@ -1,0 +1,21 @@
+{
+	"name": "@usirin/scribe",
+	"module": "index.ts",
+	"type": "module",
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"dependencies": {
+		"@discordjs/builders": "catalog:",
+		"@discordjs/rest": "catalog:",
+		"@effect/ai": "catalog:",
+		"@effect/platform": "catalog:",
+		"@effect/platform-bun": "catalog:",
+		"discord-api-types": "catalog:",
+		"discord-interactions": "catalog:",
+		"effect": "catalog:"
+	}
+}

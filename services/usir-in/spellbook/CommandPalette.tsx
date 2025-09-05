@@ -157,6 +157,7 @@ export function CommandPalette({
 			/>
 			<CommandList>
 				<CommandEmpty>No results found.</CommandEmpty>
+				{activeItem ?? <RootCommand onSelect={handleSelect} spellbook={spellbook} />}
 				{renderContent()}
 			</CommandList>
 		</Command>

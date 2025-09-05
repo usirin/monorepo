@@ -4,7 +4,7 @@ import {Dialog, Flex, Theme, VisuallyHidden} from "@radix-ui/themes";
 import {getActiveWorkspace} from "@usirin/studio";
 import {useEffect} from "react";
 import {create} from "zustand";
-import {CommandPalette} from "~/spellbook/CommandPalette";
+import {StudioCommandPalette} from "~/platform-studio/components/StudioCommandPalette";
 import {WorkspaceContainer} from "~/workspace/container";
 import {Menubar} from "./menubar";
 import {RunekeeperContextManager, useRunekeeper} from "./runekeeper-manager";
@@ -38,7 +38,7 @@ function Spellbook() {
 				<Dialog.Title>Command Palette</Dialog.Title>
 			</VisuallyHidden>
 			<Dialog.Content size="1" maxHeight="400px" aria-describedby={undefined}>
-				<CommandPalette onSelect={() => setOpen(false)} spellbook={newSpellbook} />
+				<StudioCommandPalette onClose={() => setOpen(false)} />
 			</Dialog.Content>
 		</Dialog.Root>
 	);

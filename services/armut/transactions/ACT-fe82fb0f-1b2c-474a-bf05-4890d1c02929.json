@@ -1,0 +1,841 @@
+{
+  "org": {
+    "domain": "www.chase.com",
+    "sfin-url": "https://beta-bridge.simplefin.org/simplefin",
+    "name": "Chase Bank",
+    "url": "https://www.chase.com",
+    "id": "www.chase.com"
+  },
+  "id": "ACT-fe82fb0f-1b2c-474a-bf05-4890d1c02929",
+  "name": "TOTAL CHECKING",
+  "currency": "USD",
+  "balance": "4705.72",
+  "available-balance": "4705.72",
+  "balance-date": 1756312485,
+  "transactions": [
+    {
+      "id": "TRN-ffecbd2d-49e1-4b4d-9d76-df89d5348c5a",
+      "posted": 1756123200,
+      "amount": "-596.14",
+      "description": "APPLECARD GSBANK PAYMENT XXX0992 WEB ID: XXXXXX9999",
+      "memo": "",
+      "transacted_at": 1756123200
+    },
+    {
+      "id": "TRN-778a3c75-a9ab-4556-bd81-e8b9704a4194",
+      "posted": 1756123200,
+      "amount": "-1.99",
+      "description": "PAYPAL INST XFER GOOGLE GOOGLE O WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1756123200
+    },
+    {
+      "id": "TRN-b7f40434-459b-46c8-9c98-e76b1fd51d19",
+      "posted": 1756123200,
+      "amount": "-5.99",
+      "description": "PAYPAL INST XFER TWITCHINTER WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1756123200
+    },
+    {
+      "id": "TRN-9553bea2-9b00-47b9-8c64-9518fcec7a04",
+      "posted": 1756123200,
+      "amount": "-9.99",
+      "description": "PAYPAL INST XFER ZYGORGUIDES WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1756123200
+    },
+    {
+      "id": "TRN-5754a29c-d784-4ab8-8d43-98a947fb359a",
+      "posted": 1755864000,
+      "amount": "-189.57",
+      "description": "APPLECARD GSBANK PAYMENT XXX0992 WEB ID: XXXXXX9999",
+      "memo": "",
+      "transacted_at": 1755864000
+    },
+    {
+      "id": "TRN-5cc0b13e-277c-4ef3-80da-cf8794777513",
+      "posted": 1755864000,
+      "amount": "-131.00",
+      "description": "DISCOVER E-PAYMENT 9794 WEB ID: XXXXXX0270",
+      "memo": "",
+      "transacted_at": 1755864000
+    },
+    {
+      "id": "TRN-3f425ea1-e9db-42d0-89a6-52abba6a90e2",
+      "posted": 1755864000,
+      "amount": "-5.00",
+      "description": "Rocket Money Premium ST-M4O8M4K8S1V9 CCD ID: XXXXXX5600",
+      "memo": "",
+      "transacted_at": 1755864000
+    },
+    {
+      "id": "TRN-20cea45f-cacb-464c-951c-34711c76b9b2",
+      "posted": 1755864000,
+      "amount": "4426.11",
+      "description": "DISCORD INC PAYROLL PPD ID: XXXXXX1101",
+      "memo": "",
+      "transacted_at": 1755864000
+    },
+    {
+      "id": "TRN-f29e0bc9-f3ee-4370-a421-23b6a139396b",
+      "posted": 1755777600,
+      "amount": "-13.99",
+      "description": "PAYPAL INST XFER GOOGLE YOUTUBE WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1755777600
+    },
+    {
+      "id": "TRN-adbbf473-80b6-47fa-97fa-39188d37fc3e",
+      "posted": 1755777600,
+      "amount": "-225.00",
+      "description": "VENMO PAYMENT 1044330363799 WEB ID: 3264681992",
+      "memo": "",
+      "transacted_at": 1755777600
+    },
+    {
+      "id": "TRN-6d9c68f1-7d6b-4aac-804a-139f277ecc9c",
+      "posted": 1755777600,
+      "amount": "-734.00",
+      "description": "AMERICAN EXPRESS ACH PMT A4234 WEB ID: 9493560001",
+      "memo": "",
+      "transacted_at": 1755777600
+    },
+    {
+      "id": "TRN-746738dd-81f0-496f-9d4b-8f0bddeeb2fd",
+      "posted": 1755777600,
+      "amount": "-5.00",
+      "description": "PAYPAL INST XFER CLOUDFLARE WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1755777600
+    },
+    {
+      "id": "TRN-124f4546-9876-4613-b46f-d81e87bfddd6",
+      "posted": 1755691200,
+      "amount": "-2.99",
+      "description": "PAYPAL INST XFER DISCORD WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1755691200
+    },
+    {
+      "id": "TRN-f1af5e24-1851-4165-9829-6dad96204eb0",
+      "posted": 1755604800,
+      "amount": "-124.00",
+      "description": "AMZ_STORECRD_PMT PAYMENT XXXXXXXXXXX0985 WEB ID: XXXXXX2001",
+      "memo": "",
+      "transacted_at": 1755604800
+    },
+    {
+      "id": "TRN-27019934-0ac4-4ccc-9f6a-6e0ed533cd97",
+      "posted": 1755691200,
+      "amount": "-720.16",
+      "description": "EMERYVILLE VETERINARY H EMERYVILLE CA 08/19",
+      "memo": "",
+      "transacted_at": 1755604800
+    },
+    {
+      "id": "TRN-388f6437-0023-41de-8114-8eb28f7eb660",
+      "posted": 1755518400,
+      "amount": "-400.00",
+      "description": "Zelle payment to Arsal XXXXXXX7275",
+      "memo": "",
+      "transacted_at": 1755518400
+    },
+    {
+      "id": "TRN-414f2c1d-4c26-481d-8b52-6f7a2de247b1",
+      "posted": 1755518400,
+      "amount": "-497.16",
+      "description": "APPLECARD GSBANK PAYMENT XXX0992 WEB ID: XXXXXX9999",
+      "memo": "",
+      "transacted_at": 1755518400
+    },
+    {
+      "id": "TRN-afbd1cd9-7e15-40cf-8117-4b64cd66d8ce",
+      "posted": 1755518400,
+      "amount": "-11.99",
+      "description": "PAYPAL INST XFER DROPBOX WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1755518400
+    },
+    {
+      "id": "TRN-0a62e3be-546a-4978-bdc5-b15da1103248",
+      "posted": 1755518400,
+      "amount": "-19.99",
+      "description": "PAYPAL INST XFER SPOTIFY*P39A113 WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1755518400
+    },
+    {
+      "id": "TRN-85d8d0c2-5d8e-4f98-8b3f-311f9f106395",
+      "posted": 1755518400,
+      "amount": "-38.39",
+      "description": "PAYPAL INST XFER DISCORD WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1755518400
+    },
+    {
+      "id": "TRN-ebe58846-9abb-4215-bca2-2eed52050b23",
+      "posted": 1755259200,
+      "amount": "-11.99",
+      "description": "PAYPAL INST XFER TWITCHINTER WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1755259200
+    },
+    {
+      "id": "TRN-abc3adfb-9d16-412c-ab71-f1bffd86a38f",
+      "posted": 1755259200,
+      "amount": "-200.00",
+      "description": "ATM WITHDRAWAL 002742 08/159950 SAN",
+      "memo": "",
+      "transacted_at": 1755259200
+    },
+    {
+      "id": "TRN-dcaf829a-2a97-44e9-9a42-2417d571cf7e",
+      "posted": 1755259200,
+      "amount": "-20.00",
+      "description": "VENMO PAYMENT 1044200622124 WEB ID: 3264681992",
+      "memo": "",
+      "transacted_at": 1755259200
+    },
+    {
+      "id": "TRN-33bdd5b3-b310-4f9c-a4f6-075fe078b5db",
+      "posted": 1755086400,
+      "amount": "-5.99",
+      "description": "PAYPAL INST XFER TWITCHINTER WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1755086400
+    },
+    {
+      "id": "TRN-1aa652b4-c778-4b68-97d0-fab9d63f6516",
+      "posted": 1755000000,
+      "amount": "-413.94",
+      "description": "APPLECARD GSBANK PAYMENT 2410992 WEB ID: 9999999999",
+      "memo": "",
+      "transacted_at": 1755000000
+    },
+    {
+      "id": "TRN-a8f66810-7ce2-45ea-933f-7032868255ee",
+      "posted": 1754913600,
+      "amount": "-700.00",
+      "description": "Zelle payment to Arsal XXXXXXX0262",
+      "memo": "",
+      "transacted_at": 1754913600
+    },
+    {
+      "id": "TRN-aa4a77d2-253f-44dc-bf9b-73124f89dd44",
+      "posted": 1754913600,
+      "amount": "-26.73",
+      "description": "PAYPAL INST XFER DOORDASH STARBU WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754913600
+    },
+    {
+      "id": "TRN-c0ca38b6-48f8-4e8b-828b-abdc500c60e0",
+      "posted": 1754913600,
+      "amount": "-51.71",
+      "description": "PAYPAL INST XFER DOORDASH MCDONA WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754913600
+    },
+    {
+      "id": "TRN-bf41152b-f01e-4b27-aceb-f83940a62792",
+      "posted": 1754913600,
+      "amount": "-33.10",
+      "description": "PAYPAL INST XFER DOORDASH PANDAE WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754913600
+    },
+    {
+      "id": "TRN-38a9a6ac-b2f4-4b86-9861-f5bd32964a81",
+      "posted": 1754913600,
+      "amount": "-2.00",
+      "description": "PAYPAL INST XFER DOORDASH STARBU WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754913600
+    },
+    {
+      "id": "TRN-937c63d0-61c9-474c-a0cd-9bb7c223acbf",
+      "posted": 1754913600,
+      "amount": "-46.56",
+      "description": "PAYPAL INST XFER DOORDASH MCDONA WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754913600
+    },
+    {
+      "id": "TRN-5ee56a2c-7a17-40c9-b08d-c0243f1116f8",
+      "posted": 1754913600,
+      "amount": "-32.57",
+      "description": "PAYPAL INST XFER DOORDASH SUBWAY WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754913600
+    },
+    {
+      "id": "TRN-aa53417b-e747-4ea4-9d99-712d19acfccd",
+      "posted": 1754913600,
+      "amount": "756.34",
+      "description": "Unum Life Insurance PPD ID: XXXXXX5001",
+      "memo": "",
+      "transacted_at": 1754913600
+    },
+    {
+      "id": "TRN-a3d52f81-697e-4d2c-a219-57f2eb2861fe",
+      "posted": 1754654400,
+      "amount": "-18.18",
+      "description": "PAYPAL INST XFER DOORDASH CAFEBU WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754654400
+    },
+    {
+      "id": "TRN-ea5e4153-6791-4910-9b44-11037fddc537",
+      "posted": 1754654400,
+      "amount": "-39.54",
+      "description": "PAYPAL INST XFER DOORDASH TACOBE WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754654400
+    },
+    {
+      "id": "TRN-4b7e86bc-c99a-419c-90d5-57209bd0e063",
+      "posted": 1754654400,
+      "amount": "-43.93",
+      "description": "PAYPAL INST XFER DOORDASH IHOP WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754654400
+    },
+    {
+      "id": "TRN-bee1e165-29ed-4f0c-a407-13f2c9b180ca",
+      "posted": 1754654400,
+      "amount": "-198.48",
+      "description": "APPLECARD GSBANK PAYMENT 2410992 WEB ID: 9999999999",
+      "memo": "",
+      "transacted_at": 1754654400
+    },
+    {
+      "id": "TRN-f2949bb3-12aa-4807-a815-cf16d6478529",
+      "posted": 1754654400,
+      "amount": "2787.31",
+      "description": "DISCORD INC PAYROLL PPD ID: 9111111101",
+      "memo": "",
+      "transacted_at": 1754654400
+    },
+    {
+      "id": "TRN-00143ea3-ebc4-418d-be52-ecf04ea8029d",
+      "posted": 1754568000,
+      "amount": "-19.99",
+      "description": "PAYPAL INST XFER BLIZZARDENT WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754568000
+    },
+    {
+      "id": "TRN-40305d5e-3635-4a65-b56f-2fa2389b0132",
+      "posted": 1754568000,
+      "amount": "-20.00",
+      "description": "PAYPAL INST XFER WIKIPEDIA WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754568000
+    },
+    {
+      "id": "TRN-14463d64-7819-4a0d-913a-6aea71b5cbf2",
+      "posted": 1754568000,
+      "amount": "-20.20",
+      "description": "PAYPAL INST XFER DOORDASH PROPOS WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754568000
+    },
+    {
+      "id": "TRN-3f249873-9754-4eae-bc82-9dabcbcfb5a4",
+      "posted": 1754481600,
+      "amount": "-30.98",
+      "description": "PAYPAL INST XFER DOORDASH BURGER WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754481600
+    },
+    {
+      "id": "TRN-d78404f6-b79e-4f10-a927-e00cb5220cdf",
+      "posted": 1754481600,
+      "amount": "-45.03",
+      "description": "PAYPAL INST XFER DOORDASH BONCHO WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754481600
+    },
+    {
+      "id": "TRN-d5f1b80c-25a7-4bfe-8567-05f939e78e3c",
+      "posted": 1754481600,
+      "amount": "756.34",
+      "description": "Unum Life Insurance PPD ID: 9044595001",
+      "memo": "",
+      "transacted_at": 1754481600
+    },
+    {
+      "id": "TRN-e5186f10-d7c1-4459-a3aa-ef0fad146d21",
+      "posted": 1754395200,
+      "amount": "-3.00",
+      "description": "NON-CHASE ATM FEE-WITH",
+      "memo": "",
+      "transacted_at": 1754395200
+    },
+    {
+      "id": "TRN-225a200c-f7c7-4932-9022-a62bb73244a0",
+      "posted": 1754395200,
+      "amount": "-202.95",
+      "description": "NON-CHASE ATM WITHDRAW 008838 08/051400 POWE",
+      "memo": "",
+      "transacted_at": 1754395200
+    },
+    {
+      "id": "TRN-dcf3ca17-5f62-4331-853e-5c56e49baef5",
+      "posted": 1754395200,
+      "amount": "-65.95",
+      "description": "PAYPAL INST XFER DOORDASH NICKTH WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754395200
+    },
+    {
+      "id": "TRN-7b94bf34-eee2-45db-bd6c-495332ebce9e",
+      "posted": 1754308800,
+      "amount": "-5.00",
+      "description": "PAYPAL INST XFER MEDIUM.COM WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754308800
+    },
+    {
+      "id": "TRN-6ca50040-f6a7-443e-82a0-a22cbabeec1b",
+      "posted": 1754308800,
+      "amount": "-260.28",
+      "description": "CHASE CREDIT CRD AUTOPAY PPD ID: XXXXXX9224",
+      "memo": "",
+      "transacted_at": 1754308800
+    },
+    {
+      "id": "TRN-5a4caa9f-6e84-4960-a662-a888c8b099a1",
+      "posted": 1754308800,
+      "amount": "-26.99",
+      "description": "PAYPAL INST XFER NETFLIX.COM WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754308800
+    },
+    {
+      "id": "TRN-6e5d17e7-cbbb-4536-86ae-01009253530e",
+      "posted": 1754308800,
+      "amount": "-33.99",
+      "description": "PAYPAL INST XFER DOORDASH CASABA WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754308800
+    },
+    {
+      "id": "TRN-74f2a44d-9316-4ccb-90af-5334488dedae",
+      "posted": 1754308800,
+      "amount": "-44.54",
+      "description": "PAYPAL INST XFER DOORDASH MCDONA WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754308800
+    },
+    {
+      "id": "TRN-3654a4af-4d94-4c4f-9d99-fdf960c9377e",
+      "posted": 1754308800,
+      "amount": "-95.99",
+      "description": "PAYPAL INST XFER HULU WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1754308800
+    },
+    {
+      "id": "TRN-83b19cd2-6e2b-475d-80eb-afa78d9ae961",
+      "posted": 1754049600,
+      "amount": "-607.81",
+      "description": "APPLECARD GSBANK PAYMENT 2410992 WEB ID: 9999999999",
+      "memo": "",
+      "transacted_at": 1754049600
+    },
+    {
+      "id": "TRN-4b10a405-baa4-4ef2-bd43-175248539185",
+      "posted": 1753963200,
+      "amount": "-3.50",
+      "description": "PAYPAL INST XFER PATREON MEMBER WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753963200
+    },
+    {
+      "id": "TRN-71d49e8e-4d25-424c-a8a2-9304ff8cec99",
+      "posted": 1753963200,
+      "amount": "-33.66",
+      "description": "PAYPAL INST XFER DOORDASH CRUMBL WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753963200
+    },
+    {
+      "id": "TRN-0a234a7a-7c5d-444c-b807-79c8b03d6f88",
+      "posted": 1753963200,
+      "amount": "-56.42",
+      "description": "PAYPAL INST XFER DOORDASH PAPAJO WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753963200
+    },
+    {
+      "id": "TRN-59e898b2-11cf-4820-8888-30d1ea4c9299",
+      "posted": 1753963200,
+      "amount": "-500.00",
+      "description": "Zelle payment to Arsal 25674089074",
+      "memo": "",
+      "transacted_at": 1753963200
+    },
+    {
+      "id": "TRN-cb7c2967-fa59-42f4-9a8b-5f5c1d075777",
+      "posted": 1753876800,
+      "amount": "-5.00",
+      "description": "Oportun Subscriptn PPD ID: 7461730710",
+      "memo": "",
+      "transacted_at": 1753876800
+    },
+    {
+      "id": "TRN-889f7799-152b-41e3-8f04-b19ba6e9b073",
+      "posted": 1753790400,
+      "amount": "-30.83",
+      "description": "PAYPAL INST XFER DOORDASH CHICK- WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753790400
+    },
+    {
+      "id": "TRN-e2818f8b-da9c-434e-ad91-76b3438310c3",
+      "posted": 1753704000,
+      "amount": "-33.86",
+      "description": "PAYPAL INST XFER DOORDASH YOGURT WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753704000
+    },
+    {
+      "id": "TRN-e4382d3a-eb66-4844-8a1e-ff2c39b58b10",
+      "posted": 1753704000,
+      "amount": "-60.43",
+      "description": "PAYPAL INST XFER DOORDASH NOORIN WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753704000
+    },
+    {
+      "id": "TRN-8152f067-42e4-4982-9ed8-862d207cde48",
+      "posted": 1753704000,
+      "amount": "-19.99",
+      "description": "PAYPAL INST XFER SPLICE WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753704000
+    },
+    {
+      "id": "TRN-9236bb13-099a-4305-b20d-64daf55a7a47",
+      "posted": 1753704000,
+      "amount": "-580.37",
+      "description": "APPLECARD GSBANK PAYMENT 2410992 WEB ID: 9999999999",
+      "memo": "",
+      "transacted_at": 1753704000
+    },
+    {
+      "id": "TRN-e013be25-2edc-45d4-b793-de1a572aacb6",
+      "posted": 1753704000,
+      "amount": "-24.75",
+      "description": "PAYPAL INST XFER DOORDASH BURGER WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753704000
+    },
+    {
+      "id": "TRN-d303b81a-5ca2-4486-8d5e-851ab294e43b",
+      "posted": 1753704000,
+      "amount": "-29.65",
+      "description": "PAYPAL INST XFER DOORDASH PAPAJO WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753704000
+    },
+    {
+      "id": "TRN-cdaa4c85-d103-4a7b-8f59-9e91e7c61b25",
+      "posted": 1753704000,
+      "amount": "-36.96",
+      "description": "PAYPAL INST XFER DOORDASH WISESO WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753704000
+    },
+    {
+      "id": "TRN-3d305247-3507-4bab-a387-3ed91d6f2719",
+      "posted": 1753704000,
+      "amount": "-53.17",
+      "description": "PAYPAL INST XFER DOORDASH CHIPOT WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753704000
+    },
+    {
+      "id": "TRN-befa15de-62a4-4365-86d2-950d189efd55",
+      "posted": 1753704000,
+      "amount": "-547.85",
+      "description": "BMW BANK BMWFS PYMT PPD ID: 0870631885",
+      "memo": "",
+      "transacted_at": 1753704000
+    },
+    {
+      "id": "TRN-0fa39068-a038-408c-b701-6ae8237e7a22",
+      "posted": 1753704000,
+      "amount": "756.34",
+      "description": "Unum Life Insurance PPD ID: 9044595001",
+      "memo": "",
+      "transacted_at": 1753704000
+    },
+    {
+      "id": "TRN-f55798b9-5d1c-47d1-bb63-054ad819af42",
+      "posted": 1753704000,
+      "amount": "-3.00",
+      "description": "NON-CHASE ATM FEE-WITH",
+      "memo": "",
+      "transacted_at": 1753617600
+    },
+    {
+      "id": "TRN-9cd1c64a-9431-49e1-98f8-51a1f5e7fa99",
+      "posted": 1753704000,
+      "amount": "-103.00",
+      "description": "NON-CHASE ATM WITHDRAW 451805 07/27601 VALLE",
+      "memo": "",
+      "transacted_at": 1753617600
+    },
+    {
+      "id": "TRN-3c9482bc-3719-4e09-974b-b702ea114ad8",
+      "posted": 1753444800,
+      "amount": "-9.99",
+      "description": "PAYPAL INST XFER ZYGORGUIDES WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753444800
+    },
+    {
+      "id": "TRN-ce2f51f9-8ae8-4cf6-b6bd-c9f218921c42",
+      "posted": 1753444800,
+      "amount": "-35.75",
+      "description": "PAYPAL INST XFER DOORDASH DESSER WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753444800
+    },
+    {
+      "id": "TRN-2d255b39-c89d-4b03-93b1-70167e92926c",
+      "posted": 1753444800,
+      "amount": "-27.56",
+      "description": "PAYPAL INST XFER DOORDASH MCDONA WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753444800
+    },
+    {
+      "id": "TRN-75883df1-789a-4e69-a8d0-5796c47df8a2",
+      "posted": 1753444800,
+      "amount": "-33.99",
+      "description": "PAYPAL INST XFER DOORDASH LITTLE WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753444800
+    },
+    {
+      "id": "TRN-51724ecd-ea4f-49a8-87aa-17cff8cffcf2",
+      "posted": 1753444800,
+      "amount": "-2.00",
+      "description": "PAYPAL INST XFER DOORDASH MCDONA WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753444800
+    },
+    {
+      "id": "TRN-18d8b46c-5538-45a8-8ef2-6156e8d63e2b",
+      "posted": 1753444800,
+      "amount": "-283.76",
+      "description": "APPLECARD GSBANK PAYMENT 2410992 WEB ID: 9999999999",
+      "memo": "",
+      "transacted_at": 1753444800
+    },
+    {
+      "id": "TRN-37ead63a-6f74-4852-8d02-e912c21805ca",
+      "posted": 1753444800,
+      "amount": "33.54",
+      "description": "PAYPAL TRANSFER PPD ID: PAYPALSD11",
+      "memo": "",
+      "transacted_at": 1753444800
+    },
+    {
+      "id": "TRN-ddefe28b-cbe7-49b8-a6e2-8b0c3ab36d87",
+      "posted": 1753444800,
+      "amount": "2787.31",
+      "description": "DISCORD INC DIRECT DEP PPD ID: 9111111101",
+      "memo": "",
+      "transacted_at": 1753444800
+    },
+    {
+      "id": "TRN-e2bf9017-dc12-4714-a9bc-0e9efc6f2247",
+      "posted": 1753358400,
+      "amount": "-5.99",
+      "description": "PAYPAL INST XFER TWITCHINTER WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753358400
+    },
+    {
+      "id": "TRN-e20667fd-f8a6-4fae-9e71-f46d45612974",
+      "posted": 1753272000,
+      "amount": "-1.99",
+      "description": "PAYPAL INST XFER GOOGLE GOOGLE O WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753272000
+    },
+    {
+      "id": "TRN-168f621b-6819-4d13-8e61-b69ce25c8d26",
+      "posted": 1753272000,
+      "amount": "-200.00",
+      "description": "ATM WITHDRAWAL 006013 07/239950 SAN",
+      "memo": "",
+      "transacted_at": 1753272000
+    },
+    {
+      "id": "TRN-cfd4da54-4e8b-4ebf-b207-9d8bd5ef8b85",
+      "posted": 1753272000,
+      "amount": "-34.11",
+      "description": "PAYPAL INST XFER DOORDASH SQUARE WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753272000
+    },
+    {
+      "id": "TRN-657c0388-ceae-4f80-984d-375c93222ced",
+      "posted": 1753272000,
+      "amount": "-40.06",
+      "description": "PAYPAL INST XFER DOORDASH SIMURG WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753272000
+    },
+    {
+      "id": "TRN-c287a94b-a170-43f9-a449-4eae2f19c94b",
+      "posted": 1753272000,
+      "amount": "-42.66",
+      "description": "PAYPAL INST XFER DOORDASH JOLLIB WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753272000
+    },
+    {
+      "id": "TRN-3f0f49cd-eef1-4923-a01b-fb71031fd722",
+      "posted": 1753185600,
+      "amount": "-94.61",
+      "description": "AFFIRM * PAY 05590U65 855-423-3729 CA 07/22",
+      "memo": "",
+      "transacted_at": 1753185600
+    },
+    {
+      "id": "TRN-277e9436-45c1-476b-822e-91c4f30e5af3",
+      "posted": 1753185600,
+      "amount": "-5.00",
+      "description": "Rocket Money Premium ST-Z2A0Y7P8Q6X9 CCD ID: 1800948598",
+      "memo": "",
+      "transacted_at": 1753185600
+    },
+    {
+      "id": "TRN-a1639d70-e353-4ae6-8be5-391f0ad6fe49",
+      "posted": 1753185600,
+      "amount": "-135.00",
+      "description": "DISCOVER E-PAYMENT 9794 WEB ID: 3510020270",
+      "memo": "",
+      "transacted_at": 1753185600
+    },
+    {
+      "id": "TRN-c3afa279-653c-44f9-8dba-6ce37efb41bb",
+      "posted": 1753099200,
+      "amount": "-5.00",
+      "description": "PAYPAL INST XFER CLOUDFLARE WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753099200
+    },
+    {
+      "id": "TRN-404a5f77-f192-4082-bdd8-3e5b34f0c010",
+      "posted": 1753099200,
+      "amount": "-50.68",
+      "description": "PAYPAL INST XFER DOORDASH NICKTH WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753099200
+    },
+    {
+      "id": "TRN-4612f0ff-ec17-4fcf-9147-f5592e03b834",
+      "posted": 1753099200,
+      "amount": "-13.99",
+      "description": "PAYPAL INST XFER GOOGLE YOUTUBE WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753099200
+    },
+    {
+      "id": "TRN-4a166b4a-91f0-42ce-99ce-52b17732ca18",
+      "posted": 1753099200,
+      "amount": "-300.00",
+      "description": "Zelle payment to Arsal 25565622080",
+      "memo": "",
+      "transacted_at": 1753099200
+    },
+    {
+      "id": "TRN-910cc36e-4c87-420f-b90e-8f3130fdb6cf",
+      "posted": 1753099200,
+      "amount": "-734.00",
+      "description": "AMERICAN EXPRESS ACH PMT A3018 WEB ID: 9493560001",
+      "memo": "",
+      "transacted_at": 1753099200
+    },
+    {
+      "id": "TRN-9071822a-9070-4a52-bb82-cf3beb82ff29",
+      "posted": 1753099200,
+      "amount": "-2.99",
+      "description": "PAYPAL INST XFER DISCORD WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753099200
+    },
+    {
+      "id": "TRN-40482804-2ba9-4930-80bf-5e50edccd6cc",
+      "posted": 1753099200,
+      "amount": "-9.99",
+      "description": "PAYPAL INST XFER DOORDASHDASHPAS WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753099200
+    },
+    {
+      "id": "TRN-0e70df2e-8e17-4917-8d4b-483f83f1b028",
+      "posted": 1753099200,
+      "amount": "-19.66",
+      "description": "PAYPAL INST XFER DOORDASH PAPAJO WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753099200
+    },
+    {
+      "id": "TRN-5b7013c6-a632-4908-a3eb-7a955862df36",
+      "posted": 1753099200,
+      "amount": "-39.99",
+      "description": "PAYPAL INST XFER LINKEDIN WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753099200
+    },
+    {
+      "id": "TRN-4650d2f9-40c6-482a-aacc-c1ad132e9cf8",
+      "posted": 1753099200,
+      "amount": "-47.43",
+      "description": "PAYPAL INST XFER DOORDASH LITTLE WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753099200
+    },
+    {
+      "id": "TRN-539abeb5-4e58-420c-955a-a382eb84e235",
+      "posted": 1753099200,
+      "amount": "-50.46",
+      "description": "PAYPAL INST XFER DOORDASH PAPAJO WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753099200
+    },
+    {
+      "id": "TRN-95742712-51f9-4b73-98a8-66d8d47261d4",
+      "posted": 1753099200,
+      "amount": "-73.91",
+      "description": "PAYPAL INST XFER DOORDASH PRESSE WEB ID: PAYPALSI77",
+      "memo": "",
+      "transacted_at": 1753099200
+    },
+    {
+      "id": "TRN-52b8e30c-f1ad-43ea-8912-470fd5fe8519",
+      "posted": 1753099200,
+      "amount": "-128.00",
+      "description": "AMZ_STORECRD_PMT PAYMENT 604578161010985 WEB ID: 9130142001",
+      "memo": "",
+      "transacted_at": 1753099200
+    },
+    {
+      "id": "TRN-13cc1114-f747-4d3c-8f24-0409aa70b57e",
+      "posted": 1753099200,
+      "amount": "2809.29",
+      "description": "Unum Life Insurance PPD ID: 9044595001",
+      "memo": "",
+      "transacted_at": 1753099200
+    }
+  ]
+}
