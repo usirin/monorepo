@@ -26,7 +26,7 @@ Build a prototype of `sixtysix`, an Effect-TS native frontend router that levera
 ### As a developer migrating from React Router, I want:
 
 1. **Familiar React Patterns**: Routes that work with standard Suspense/ErrorBoundary instead of custom loading/error components
-2. **Progressive Adoption**: Ability to prototype with sixtysix without rewriting my entire application  
+2. **Progressive Adoption**: Ability to prototype with sixtysix without rewriting my entire application
 3. **Better DX**: Elimination of useEffect/useState boilerplate for data loading in route components
 
 ## Real-World Scenarios Addressed
@@ -57,19 +57,19 @@ export class ValidationError extends Data.TaggedError("ValidationError")<{
 export class UserService extends Effect.Service<UserService>()("sixtysix/UserService", {
   effect: Effect.gen(function* () {
     const http = yield* HttpApi.client.Client
-    
+
     const getCurrentUser = () =>
       http.get("/api/auth/me").pipe(
         Effect.mapError(() => new UnauthorizedError({ resource: "user", userId: "current" })),
         Effect.cached({ ttl: 300000 }) // 5 minute cache
       )
-    
+
     const getById = (id: string) =>
       http.get(`/api/users/${id}`).pipe(
         Effect.mapError(() => new NotFoundError({ resource: "user", id })),
         Effect.cached({ ttl: 60000 }) // 1 minute cache
       )
-    
+
     return { getCurrentUser, getById } as const
   }),
   dependencies: [HttpApi.client.layer]
@@ -80,65 +80,65 @@ export class OrgService extends Effect.Service<OrgService>()("sixtysix/OrgServic
   effect: Effect.gen(function* () {
     const http = yield* HttpApi.client.Client
     const userService = yield* UserService
-    
+
     const requireMembership = (orgId: string) =>
       Effect.gen(function* () {
         const currentUser = yield* userService.getCurrentUser()
         const membership = yield* http.get(`/api/orgs/${orgId}/members/${currentUser.id}`)
-        
+
         if (!membership.active) {
           return yield* Effect.fail(
             new UnauthorizedError({ resource: "organization", userId: currentUser.id })
           )
         }
-        
+
         return { orgId, role: membership.role, user: currentUser }
       })
-    
+
     const isAdmin = (orgId: string, userId: string) =>
       http.get(`/api/orgs/${orgId}/members/${userId}`).pipe(
         Effect.map(membership => membership.role === "admin"),
         Effect.orElse(() => Effect.succeed(false))
       )
-    
+
     return { requireMembership, isAdmin } as const
   }),
   dependencies: [HttpApi.client.layer, UserService.Default]
 }) {}
 
-// Task Service  
+// Task Service
 export class TaskService extends Effect.Service<TaskService>()("sixtysix/TaskService", {
   effect: Effect.gen(function* () {
     const http = yield* HttpApi.client.Client
     const orgService = yield* OrgService
-    
+
     const get = (taskId: string) =>
       http.get(`/api/tasks/${taskId}`).pipe(
         Effect.mapError(() => new NotFoundError({ resource: "task", id: taskId }))
       )
-    
+
     const requireAccess = (orgId: string, projectId: string, taskId: string) =>
       Effect.gen(function* () {
         const [membership, task] = yield* Effect.all([
           orgService.requireMembership(orgId),
           get(taskId)
         ])
-        
+
         // Check if user has access to this project's tasks
         if (task.projectId !== projectId) {
           return yield* Effect.fail(
             new ValidationError({ field: "projectId", message: "Task does not belong to project" })
           )
         }
-        
+
         return { task, membership }
       })
-    
+
     const create = (projectId: string, data: TaskCreateData) =>
       http.post(`/api/projects/${projectId}/tasks`, { body: data }).pipe(
         Effect.mapError(() => new ValidationError({ field: "task", message: "Failed to create task" }))
       )
-    
+
     return { get, requireAccess, create } as const
   }),
   dependencies: [HttpApi.client.layer, OrgService.Default]
@@ -164,15 +164,15 @@ Router.route("/org/:orgId/projects/:projectId/tasks/:taskId", ({ orgId, projectI
 export class AnalyticsService extends Effect.Service<AnalyticsService>()("sixtysix/AnalyticsService", {
   effect: Effect.gen(function* () {
     const http = yield* HttpApi.client.Client
-    
+
     const getOrgStats = (orgId: string) =>
       http.get(`/api/orgs/${orgId}/analytics`).pipe(
         Effect.cached({ ttl: 120000 }) // 2 minute cache for stats
       )
-    
+
     const getRecentActivity = (orgId: string) =>
       http.get(`/api/orgs/${orgId}/activity?limit=10`)
-    
+
     return { getOrgStats, getRecentActivity } as const
   }),
   dependencies: [HttpApi.client.layer]
@@ -183,16 +183,16 @@ Router.route("/org/:orgId/dashboard", ({ orgId }) =>
   Effect.gen(function*() {
     const orgService = yield* OrgService
     const analyticsService = yield* AnalyticsService
-    
+
     const [membership, stats, activity] = yield* Effect.all([
       orgService.requireMembership(orgId),
       analyticsService.getOrgStats(orgId),
       analyticsService.getRecentActivity(orgId)
     ])
-    
-    return <Dashboard 
-      org={membership} 
-      stats={stats} 
+
+    return <Dashboard
+      org={membership}
+      stats={stats}
       activity={activity}
     />
   })
@@ -222,31 +222,31 @@ Router.route("/org/:orgId/dashboard", ({ orgId }) =>
 ```typescript
 // Use Effect's built-in observability instead of custom middleware
 const router = Router.empty.pipe(
-  Router.route("/", () => 
+  Router.route("/", () =>
     Effect.succeed(<HomePage />).pipe(
       Effect.withSpan("route.home")
     )
   ),
-  
+
   Router.route("/org/:orgId/dashboard", ({ orgId }) =>
     Effect.gen(function*() {
       const orgService = yield* OrgService
       const membership = yield* orgService.requireMembership(orgId)
       return <Dashboard org={membership} />
     }).pipe(
-      Effect.withSpan("route.dashboard", { 
+      Effect.withSpan("route.dashboard", {
         attributes: { orgId, userId: "current" }
       })
     )
   ),
-  
+
   Router.route("/org/:orgId/projects/:projectId/tasks/:taskId", ({ orgId, projectId, taskId }) =>
     Effect.gen(function*() {
       const taskService = yield* TaskService
       const { task, membership } = yield* taskService.requireAccess(orgId, projectId, taskId)
       return <TaskDetail task={task} userRole={membership.role} />
     }).pipe(
-      Effect.withSpan("route.task-detail", { 
+      Effect.withSpan("route.task-detail", {
         attributes: { orgId, projectId, taskId }
       })
     )
@@ -255,7 +255,7 @@ const router = Router.empty.pipe(
 
 // Effect runtime automatically provides:
 // - Automatic timing and duration tracking
-// - Error correlation with traces  
+// - Error correlation with traces
 // - Distributed tracing across service calls
 // - Metrics collection (request counts, error rates)
 // - Structured logging with correlation IDs
@@ -266,22 +266,22 @@ const routeCounter = Effect.Metric.counter("route_requests", {
 })
 
 const routeDuration = Effect.Metric.histogram("route_duration_ms", {
-  description: "Route execution time in milliseconds" 
+  description: "Route execution time in milliseconds"
 })
 
 const dashboardRoute = ({ orgId }: { orgId: string }) =>
   Effect.gen(function*() {
     const orgService = yield* OrgService
     const membership = yield* orgService.requireMembership(orgId)
-    
+
     // Built-in metrics tracking
     yield* Effect.Metric.increment(routeCounter, 1, { route: "dashboard", orgId })
-    
+
     return <Dashboard org={membership} />
   }).pipe(
     Effect.withSpan("route.dashboard", { attributes: { orgId } }),
     Effect.timed, // Automatic duration tracking
-    Effect.tap(([duration]) => 
+    Effect.tap(([duration]) =>
       Effect.Metric.set(routeDuration, duration.millis, { route: "dashboard" })
     ),
     Effect.map(([, result]) => result)
@@ -292,17 +292,17 @@ const dashboardRoute = ({ orgId }: { orgId: string }) =>
 ```typescript
 const CreateTaskPage = ({ projectId }: { projectId: string }) => {
   const runtime = useRuntime()
-  
+
   const handleSubmit = (data: TaskCreateData) => {
     const createEffect = Effect.gen(function*() {
       const taskService = yield* TaskService
       const router = yield* RouterService
-      
+
       const task = yield* taskService.create(projectId, data)
       // Analytics happens automatically via router middleware
       yield* router.navigate(`/org/${task.orgId}/projects/${projectId}/tasks/${task.id}`)
     })
-    
+
     runtime.runPromise(createEffect)
   }
 
@@ -321,7 +321,7 @@ const CreateTaskPage = ({ projectId }: { projectId: string }) => {
 - [ ] Built-in observability via `Effect.withSpan()`, `Effect.Metric`, and structured logging
 - [ ] Zero-config telemetry and distributed tracing across route boundaries
 
-### ManagedRuntime Integration  
+### ManagedRuntime Integration
 - [ ] ManagedRuntime created once at app startup with all service layers
 - [ ] RouterService manages URL state via SubscriptionRef and provides current route effect
 - [ ] Routes can `yield*` from any service in the runtime layer
@@ -355,7 +355,7 @@ import { createBrowserHistory, Location, Action } from "history"
 const AppRuntime = ManagedRuntime.make(Layer.mergeAll(
   HttpApi.client.layer,       // HTTP client for all services
   UserService.Default,        // User management
-  OrgService.Default,         // Organization management  
+  OrgService.Default,         // Organization management
   TaskService.Default,        // Task operations
   HistoryService.Default,     // Browser history wrapper
   RouterService.Default,      // URL state management
@@ -368,12 +368,12 @@ const AppRuntime = ManagedRuntime.make(Layer.mergeAll(
 // 2. Routes as pure Effect computations with realistic services
 const routes = Router.empty.pipe(
   Router.route("/", () => Effect.succeed(<HomePage />)),
-  
+
   Router.route("/org/:orgId/dashboard", ({ orgId }) =>
     Effect.gen(function*() {
       const orgService = yield* OrgService
       const analyticsService = yield* AnalyticsService
-      
+
       const [membership, stats, activity] = yield* Effect.all([
         orgService.requireMembership(orgId),
         analyticsService.getOrgStats(orgId),
@@ -382,7 +382,7 @@ const routes = Router.empty.pipe(
       return <Dashboard org={membership} stats={stats} activity={activity} />
     })
   ),
-  
+
   Router.route("/org/:orgId/projects/:projectId/tasks/:taskId", ({ orgId, projectId, taskId }) =>
     Effect.gen(function*() {
       const taskService = yield* TaskService
@@ -396,19 +396,19 @@ const routes = Router.empty.pipe(
 export class HistoryService extends Effect.Service<HistoryService>()("sixtysix/HistoryService", {
   effect: Effect.gen(function* () {
     const history = createBrowserHistory()
-    
+
     const push = (path: string) =>
       Effect.sync(() => history.push(path))
-    
+
     const replace = (path: string) =>
       Effect.sync(() => history.replace(path))
-    
+
     const listen = (listener: (location: Location, action: Action) => void) =>
       Effect.sync(() => {
         const unlisten = history.listen(listener)
         return unlisten
       })
-    
+
     return { history, push, replace, listen } as const
   })
 }) {}
@@ -418,7 +418,7 @@ export class RouterService extends Effect.Service<RouterService>()("sixtysix/Rou
   effect: Effect.gen(function* () {
     const historyService = yield* HistoryService
     const currentEffect = yield* SubscriptionRef.make<Effect<ReactElement, any, any> | null>(null)
-    
+
     const navigate = (path: string) =>
       Effect.gen(function* () {
         yield* historyService.push(path)
@@ -429,7 +429,7 @@ export class RouterService extends Effect.Service<RouterService>()("sixtysix/Rou
       }).pipe(
         Effect.withSpan("router.navigate", { attributes: { path } })
       )
-    
+
     return { currentEffect, navigate } as const
   }),
   dependencies: [HistoryService.Default]
@@ -446,11 +446,11 @@ function RouteRenderer({ effect }: { effect: Effect<ReactElement, any, any> }) {
 function Router() {
   const router = useService(RouterService)
   const currentEffect = useSubscriptionRef(router.currentEffect)
-  
+
   if (!currentEffect) {
     return <NotFoundPage />
   }
-  
+
   return <RouteRenderer effect={currentEffect} />
 }
 
@@ -511,7 +511,7 @@ useEffect(() => {
 ## Success Metrics
 
 1. **API Clarity**: Effect developers can understand the router without documentation
-2. **Code Reduction**: Route components have significantly less boilerplate than React Router equivalents  
+2. **Code Reduction**: Route components have significantly less boilerplate than React Router equivalents
 3. **Service Composition**: Routes naturally compose with mock services via ManagedRuntime layer swapping
 4. **Error Handling**: All async operations have proper error boundaries without manual setup
 5. **Type Safety**: Route dependencies and errors are compile-time checked
