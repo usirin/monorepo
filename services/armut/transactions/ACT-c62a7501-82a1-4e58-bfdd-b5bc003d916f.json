@@ -9,8 +9,17 @@
   "id": "ACT-c62a7501-82a1-4e58-bfdd-b5bc003d916f",
   "name": "CHASE SAVINGS",
   "currency": "USD",
-  "balance": "307.21",
-  "available-balance": "307.21",
-  "balance-date": 1756312485,
-  "transactions": []
+  "balance": "207.21",
+  "available-balance": "207.21",
+  "balance-date": 1758469280,
+  "transactions": [
+    {
+      "id": "TRN-f253f13d-31c0-4dc9-b5c0-6c422298607e",
+      "posted": 1757505600,
+      "amount": "-100.00",
+      "description": "Online Transfer to CHK ...3632 transaction#: 26173001733 09/10",
+      "memo": "",
+      "transacted_at": 1757505600
+    }
+  ]
 }

@@ -1,12 +1,15 @@
-import './App.css';
+import type React from "react";
+import {WakeUpSequence} from "./components/WakeUpSequence.js";
+import {AppRuntime} from "./runtime/AppRuntime.js";
+import {RuntimeProvider} from "./runtime/RuntimeProvider.js";
+import "./App.css";
 
-const App = () => {
-  return (
-    <div className="content">
-      <h1>Rsbuild with React</h1>
-      <p>Start building amazing things with Rsbuild.</p>
-    </div>
-  );
+const App: React.FC = () => {
+	return (
+		<RuntimeProvider runtime={AppRuntime}>
+			<WakeUpSequence />
+		</RuntimeProvider>
+	);
 };
 
 export default App;

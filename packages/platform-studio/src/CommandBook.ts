@@ -31,9 +31,9 @@ const example = Command.make("example", Schema.Struct({text: Schema.String}), ({
 
 const sample = Command.make("sample", Schema.Number, (count) => Effect.succeed(count * 2));
 
-const cmds = [example, sample] as const;
+const foo = Command.execute(example, {text: "5"});
 
-const book = make(cmds);
+const cmds = [example, sample] as const;
 
 type ExampleParams = Command.ParamsOf<typeof example>;
 

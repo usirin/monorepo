@@ -1,5 +1,5 @@
 {
-	"name": "rsbuild-lab",
+	"name": "@usirin/studio-lab",
 	"version": "1.0.0",
 	"private": true,
 	"type": "module",
@@ -9,15 +9,16 @@
 		"preview": "rsbuild preview"
 	},
 	"dependencies": {
-		"effect": "catalog:",
 		"@effect/platform": "catalog:",
-		"@react-three/fiber": "catalog:",
-		"@react-three/drei": "catalog:",
-		"@react-three/postprocessing": "catalog:",
-		"three": "catalog:",
-		"tone": "catalog:",
+		"@radix-ui/react-slot": "catalog:",
+		"classnames": "catalog:",
+		"effect": "catalog:",
+		"history": "catalog:",
+		"radix3": "catalog:",
 		"react": "catalog:",
-		"react-dom": "catalog:"
+		"react-aria-components": "catalog:",
+		"react-dom": "catalog:",
+		"ts-toolbelt": "catalog:"
 	},
 	"devDependencies": {
 		"@rsbuild/core": "catalog:",
