@@ -43,7 +43,8 @@
 	},
 	"devDependencies": {
 		"@rslib/core": "catalog:",
-		"@types/bun": "latest"
+		"@types/bun": "latest",
+		"fast-check": "^3.15.0"
 	},
 	"peerDependencies": {
 		"typescript": "catalog:"

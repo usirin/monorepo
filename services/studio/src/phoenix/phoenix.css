@@ -1,5 +1,27 @@
+@import "@radix-ui/colors/gray.css";
+@import "@radix-ui/colors/gray-alpha.css";
+@import "@radix-ui/colors/gray-dark.css";
+@import "@radix-ui/colors/gray-dark-alpha.css";
+@import "@radix-ui/colors/amber.css";
+@import "@radix-ui/colors/amber-alpha.css";
+@import "@radix-ui/colors/amber-dark.css";
+@import "@radix-ui/colors/amber-dark-alpha.css";
+@import "@radix-ui/colors/ruby.css";
+@import "@radix-ui/colors/ruby-alpha.css";
+@import "@radix-ui/colors/ruby-dark.css";
+@import "@radix-ui/colors/ruby-dark-alpha.css";
+@import "@radix-ui/colors/jade.css";
+@import "@radix-ui/colors/jade-alpha.css";
+@import "@radix-ui/colors/jade-dark.css";
+@import "@radix-ui/colors/jade-dark-alpha.css";
+@import "@radix-ui/colors/sky.css";
+@import "@radix-ui/colors/sky-alpha.css";
+@import "@radix-ui/colors/sky-dark.css";
+@import "@radix-ui/colors/sky-dark-alpha.css";
+
 :root {
-  --space-0: 0;
+	--space-0: 0;
+	--space-2: 2px;
 	--space-4: 4px;
 	--space-8: 8px;
 	--space-12: 12px;
@@ -21,4 +43,19 @@
 	--space-128: 128px;
 	--space-256: 256px;
 	--space-512: 512px;
+}
+
+:root {
+  --radius-none: 0;
+  --radius-2: 2px;
+  --radius-4: 4px;
+  --radius-8: 8px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-round: 9999px;
+}
+
+:root {
+  --color-bg-base: var(--gray-1);
+  --color-bg-subtle: var(--gray-2);
 }

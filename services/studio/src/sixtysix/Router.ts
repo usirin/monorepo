@@ -1,8 +1,6 @@
 import {Context, Data, Effect, Layer, Stream} from "effect";
 import type * as Radix3 from "radix3";
 
-import * as History from "./History";
-
 interface RouteData {
 	_tag: "RouteData";
 	handler: (res: Radix3.MatchedRoute<RouteData>) => void;

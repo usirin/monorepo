@@ -21,3 +21,5 @@ export type Space =
 	| 128
 	| 256
 	| 512;
+
+export type Color = "gray" | "amber" | "ruby" | "jade" | "sky";

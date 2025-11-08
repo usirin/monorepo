@@ -1,9 +1,10 @@
+import * as Slot from "@radix-ui/react-slot";
 import classNames from "classnames";
+import {capitalize} from "effect/String";
 import * as React from "react";
 import type {Object as Obj} from "ts-toolbelt";
+
 import type {Space} from "./phoenix";
-import {capitalize} from "effect/String";
-import * as Slot from "@radix-ui/react-slot";
 
 import styles from "./Stack.module.css";
 

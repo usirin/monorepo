@@ -29,6 +29,8 @@ const example = Command.make("example", Schema.Struct({text: Schema.String}), ({
 	Effect.succeed(`Example command executed with text: ${text}`),
 );
 
+type ExampleName = Command.NameOf<typeof example>;
+
 const sample = Command.make("sample", Schema.Number, (count) => Effect.succeed(count * 2));
 
 const foo = Command.execute(example, {text: "5"});
