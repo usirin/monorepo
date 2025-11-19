@@ -40,6 +40,7 @@ catalog:
   '@rsbuild/plugin-react': 1.4.0
   '@rslib/core': 0.10.4
   '@standard-schema/spec': 1.0.0
+  '@types/dom-navigation': ^1.0.6
   '@types/history': ^5.0.0
   '@types/node': 22.15.18
   '@types/path-browserify': 1.0.3

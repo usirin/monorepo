@@ -26,6 +26,7 @@
 	"devDependencies": {
 		"@rsbuild/core": "catalog:",
 		"@rsbuild/plugin-react": "catalog:",
+		"@types/dom-navigation": "catalog:",
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",
 		"typescript": "catalog:"

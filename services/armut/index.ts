@@ -1,5 +1,5 @@
 import {BunRuntime} from "@effect/platform-bun";
-import {Effect, Layer, Stream} from "effect";
+import {Effect, Layer} from "effect";
 import {Gemini} from "./dalaran/Gemini";
 import * as SimpleFin from "./SimpleFin";
 import {TransactionIngestor} from "./TransactionIngestor";

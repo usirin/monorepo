@@ -7,9 +7,8 @@ import * as Router from "./Router";
 
 const AllLayers = Layer.mergeAll(
 	// Register router
-	Router.layer(() => createRouter()).pipe(
-		Layer.provide(History.layer(() => createBrowserHistory())),
-	),
+	Router.layer(() => createRouter()),
+	History.layer(() => createBrowserHistory()),
 );
 
 export const make = () => ManagedRuntime.make(AllLayers);

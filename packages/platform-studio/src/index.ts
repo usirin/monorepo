@@ -1,5 +1,5 @@
-export * as CommandPalette from "./CommandPalette";
-export * as StudioCommandExecutor from "./StudioCommandExecutor";
+// export * as CommandPalette from "./CommandPalette";
+// export * as StudioCommandExecutor from "./StudioCommandExecutor";
 export * as StudioConsole from "./StudioConsole";
 export * as StudioContext from "./StudioContext";
 export * as StudioFileSystem from "./StudioFileSystem";
