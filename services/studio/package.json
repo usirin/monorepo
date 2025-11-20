@@ -10,8 +10,11 @@
 	},
 	"dependencies": {
 		"@effect/platform": "catalog:",
+		"@google/genai": "catalog:",
 		"@radix-ui/colors": "catalog:",
 		"@radix-ui/react-slot": "catalog:",
+		"@react-three/drei": "catalog:",
+		"@react-three/fiber": "catalog:",
 		"classnames": "catalog:",
 		"effect": "catalog:",
 		"history": "catalog:",
@@ -21,6 +24,7 @@
 		"react-aria-components": "catalog:",
 		"react-dom": "catalog:",
 		"react-stately": "catalog:",
+		"three": "catalog:",
 		"ts-toolbelt": "catalog:"
 	},
 	"devDependencies": {
@@ -29,6 +33,7 @@
 		"@types/dom-navigation": "catalog:",
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",
+		"@types/three": "^0.160.0",
 		"typescript": "catalog:"
 	}
 }
