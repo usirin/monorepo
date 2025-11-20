@@ -197,7 +197,7 @@ export const VoxelServiceLive = Layer.effect(
 					Task: Generate a 3D voxel art model of: "${prompt}".
 					
 					Strict Rules:
-					1. Use approximately 150 to 600 voxels.
+					1. Use approximately 450 to 100 voxels.
 					2. The model must be centered at x=0, z=0.
 					3. The bottom of the model must be at y=0 or slightly higher.
 					4. Ensure the structure is physically plausible (connected).
